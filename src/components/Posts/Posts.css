@@ -1,0 +1,22 @@
+.Posts{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--cardColor);
+}
+
+.Posts>img{
+    border-radius: 0.5rem;
+    width: 100%;
+    max-height: 20rem;
+    object-fit: cover;
+}
+
+.shareOptions{
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    cursor: pointer;
+}
