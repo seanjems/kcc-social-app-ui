@@ -16,6 +16,7 @@ const RightSide = () => {
         <img src={Notification} alt="" />
         <img src={Messages} alt="" />
       </div>
+
       <TrendCard />
       <button className="button sh-button">Share</button>
     </div>
