@@ -1,0 +1,92 @@
+.Auth{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center; 
+    gap: 2rem;
+    position: relative;
+}
+
+.a-left{
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.a-left>img{
+    width: 6rem;
+    max-height: 6rem;
+    object-fit: cover;
+}
+
+.a-left>div{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.a-left>div>h1{
+    font-size: 3rem;
+    background: red;
+    background-image: var(--buttonBg);
+    background-repeat: repeat;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+
+}
+
+.a-left>div>span:nth-of-type(1){
+    font-size: 0.7rem;
+    font-weight: 400;
+   
+}
+
+.signupForm>form{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background: var(--cardColor);
+    border-radius: 1rem;
+    padding: 2rem;
+    align-items: center;
+    
+}
+
+.signupForm>form>div{
+    display: flex;
+    justify-content: center;
+    gap:  0.5rem;
+    flex: 1;
+    width: 100%;
+    min-width: 20rem;
+}
+
+.signupForm>form>div>input{
+   flex:1;
+}
+
+.formInput{
+    background: var(--inputColor);
+    border: none;
+    outline: none;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.sign-button {
+    padding: 0.5rem 2rem;
+    align-self: flex-end;
+    margin-top: 2rem;
+}
+
+
+
+.signupForm>form>span{
+    font-size: 0.8rem;
+    align-self: center;
+    cursor: pointer;
+}
+
