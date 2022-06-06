@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import "./MyProfileCard.css";
 import { UilPen } from "@iconscout/react-unicons";
+import ProfileModal from "../ProfileModal/ProfileModal";
 
 const MyProfileCard = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="MyProfileCard">
       <div>
         <h4>Your Info</h4>
-        <UilPen />
+
+        <UilPen
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        />
+        <ProfileModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
       </div>
       <div className="detail">
         <div>

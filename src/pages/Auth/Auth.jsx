@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Auth.css";
 
 import Logo from "../../img/logo.png";
@@ -23,8 +23,8 @@ const Auth = () => {
 const Login = () => {
   return (
     <>
-      <div className="signupForm">
-        <form action="submit">
+      <div className="inputForm">
+        <form>
           <h2>Login</h2>
 
           <div>

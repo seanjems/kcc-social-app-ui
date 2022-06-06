@@ -44,7 +44,7 @@
    
 }
 
-.signupForm>form{
+.inputForm>form{
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
@@ -55,7 +55,7 @@
     
 }
 
-.signupForm>form>div{
+.inputForm>form>div{
     display: flex;
     justify-content: center;
     gap:  0.5rem;
@@ -64,7 +64,7 @@
     min-width: 20rem;
 }
 
-.signupForm>form>div>input{
+.inputForm>form>div>input{
    flex:1;
 }
 
@@ -84,7 +84,7 @@
 
 
 
-.signupForm>form>span{
+.inputForm>form>span{
     font-size: 0.8rem;
     align-self: center;
     cursor: pointer;
