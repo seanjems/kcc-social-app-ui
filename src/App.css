@@ -47,6 +47,7 @@ overflow: -moz-scrollbars-none; /* for old fire fox scroll bars*/
   border-radius: 0.5rem;
   align-items: center;
   background: var(--buttonBg);
+  border: 2px solid ;
   transition: all 100ms ease-in-out;
 }
 
