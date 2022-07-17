@@ -1,10 +1,14 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
 import CoverPic from "../../img/cover.jpg";
 import ProfilePic from "../../img/profileImg.jpg";
 import "./ProfileCard.css";
 
+import { useNavigate } from "react-router-dom";
+
 const ProfileCard = () => {
   const myProfileScreen = true;
+  const navigate = useNavigate();
   return (
     <div className="ProfileCard">
       <div className="ProfileImages">
@@ -13,7 +17,7 @@ const ProfileCard = () => {
       </div>
 
       <div className="ProfileName">
-        <span>Ruth Kokusiima</span>
+        <span onClick={() => navigate("../profile")}>Ruth Kokusiima</span>
         <span>Deaconess/Singer/Youth choir</span>
       </div>
       <div className="followStatus">

@@ -3,7 +3,7 @@ import "./MyProfileCard.css";
 import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal/ProfileModal";
 
-const MyProfileCard = () => {
+const MyProfileCard = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -47,7 +47,12 @@ const MyProfileCard = () => {
           </span>
           <span>Medic</span>
         </div>
-        <button className="button lg-button">Logout</button>
+        <button
+          className="button lg-button"
+          onClick={() => props.setIsLoggedIn(false)}
+        >
+          Logout
+        </button>
       </div>
     </div>
   );

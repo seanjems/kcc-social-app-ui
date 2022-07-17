@@ -1,6 +1,18 @@
 .Home{
-    position: relative;
-    display: grid;
-    grid-template-columns: 18rem auto 20rem;
+    
+    display: flex;
     gap: 1rem;
+}
+
+.Home>:nth-child(1){
+    flex: 1;
+    
+}
+.Home>:nth-child(2){
+    flex: 3;
+    
+}
+.Home>:nth-child(3){
+    flex: 1;
+    
 }

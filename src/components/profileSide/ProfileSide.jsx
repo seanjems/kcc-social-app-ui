@@ -7,15 +7,7 @@ import "./ProfileSide.css";
 
 const ProfileSide = () => {
   return (
-    //inline Styling because the profile css is not being picked. find out why...
-    <div
-      className="ProfileSide"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.75rem",
-        alignItems: "center",
-      }}>
+    <div className="ProfileSide">
       <LogoSearch />
       <ProfileCard />
       <FollowersCard />

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Auth.css";
+import { Navigate } from "react-router-dom";
 
 import Logo from "../../img/logo.png";
 
-const Auth = () => {
+const Auth = (props) => {
+  useEffect(() => {}, []);
   return (
     <div className="Auth">
       <div className="a-left">
@@ -21,6 +23,9 @@ const Auth = () => {
 };
 
 const Login = () => {
+  const handleLogin = () => {
+    <Navigate to="/home" />;
+  };
   return (
     <>
       <div className="inputForm">
@@ -45,7 +50,14 @@ const Login = () => {
           </div>
           <span>Don't have an account? Signup</span>
 
-          <button className="button sign-button">Login</button>
+          <button
+            className="button sign-button"
+            onClick={() => {
+              handleLogin();
+            }}
+          >
+            Login
+          </button>
         </form>
       </div>
     </>

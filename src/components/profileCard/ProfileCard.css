@@ -15,11 +15,13 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    width: 100%;
 
 }
 
 .ProfileImages>img:nth-of-type(1){
-    width: 120%;
+    width: 100%;
+    max-height: 15rem;
     object-fit: cover;
 }
 
@@ -42,6 +44,9 @@
 .ProfileName>span:nth-of-type(1){
     font-weight: bold;
 }
+.ProfileName>span:nth-of-type(1):hover{
+    cursor: pointer;
+}
 
 .ProfileName>span:nth-of-type(2){
     font-size: 0.8em;
@@ -53,6 +58,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1rem;
 }
 
 .followStatus>hr{
@@ -63,9 +69,9 @@
 .followStatus>div{
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    gap: 3rem;
+    gap: 1rem;
 }
 
 .follow{
@@ -105,5 +111,6 @@
     font-size: 0.6rem;
     color: var(--gray);
     width: 80%;
+    padding-bottom: 1rem;
     
 }

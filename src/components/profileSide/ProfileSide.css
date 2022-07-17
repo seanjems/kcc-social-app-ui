@@ -1,6 +1,6 @@
-    .ProfileSide.css{
+    .ProfileSide{
         display: flex;
         flex-direction: column;
-        gap: 12rem;
+        gap: 1rem;
         align-items: center;
     }

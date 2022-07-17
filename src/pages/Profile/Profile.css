@@ -1,9 +1,9 @@
 .Profile{
     display: grid;
     gap: 1rem;
-    grid-template-columns: 20rem auto 22rem;
+    grid-template-columns: 20% auto 20%;
     position: relative;
-    gap: 1rem;
+   
    
 }
 
