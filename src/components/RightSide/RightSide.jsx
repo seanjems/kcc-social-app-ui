@@ -7,13 +7,15 @@ import { UilSetting } from "@iconscout/react-unicons";
 import "./RightSide.css";
 import TrendCard from "../TrendCard/TrendCard";
 import ShareModal from "../ShareModal/ShareModal";
+import { useNavigate } from "react-router-dom";
 
 const RightSide = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <div className="RightSide">
       <div className="navIcons">
-        <img src={Home} alt="" />
+        <img src={Home} alt="" onClick={() => navigate("../home")} />
         <UilSetting />
         <img src={Notification} alt="" />
         <img src={Messages} alt="" />
@@ -24,7 +26,8 @@ const RightSide = () => {
         className="button sh-button"
         onClick={() => {
           setIsModalOpen(true);
-        }}>
+        }}
+      >
         Share
       </button>
       <ShareModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />

@@ -9,8 +9,10 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   return (
     <div className="App">
-      <div className="blur" style={{ top: "-18%", right: "0" }}></div>
-      <div className="blur" style={{ top: "45%", left: "-8rem " }}></div>
+      <div className="blurs">
+        <div className="blur" style={{ top: "-18%", right: "0" }}></div>
+        <div className="blur" style={{ top: "45%", left: "-8rem " }}></div>
+      </div>
 
       <Routes>
         <Route

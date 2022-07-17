@@ -3,4 +3,13 @@
         flex-direction: column;
         gap: 1rem;
         align-items: center;
+        overflow: auto;
+        height: 100vh;
+        z-index: 1;
+
+        scrollbar-width: none;
+        /* Firefox */
+    
+        overflow: -moz-scrollbars-none;
+        /* for old fire fox scroll bars*/
     }

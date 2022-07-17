@@ -2,6 +2,7 @@
     
     display: flex;
     gap: 1rem;
+    z-index: 10;
 }
 
 .Home>:nth-child(1){

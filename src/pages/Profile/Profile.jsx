@@ -17,7 +17,7 @@ const Profile = () => {
         <FollowersCard />
       </div>
       <dv className="ProfileCenter">
-        <ProfileCard />
+        <ProfileCard isOnProfileScreen={true} />
         <PostShare />
         <PostsCard />
       </dv>

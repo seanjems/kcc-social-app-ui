@@ -22,8 +22,9 @@ overflow: -moz-scrollbars-none; /* for old fire fox scroll bars*/
 .App{
   overflow: hidden;
   color: var(--black);
-  background: #f3f3f3 ;
+  background-color: #f3f3f3 ;
   padding: 1rem 1rem;
+ 
 } 
 
 .blur{
@@ -31,9 +32,12 @@ overflow: -moz-scrollbars-none; /* for old fire fox scroll bars*/
   width: 22rem;
   height: 14rem;
   border-radius: 50%;
-  background: #92ddf0;
+  background-color: #92ddf0;
   filter: blur(72px);
+  
 }
+
+
 
 .button{
   color: white;

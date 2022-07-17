@@ -6,8 +6,8 @@ import "./ProfileCard.css";
 
 import { useNavigate } from "react-router-dom";
 
-const ProfileCard = () => {
-  const myProfileScreen = true;
+const ProfileCard = ({ isOnProfileScreen = false }) => {
+  const myProfileScreen = isOnProfileScreen;
   const navigate = useNavigate();
   return (
     <div className="ProfileCard">
@@ -48,7 +48,13 @@ const ProfileCard = () => {
           Jesus reigns!!
         </div>
 
-        {myProfileScreen ? "" : <span className="Myprofile">My Profile</span>}
+        {myProfileScreen ? (
+          ""
+        ) : (
+          <span className="Myprofile" onClick={() => navigate("../profile")}>
+            My Profile
+          </span>
+        )}
       </div>
     </div>
   );

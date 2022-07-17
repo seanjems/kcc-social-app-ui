@@ -4,9 +4,12 @@
     display: flex;
     gap: 1rem;
     border-radius: 1rem;
-    overflow:hidden;
+    min-height: fit-content;
     background-color: var(--cardColor);
     align-items: center;
+    
+  
+    
 }
 
 .ProfileImages{
@@ -16,13 +19,14 @@
     align-items: center;
     position: relative;
     width: 100%;
-
 }
 
 .ProfileImages>img:nth-of-type(1){
     width: 100%;
     max-height: 15rem;
     object-fit: cover;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
 }
 
 .ProfileImages>img:nth-of-type(2){
@@ -93,13 +97,14 @@
 .vl{
     height: 150%;
     border-left: 2px solid var(--hrColor);
-    min-height: 4em;
+    height: 3rem;
 }
 
 .Myprofile{
     font-weight: bold;
     color: orange;
     padding: 1rem;
+    padding-top: 0rem;
     
 }
 

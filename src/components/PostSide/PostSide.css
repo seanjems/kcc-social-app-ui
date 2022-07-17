@@ -7,7 +7,9 @@
     border-radius: 1rem;
     height: 100vh;
 
-    scrollbar-width: none;  /* Firefox */
+    scrollbar-width: none;
+    /* Firefox */
 
-overflow: -moz-scrollbars-none; /* for old fire fox scroll bars*/
-}
+    overflow: -moz-scrollbars-none;
+    /* for old fire fox scroll bars*/
+    }
