@@ -1,15 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Auth.css";
 import { Navigate } from "react-router-dom";
 
 import Logo from "../../img/logo.png";
+import AuthContext from "../../auth/context";
+import testingApi from "../../api/testingApi";
 
 const Auth = (props) => {
+  const userContext = useContext(AuthContext);
   const [hasAccount, setHasAccount] = useState(true);
   const Login = () => {
     const handleLogin = () => {
       <Navigate to="/home" />;
     };
+
+    const handleFetchPosts = async () => {
+      console.log("we are here .. ");
+      const response = await testingApi.getPosts();
+      console.log(response.data);
+    };
+
+    // testing testing
+    async function fetchPosts() {
+      return fetch("https://localhost:44361/api/app/posts/find-by-id", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: "092ecc74-10f8-5a5d-7ad5-3a053c491e2d",
+        }),
+      })
+        .then((data) => data.json())
+        .then((resp) => {
+          if (resp.error !== null) {
+            console.log("Error: " + resp.error);
+
+            return;
+          } else {
+            console.log(resp.result);
+          }
+        });
+    }
     return (
       <>
         <div className="inputForm">
@@ -26,7 +58,7 @@ const Auth = (props) => {
             </div>
             <div>
               <input
-                type="text"
+                type="password"
                 name="password"
                 placeholder="Password"
                 className="formInput"
@@ -38,8 +70,13 @@ const Auth = (props) => {
 
             <button
               className="button sign-button"
-              onClick={() => {
-                handleLogin();
+              onClick={(e) => {
+                e.preventDefault();
+                console.log("we are here in button");
+                fetchPosts();
+                //handleFetchPosts();
+                // userContext.setIsLoggedIn(true);
+                // localStorage.setItem("isLoggedIn", true);
               }}
             >
               Login
@@ -79,13 +116,13 @@ const Auth = (props) => {
             </div>
             <div>
               <input
-                type="text"
+                type="password"
                 name="password"
                 placeholder="Password"
                 className="formInput"
               />
               <input
-                type="text"
+                type="password"
                 name="confirmpass"
                 placeholder="Confirm Password"
                 className="formInput"

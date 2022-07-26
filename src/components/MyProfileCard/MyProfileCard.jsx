@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./MyProfileCard.css";
 import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal/ProfileModal";
+import AuthContext from "../../auth/context";
 
 const MyProfileCard = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const userContext = useContext(AuthContext);
 
   return (
     <div className="MyProfileCard">
@@ -49,7 +51,10 @@ const MyProfileCard = (props) => {
         </div>
         <button
           className="button lg-button"
-          onClick={() => props.setIsLoggedIn(false)}
+          onClick={() => {
+            userContext.setIsLoggedIn(false);
+            localStorage.removeItem("isLoggedIn");
+          }}
         >
           Logout
         </button>
