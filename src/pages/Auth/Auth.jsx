@@ -20,28 +20,6 @@ const Auth = (props) => {
       console.log(response.data);
     };
 
-    // testing testing
-    async function fetchPosts() {
-      return fetch("https://localhost:44361/api/app/posts/find-by-id", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: "092ecc74-10f8-5a5d-7ad5-3a053c491e2d",
-        }),
-      })
-        .then((data) => data.json())
-        .then((resp) => {
-          if (resp.error !== null) {
-            console.log("Error: " + resp.error);
-
-            return;
-          } else {
-            console.log(resp.result);
-          }
-        });
-    }
     return (
       <>
         <div className="inputForm">
@@ -72,11 +50,10 @@ const Auth = (props) => {
               className="button sign-button"
               onClick={(e) => {
                 e.preventDefault();
-                console.log("we are here in button");
-                fetchPosts();
+                //fetchPosts();
                 //handleFetchPosts();
-                // userContext.setIsLoggedIn(true);
-                // localStorage.setItem("isLoggedIn", true);
+                userContext.setIsLoggedIn(true);
+                localStorage.setItem("isLoggedIn", true);
               }}
             >
               Login
