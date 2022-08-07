@@ -14,14 +14,27 @@ import * as Yup from "yup";
 import ErrorTextComponent from "../../components/Reusables/ErrorTextComponent";
 
 //validationObjects
+const createUserFormValidation = Yup.object().shape({
+  emailAddress: Yup.string().required().email().label("Email"),
+  password: Yup.string().required().min(4).label("Password"),
+  confirmpass: Yup.string()
+    .required()
+    .min(4)
+    .label("Confirm password")
+    .oneOf([Yup.ref("password"), null], "Passwords must match"),
+  surname: Yup.string().required().min(3).max(15).label("Lastname"),
+  name: Yup.string().required().min(3).max(15).label("Firstname"),
+});
+
 const loginFormValidation = Yup.object().shape({
   userNameOrEmailAddress: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(4).label("Password"),
 });
+
 const Auth = (props) => {
   const userContext = useContext(AuthContext);
   const [hasAccount, setHasAccount] = useState(true);
-
+  const [accountCreated, setAccountCreated] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
 
   const handleCreateUser = async ({
@@ -30,25 +43,31 @@ const Auth = (props) => {
     emailAddress,
     userName,
     name,
-    surName,
-    confirmpass,
+    surname,
   }) => {
     //set username
-    userName = `${name}${surName}`;
-    //validate passwords
-    const result = await authorization.tryCreateUser(
-      appName,
-      password,
-      emailAddress,
-      userName,
-      name,
-      surName,
-      confirmpass
-    );
+    setAccountCreated(false);
+    userName = `${name}${surname}`;
+    appName = "sdakcc_React";
+    console.log(appName, password, emailAddress, userName, name, surname);
+    ////validate passwords
+    // const result = await authorization.tryCreateUser(
+    //   appName,
+    //   password,
+    //   emailAddress,
+    //   userName,
+    //   name,
+    //   surname
+    // );
+
+    //set notification on success
+    setHasAccount(true);
+    setAccountCreated(true);
   };
 
   const handleLogin = async ({ userNameOrEmailAddress, password }) => {
     setLoginFailed(false);
+    setAccountCreated(false);
     const result = await authorization.tryLogin(
       userNameOrEmailAddress,
       password
@@ -66,16 +85,6 @@ const Auth = (props) => {
   };
 
   const Login = () => {
-    // const handleLogin = () => {
-    //   <Navigate to="/home" />;
-    // };
-
-    // const handleFetchPosts = async () => {
-    //   console.log("we are here .. ");
-    //   const response = await testingApi.getPosts();
-    //   console.log(response.data);
-    // };
-
     return (
       <>
         <div className="inputForm">
@@ -94,6 +103,11 @@ const Auth = (props) => {
               touched,
             }) => (
               <Form>
+                <ErrorTextComponent
+                  error="Account creation successfull"
+                  visible={accountCreated}
+                  greenMessage={true}
+                />
                 <h2>Login</h2>
 
                 <ErrorTextComponent
@@ -160,14 +174,21 @@ const Auth = (props) => {
               emailAddress: "",
               userName: "",
               name: "",
-              surName: "",
+              surname: "",
               confirmpass: "",
             }}
             onSubmit={(values) => {
               handleCreateUser(values);
             }}
+            validationSchema={createUserFormValidation}
           >
-            {({ handleChange, handleSubmit }) => (
+            {({
+              handleChange,
+              handleSubmit,
+              errors,
+              setFieldTouched,
+              touched,
+            }) => (
               <Form>
                 <h2>Sign up</h2>
                 <div>
@@ -176,22 +197,40 @@ const Auth = (props) => {
                     onChange={handleChange("name")}
                     placeholder="FirstName"
                     className="formInput"
+                    onBlur={() => setFieldTouched("name")}
                   />
+
                   <input
                     type="text"
-                    onChange={handleChange("surName")}
+                    onChange={handleChange("surname")}
                     placeholder="Last name"
                     className="formInput"
+                    onBlur={() => setFieldTouched("surname")}
+                  />
+                </div>
+                <div>
+                  <ErrorTextComponent
+                    error={errors.name}
+                    visible={touched.name}
+                  />
+
+                  <ErrorTextComponent
+                    error={errors.surname}
+                    visible={touched.surname}
                   />
                 </div>
                 <div>
                   <input
                     type="text"
-                    onChange={handleChange("userName")}
-                    placeholder="Username"
+                    onChange={handleChange("emailAddress")}
+                    placeholder="Email"
                     className="formInput"
                   />
                 </div>
+                <ErrorTextComponent
+                  error={errors.userName}
+                  visible={touched.userName}
+                />
                 <div>
                   <input
                     type="password"
@@ -206,11 +245,26 @@ const Auth = (props) => {
                     className="formInput"
                   />
                 </div>
+                <div>
+                  <ErrorTextComponent
+                    error={errors.password}
+                    visible={touched.password}
+                  />
+
+                  <ErrorTextComponent
+                    error={errors.confirmpass}
+                    visible={touched.confirmpass}
+                  />
+                </div>
                 <span onClick={() => setHasAccount(!hasAccount)}>
                   Already have an account? Login
                 </span>
 
-                <button className="button sign-button" onSubmit={handleSubmit}>
+                <button
+                  className="button sign-button"
+                  type="submit"
+                  onSubmit={handleSubmit}
+                >
                   Signup
                 </button>
               </Form>
