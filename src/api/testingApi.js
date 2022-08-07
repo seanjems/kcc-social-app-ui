@@ -1,4 +1,4 @@
-import apiClient from "./client";
+import apiClient from "./apiClient";
 
 const endpointPosts = "api/app/posts/find-by-id";
 

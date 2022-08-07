@@ -7,13 +7,13 @@ import { useEffect, useState } from "react";
 import AuthContext from "./auth/context";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
+  const [user, setUser] = useState(
     false
     //localStorage.getItem("isLoggedIn")
   );
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       <div className="App">
         <div className="blurs">
           <div className="blur" style={{ top: "-18%", right: "0" }}></div>
@@ -23,41 +23,27 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              isLoggedIn ? <Navigate to="home" /> : <Navigate to="/auth" />
-            }
+            element={user ? <Navigate to="home" /> : <Navigate to="/auth" />}
           />
 
           <Route
             path="/home"
             element={
-              isLoggedIn ? (
-                <Home setIsLoggedIn={setIsLoggedIn} />
-              ) : (
-                <Navigate to="../auth" />
-              )
+              user ? <Home setUser={setUser} /> : <Navigate to="../auth" />
             }
           />
 
           <Route
             path="/auth"
             element={
-              isLoggedIn ? (
-                <Navigate to="../home" />
-              ) : (
-                <Auth setIsLoggedIn={setIsLoggedIn} />
-              )
+              user ? <Navigate to="../home" /> : <Auth setUser={setUser} />
             }
           />
 
           <Route
             path="/profile"
             element={
-              isLoggedIn ? (
-                <Profile setIsLoggedIn={setIsLoggedIn} />
-              ) : (
-                <Navigate to="../auth" />
-              )
+              user ? <Profile setUser={setUser} /> : <Navigate to="../auth" />
             }
           />
         </Routes>
