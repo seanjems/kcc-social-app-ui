@@ -10,12 +10,42 @@ import authorization from "../../api/authorization";
 
 import { Formik, Form } from "formik";
 import jwtDecode from "jwt-decode";
+import * as Yup from "yup";
+import ErrorTextComponent from "../../components/Reusables/ErrorTextComponent";
 
+//validationObjects
+const loginFormValidation = Yup.object().shape({
+  userNameOrEmailAddress: Yup.string().required().email().label("Email"),
+  password: Yup.string().required().min(4).label("Password"),
+});
 const Auth = (props) => {
   const userContext = useContext(AuthContext);
   const [hasAccount, setHasAccount] = useState(true);
 
   const [loginFailed, setLoginFailed] = useState(false);
+
+  const handleCreateUser = async ({
+    appName,
+    password,
+    emailAddress,
+    userName,
+    name,
+    surName,
+    confirmpass,
+  }) => {
+    //set username
+    userName = `${name}${surName}`;
+    //validate passwords
+    const result = await authorization.tryCreateUser(
+      appName,
+      password,
+      emailAddress,
+      userName,
+      name,
+      surName,
+      confirmpass
+    );
+  };
 
   const handleLogin = async ({ userNameOrEmailAddress, password }) => {
     setLoginFailed(false);
@@ -54,37 +84,53 @@ const Auth = (props) => {
             onSubmit={(values) => {
               handleLogin(values);
             }}
+            validationSchema={loginFormValidation}
           >
-            {({ handleChange, handleSubmit }) => (
+            {({
+              handleChange,
+              handleSubmit,
+              errors,
+              setFieldTouched,
+              touched,
+            }) => (
               <Form>
                 <h2>Login</h2>
 
-                <span
-                  style={
-                    loginFailed
-                      ? { display: "block", color: "red" }
-                      : { display: "none" }
-                  }
-                >
-                  Invalid Username and/or Password
-                </span>
+                <ErrorTextComponent
+                  error="Invalid Username and/or Password"
+                  visible={loginFailed}
+                />
+
                 <div>
                   <input
                     type="text"
                     placeholder="Username"
+                    onBlur={() => setFieldTouched("userNameOrEmailAddress")}
                     className="formInput"
                     onChange={handleChange("userNameOrEmailAddress")}
                   />
                 </div>
+
+                <ErrorTextComponent
+                  error={errors.userNameOrEmailAddress}
+                  visible={touched.userNameOrEmailAddress}
+                />
+
                 <div>
                   <input
                     type="password"
                     name="password"
                     placeholder="Password"
+                    onBlur={() => setFieldTouched("password")}
                     className="formInput"
                     onChange={handleChange("password")}
                   />
                 </div>
+                <ErrorTextComponent
+                  error={errors.password}
+                  visible={touched.password}
+                />
+
                 <span onClick={() => setHasAccount(!hasAccount)}>
                   Don't have an account? Signup
                 </span>
@@ -107,50 +153,69 @@ const Auth = (props) => {
     return (
       <>
         <div className="inputForm">
-          <form action="submit">
-            <h2>Sign up</h2>
-            <div>
-              <input
-                type="text"
-                name="firstname"
-                placeholder="FirstName"
-                className="formInput"
-              />
-              <input
-                type="text"
-                name="lastname"
-                placeholder="Last name"
-                className="formInput"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                className="formInput"
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="formInput"
-              />
-              <input
-                type="password"
-                name="confirmpass"
-                placeholder="Confirm Password"
-                className="formInput"
-              />
-            </div>
-            <span onClick={() => setHasAccount(!hasAccount)}>
-              Already have an account? Login
-            </span>
+          <Formik
+            initialValues={{
+              appName: "",
+              password: "",
+              emailAddress: "",
+              userName: "",
+              name: "",
+              surName: "",
+              confirmpass: "",
+            }}
+            onSubmit={(values) => {
+              handleCreateUser(values);
+            }}
+          >
+            {({ handleChange, handleSubmit }) => (
+              <Form>
+                <h2>Sign up</h2>
+                <div>
+                  <input
+                    type="text"
+                    onChange={handleChange("name")}
+                    placeholder="FirstName"
+                    className="formInput"
+                  />
+                  <input
+                    type="text"
+                    onChange={handleChange("surName")}
+                    placeholder="Last name"
+                    className="formInput"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    onChange={handleChange("userName")}
+                    placeholder="Username"
+                    className="formInput"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="password"
+                    onChange={handleChange("password")}
+                    placeholder="Password"
+                    className="formInput"
+                  />
+                  <input
+                    type="password"
+                    onChange={handleChange("confirmpass")}
+                    placeholder="Confirm Password"
+                    className="formInput"
+                  />
+                </div>
+                <span onClick={() => setHasAccount(!hasAccount)}>
+                  Already have an account? Login
+                </span>
 
-            <button className="button sign-button">Signup</button>
-          </form>
+                <button className="button sign-button" onSubmit={handleSubmit}>
+                  Signup
+                </button>
+              </Form>
+            )}
+          </Formik>
         </div>
       </>
     );
