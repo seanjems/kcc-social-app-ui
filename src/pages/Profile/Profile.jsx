@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./Profile.css";
 import LogoSearch from "../../components/logoSearch//LogoSearch";
 import MyProfileCard from "../../components/MyProfileCard/MyProfileCard";
@@ -7,8 +7,15 @@ import ProfileCard from "../../components/profileCard/ProfileCard";
 import PostsCard from "../../components/PostsCard/PostsCard";
 import RightSide from "../../components/RightSide/RightSide";
 import PostShare from "../../components/PostShare/PostShare";
+import AuthContext from "../../auth/context";
 
 const Profile = () => {
+  const userContext = useContext(AuthContext);
+
+  useEffect(() => {
+    userContext.existingLogin();
+  }, []);
+
   return (
     <div className="Profile">
       <div className="ProfileLeft">

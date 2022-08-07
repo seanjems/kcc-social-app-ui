@@ -5,15 +5,24 @@ import Profile from "./pages/Profile/Profile";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AuthContext from "./auth/context";
+import jwtDecode from "jwt-decode";
 
 function App() {
-  const [user, setUser] = useState(
-    false
-    //localStorage.getItem("isLoggedIn")
-  );
+  const [user, setUser] = useState(null);
+
+  const existingLogin = () => {
+    var token = localStorage.getItem("token");
+    const user = token ? jwtDecode(token) : null;
+
+    const cleanItem = user ? JSON.parse(user.user) : null;
+    setUser(cleanItem);
+  };
+  useEffect(() => {
+    existingLogin();
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, existingLogin }}>
       <div className="App">
         <div className="blurs">
           <div className="blur" style={{ top: "-18%", right: "0" }}></div>

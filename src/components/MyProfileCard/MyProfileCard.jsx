@@ -52,8 +52,8 @@ const MyProfileCard = (props) => {
         <button
           className="button lg-button"
           onClick={() => {
-            userContext.setIsLoggedIn(false);
-            localStorage.removeItem("isLoggedIn");
+            userContext.setUser(null);
+            localStorage.removeItem("token");
           }}
         >
           Logout
