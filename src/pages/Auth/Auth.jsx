@@ -36,51 +36,58 @@ const Auth = (props) => {
   const [hasAccount, setHasAccount] = useState(true);
   const [accountCreated, setAccountCreated] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
+  const [createUserFailed, setCreateUserFailed] = useState(false);
+  const [createUserErrors, setCreateUserErrors] = useState([]);
 
-  const handleCreateUser = async ({
-    appName,
-    password,
-    emailAddress,
-    userName,
-    name,
-    surname,
-  }) => {
+  const handleCreateUser = async (createUserInput) => {
+    var { password, emailAddress, userName, name, surname } = createUserInput;
     //set username
     setAccountCreated(false);
+    setCreateUserErrors([]);
+    setCreateUserFailed(false);
     userName = `${name}${surname}`;
-    appName = "sdakcc_React";
-    console.log(appName, password, emailAddress, userName, name, surname);
-    ////validate passwords
-    // const result = await authorization.tryCreateUser(
-    //   appName,
-    //   password,
-    //   emailAddress,
-    //   userName,
-    //   name,
-    //   surname
-    // );
+    console.log(
+      "ready to dispatch create",
+      password,
+      emailAddress,
+      userName,
+      name,
+      surname
+    );
+    //validate passwords
+    const result = await authorization.tryCreateUser(
+      password,
+      emailAddress,
+      userName,
+      name,
+      surname
+    );
+
+    console.log("create user result", result);
+    if (!result.ok) {
+      setCreateUserFailed(true);
+      setCreateUserErrors(result.data);
+      return;
+    }
 
     //set notification on success
     setHasAccount(true);
     setAccountCreated(true);
   };
 
-  const handleLogin = async ({ userNameOrEmailAddress, password }) => {
+  const handleLogin = async ({ userNameOrEmailAddress: email, password }) => {
     setLoginFailed(false);
     setAccountCreated(false);
-    const result = await authorization.tryLogin(
-      userNameOrEmailAddress,
-      password
-    );
-
-    if (!result.ok) return setLoginFailed(true);
-    //console.log(result.data.token);
-    const user = jwtDecode(result.data.token);
+    const result = await authorization.tryLogin(email, password);
+    console.log(result);
+    if (!result?.data?.userToken) return setLoginFailed(true);
+    console.log(result.data.userToken);
+    const user = jwtDecode(result.data.userToken);
 
     const cleanItem = JSON.parse(user.user);
-    //console.log(cleanItem);
+    console.log(cleanItem);
     userContext.setUser(cleanItem);
-    localStorage.setItem("token", result.data.token);
+    user && localStorage.setItem("token", result.data.userToken);
     //console.log("from cache", localStorage.getItem("token"));
   };
 
@@ -108,6 +115,7 @@ const Auth = (props) => {
                   visible={accountCreated}
                   greenMessage={true}
                 />
+
                 <h2>Login</h2>
 
                 <ErrorTextComponent
@@ -190,6 +198,19 @@ const Auth = (props) => {
               touched,
             }) => (
               <Form>
+                {createUserErrors.map((error, idx) => {
+                  return (
+                    <ErrorTextComponent
+                      key={idx}
+                      error={error.description}
+                      visible={createUserFailed}
+                    />
+                  );
+                })}
+                <ErrorTextComponent
+                  error="Invalid Username and/or Password"
+                  visible={loginFailed}
+                />
                 <h2>Sign up</h2>
                 <div>
                   <input
@@ -259,7 +280,6 @@ const Auth = (props) => {
                 <span onClick={() => setHasAccount(!hasAccount)}>
                   Already have an account? Login
                 </span>
-
                 <button
                   className="button sign-button"
                   type="submit"

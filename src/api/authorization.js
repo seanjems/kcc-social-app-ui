@@ -1,14 +1,25 @@
 import apiClient from "./apiClient";
 
-const endpointLogin = "api/Authorization/CustomLogin";
+const endpointLogin = "api/Authorization/Login";
+const endpointCreateUser = "api/Authorization/CreateUser";
 
-const tryLogin = (userNameOrEmailAddress, password, rememberMe = false) =>
+const tryLogin = (email, password, rememberMe = false) =>
   apiClient.post(endpointLogin, {
-    userNameOrEmailAddress,
+    email,
     password,
     rememberMe,
   });
 
+const tryCreateUser = (password, emailAddress, userName, name, surName) =>
+  apiClient.post(endpointCreateUser, {
+    password,
+    emailAddress,
+    userName,
+    name,
+    surName,
+  });
+
 export default {
   tryLogin,
+  tryCreateUser,
 };
