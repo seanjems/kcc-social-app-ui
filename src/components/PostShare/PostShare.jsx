@@ -16,6 +16,7 @@ const PostShare = () => {
   const [image, setImage] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
   const imageRef = useRef();
+  const shareTextInput = useRef();
   const userContext = useContext(AuthContext);
 
   const postsContext = useContext(postsDataContext);
@@ -62,6 +63,11 @@ const PostShare = () => {
     currentData.unshift(result.data);
     postsContext.setFetchList(currentData);
     console.log(result.data, "this is the new istem we are pushing");
+
+    //clear form
+    setImage(null);
+    shareTextInput.current.value = "";
+    setUploadFile(null);
   };
 
   return (
@@ -81,6 +87,7 @@ const PostShare = () => {
               <div className="shareInput">
                 <input
                   type="textarea"
+                  ref={shareTextInput}
                   placeHolder="Share something . . .!"
                   onChange={handleChange("description")}
                   onBlur={() => setFieldTouched("description")}
