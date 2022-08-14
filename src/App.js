@@ -5,6 +5,7 @@ import Profile from "./pages/Profile/Profile";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AuthContext from "./auth/context";
+
 import jwtDecode from "jwt-decode";
 
 import { MantineProvider } from "@mantine/core";

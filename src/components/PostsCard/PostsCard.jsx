@@ -3,27 +3,28 @@ import React, { useEffect, useState } from "react";
 import PostsData from "../../Data/PostsData";
 import Posts from "../Posts/Posts";
 import "./PostsCard.css";
+import { useContext } from "react";
+import postsDataContext from "../../auth/postDataContext";
 
 const PostsCard = () => {
-  const [fetchList, setFetchList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const postsContext = useContext(postsDataContext);
 
   useEffect(() => {
     getItems();
   }, []);
 
   const getItems = async () => {
-    setIsLoading(true);
+    postsContext.setIsLoading(true);
     var list = await PostsData();
 
-    setFetchList(list);
-    setIsLoading(false);
+    postsContext.setFetchList(list);
+    postsContext.setIsLoading(false);
     console.log(list, "4567890-ihgc");
   };
   return (
-    !isLoading && (
+    !postsContext.isLoading && (
       <div className="PostsCard">
-        {fetchList.map((data) => (
+        {postsContext.fetchList.map((data) => (
           <Posts data={data} />
         ))}
       </div>

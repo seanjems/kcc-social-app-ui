@@ -10,13 +10,15 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
-import axios from "axios";
+import postsDataContext from "../../auth/postDataContext";
 
 const PostShare = () => {
   const [image, setImage] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
   const imageRef = useRef();
   const userContext = useContext(AuthContext);
+
+  const postsContext = useContext(postsDataContext);
 
   const onImageChanged = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -56,6 +58,10 @@ const PostShare = () => {
     // }
 
     //add to posts array
+    var currentData = [...postsContext.fetchList];
+    currentData.unshift(result.data);
+    postsContext.setFetchList(currentData);
+    console.log(result.data, "this is the new istem we are pushing");
   };
 
   return (
