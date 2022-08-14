@@ -1,14 +1,9 @@
 import apiClient from "./apiClient";
 
-const endpGetallPaged = "api/Authorization/CustomLogin";
+const endpGetallPaged = "api/Posts";
 
-const tryLogin = (userNameOrEmailAddress, password, rememberMe = false) =>
-  apiClient.post(endpointLogin, {
-    userNameOrEmailAddress,
-    password,
-    rememberMe,
-  });
+const tryCreatePost = (formData) => apiClient.post(endpGetallPaged, formData);
 
 export default {
-  tryLogin,
+  tryCreatePost,
 };

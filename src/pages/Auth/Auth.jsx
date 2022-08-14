@@ -198,15 +198,17 @@ const Auth = (props) => {
               touched,
             }) => (
               <Form>
-                {createUserErrors.map((error, idx) => {
-                  return (
-                    <ErrorTextComponent
-                      key={idx}
-                      error={error.description}
-                      visible={createUserFailed}
-                    />
-                  );
-                })}
+                {createUserFailed
+                  ? createUserErrors.map((error, idx) => {
+                      return (
+                        <ErrorTextComponent
+                          key={idx}
+                          error={error.description}
+                          visible={createUserFailed}
+                        />
+                      );
+                    })
+                  : ""}
                 <ErrorTextComponent
                   error="Invalid Username and/or Password"
                   visible={loginFailed}
