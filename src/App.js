@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import AuthContext from "./auth/context";
 import jwtDecode from "jwt-decode";
 
+import { MantineProvider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -23,40 +26,58 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ user, setUser, existingLogin }}>
-      <div className="App">
-        <div className="blurs">
-          <div className="blur" style={{ top: "-18%", right: "0" }}></div>
-          <div className="blur" style={{ top: "45%", left: "-8rem " }}></div>
-        </div>
+      <MantineProvider
+        withNormalizeCSS
+        withGlobalStyles
+        position="top-right"
+        zIndex={2077}
+      >
+        <NotificationsProvider position="top-right" zIndex={2077}>
+          <div className="App">
+            <div className="blurs">
+              <div className="blur" style={{ top: "-18%", right: "0" }}></div>
+              <div
+                className="blur"
+                style={{ top: "45%", left: "-8rem " }}
+              ></div>
+            </div>
 
-        <Routes>
-          <Route
-            path="/"
-            element={user ? <Navigate to="home" /> : <Navigate to="/auth" />}
-          />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  user ? <Navigate to="home" /> : <Navigate to="/auth" />
+                }
+              />
 
-          <Route
-            path="/home"
-            element={
-              user ? <Home setUser={setUser} /> : <Navigate to="../auth" />
-            }
-          />
+              <Route
+                path="/home"
+                element={
+                  user ? <Home setUser={setUser} /> : <Navigate to="../auth" />
+                }
+              />
 
-          <Route
-            path="/auth"
-            element={
-              user ? <Navigate to="../home" /> : <Auth setUser={setUser} />
-            }
-          />
+              <Route
+                path="/auth"
+                element={
+                  user ? <Navigate to="../home" /> : <Auth setUser={setUser} />
+                }
+              />
 
-          <Route
-            path="/profile"
-            element={
-              user ? <Profile setUser={setUser} /> : <Navigate to="../auth" />
-            }
-          />
-        </Routes>
-      </div>
+              <Route
+                path="/profile"
+                element={
+                  user ? (
+                    <Profile setUser={setUser} />
+                  ) : (
+                    <Navigate to="../auth" />
+                  )
+                }
+              />
+            </Routes>
+          </div>
+        </NotificationsProvider>
+      </MantineProvider>
     </AuthContext.Provider>
   );
 }
