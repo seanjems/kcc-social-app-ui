@@ -52,22 +52,17 @@ const PostShare = () => {
     const result = await posts.tryCreatePost(formData);
 
     console.log("create user result", result);
-    // if (!result.ok) {
-    //   setCreatePostFailed(true);
-    //   setCreatePostErrors(result.data);
-    //   return;
-    // }
+    if (result.ok) {
+      //add to posts array
+      var currentData = [...postsContext.fetchList];
+      currentData.unshift(result.data);
+      postsContext.setFetchList(currentData);
 
-    //add to posts array
-    var currentData = [...postsContext.fetchList];
-    currentData.unshift(result.data);
-    postsContext.setFetchList(currentData);
-    console.log(result.data, "this is the new istem we are pushing");
-
-    //clear form
-    setImage(null);
-    shareTextInput.current.value = "";
-    setUploadFile(null);
+      //clear form
+      setImage(null);
+      shareTextInput.current.value = "";
+      setUploadFile(null);
+    }
   };
 
   return (
