@@ -3,8 +3,9 @@ import postPic1 from "../img/postpic1.JPG";
 import postPic2 from "../img/postpic2.JPG";
 import postPic3 from "../img/postpic3.JPG";
 
-const fetchPostsPaged = async (page) => {
-  const result = await posts.tryGetAllPostPaged(page);
+const fetchPostsPaged = async (page, userProfileId) => {
+  console.log("Sending post request with profileId", userProfileId);
+  const result = await posts.tryGetAllPostPaged(page, userProfileId);
   if (!result.ok) return [];
 
   console.log("fetch posts result", result.data);
@@ -19,8 +20,9 @@ const fetchPostsPaged = async (page) => {
   //add to posts array
 };
 
-const PostsData = (page = 1) => {
-  return fetchPostsPaged(page);
+const PostsData = (page = 1, userProfileId = null) => {
+  console.log("received userId for post", userProfileId);
+  return fetchPostsPaged(page, userProfileId);
 };
 export default PostsData;
 // [
