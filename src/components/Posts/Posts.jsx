@@ -6,7 +6,7 @@ import Liked from "../../img/like.png";
 import Share from "../../img/share.png";
 import Comment from "../../img/comment.png";
 
-const Posts = ({ data }) => {
+const Posts = ({ data, handleLike }) => {
   return (
     <div className="Posts">
       <span>
@@ -15,7 +15,7 @@ const Posts = ({ data }) => {
       {data.desc && <span>{data.desc}</span>}
       {data.img && <img src={data.img} alt="" />}
       <div className="shareOptions">
-        <img src={data.liked ? Liked : Like} alt="" />
+        <img src={data.liked ? Liked : Like} alt="" onClick={handleLike} />
         <img src={Comment} alt="" />
         <img src={Share} alt="" />
       </div>

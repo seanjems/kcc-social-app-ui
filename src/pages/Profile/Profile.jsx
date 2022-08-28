@@ -40,7 +40,11 @@ const Profile = () => {
       <dv className="ProfileCenter">
         <ProfileCard isOnProfileScreen={true} />
         <PostShare />
-        {!isLoading ? <PostsCard fetchList={fetchList} /> : "Loading ..."}
+        {!isLoading ? (
+          <PostsCard fetchList={fetchList} />
+        ) : (
+          <span> Loading ...</span>
+        )}
       </dv>
       <div className="ProfileRight">
         <RightSide />

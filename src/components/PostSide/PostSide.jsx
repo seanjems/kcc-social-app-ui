@@ -2,7 +2,13 @@ import React from "react";
 import PostsCard from "../PostsCard/PostsCard";
 import PostShare from "../PostShare/PostShare";
 import "./PostSide.css";
-const PostSide = ({ fetchList, setFetchList, isLoading, setIsLoading }) => {
+const PostSide = ({
+  fetchList,
+  setFetchList,
+  isLoading,
+  setIsLoading,
+  handleLike,
+}) => {
   return (
     <div className="PostSide">
       <PostShare
@@ -11,7 +17,7 @@ const PostSide = ({ fetchList, setFetchList, isLoading, setIsLoading }) => {
         isLoading={isLoading}
         setIsLoading={setIsLoading}
       />
-      <PostsCard fetchList={fetchList} />
+      <PostsCard fetchList={fetchList} handleLike={handleLike} />
     </div>
   );
 };

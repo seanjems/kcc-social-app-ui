@@ -12,6 +12,7 @@ import { Formik, Form } from "formik";
 import jwtDecode from "jwt-decode";
 import * as Yup from "yup";
 import ErrorTextComponent from "../../components/Reusables/ErrorTextComponent";
+import apiClient from "../../api/apiClient";
 
 //validationObjects
 const createUserFormValidation = Yup.object().shape({
@@ -88,6 +89,10 @@ const Auth = (props) => {
     console.log(cleanItem);
     userContext.setUser(cleanItem);
     user && localStorage.setItem("token", result.data.userToken);
+    //http headers
+    apiClient.setHeaders({
+      Authorization: `Bearer ${result.data.userToken}`,
+    });
     //console.log("from cache", localStorage.getItem("token"));
   };
 
