@@ -1699,6 +1699,11 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
+"@tabler/icons@^1.90.0":
+  version "1.90.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.90.0.tgz#c87fc4af5a6fe7f6a6bc89595aaa652a77e7d857"
+  integrity sha512-1HSpd5jMrZMwOrfuxSAGjPVb4a1RWQYuPoeSXle1kOeCEou4WCbvxNHNzuz39Glr9cQz50LwJ/voH9Yx8+iqqQ==
+
 "@testing-library/dom@^8.0.0":
   version "8.11.3"
   resolved "https://registry.npmjs.org/@testing-library/dom/-/dom-8.11.3.tgz"
