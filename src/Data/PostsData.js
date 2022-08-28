@@ -1,11 +1,11 @@
 import posts from "../api/posts";
 
 const fetchPostsPaged = async (page, userProfileId) => {
-  console.log("Sending post request with profileId", userProfileId);
+  // console.log("Sending post request with profileId", userProfileId);
   const result = await posts.tryGetAllPostPaged(page, userProfileId);
   if (!result.ok) return [];
 
-  console.log("fetch posts result", result.data);
+  //console.log("fetch posts result", result.data);
   return result.data;
 
   // if (!result.ok) {

@@ -85,7 +85,7 @@ const PostShare = ({ fetchList, setFetchList }) => {
                 <input
                   type="textarea"
                   ref={shareTextInput}
-                  placeHolder="Share something . . .!"
+                  placeholder="Share something . . .!"
                   onChange={handleChange("description")}
                   onBlur={() => setFieldTouched("description")}
                 ></input>

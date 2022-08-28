@@ -2,7 +2,7 @@ import apiClient from "./apiClient";
 
 const endpointCreatePost = "api/Posts";
 const endpointGetallPostPaged = "api/Posts";
-const endpointLikePost = "api/Posts";
+const endpointLikePost = "api/Likes";
 
 const tryCreatePost = (formData) =>
   apiClient.post(endpointCreatePost, formData);
@@ -16,4 +16,5 @@ const tryLikePost = (postLikeObj) =>
 export default {
   tryCreatePost,
   tryGetAllPostPaged,
+  tryLikePost,
 };

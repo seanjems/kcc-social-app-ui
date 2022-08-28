@@ -21,10 +21,18 @@ export const Home = () => {
 
     setFetchList(list);
     setIsLoading(false);
-    console.log("currently posts temp data", fetchList);
   };
   const handleLike = async (idx) => {
     var fetchListCopy = [...fetchList];
+    // console.log(
+    //   "initiating likes with fetchlistcopy and idx",
+    //   fetchListCopy,
+    //   idx,
+    //   fetchListCopy[idx]
+    // );
+
+    //create deep copy backup
+    const originalValues = JSON.parse(JSON.stringify(fetchList));
     const currentState = fetchListCopy[idx]?.liked;
     fetchListCopy[idx].liked = !currentState;
     fetchListCopy[idx].likes = currentState
@@ -33,15 +41,12 @@ export const Home = () => {
     setFetchList(fetchListCopy);
     // call api
     const userId = userContext.user.UserId;
-
     var like = await posts.tryLikePost({
       postId: fetchListCopy[idx]?.id,
       userId: userId,
     });
-
     if (!like.ok) {
-      fetchListCopy[idx].liked = !currentState;
-      setFetchList(fetchListCopy);
+      setFetchList(originalValues);
       return;
     }
     fetchListCopy[idx].liked = !currentState;
