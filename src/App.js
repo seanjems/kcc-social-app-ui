@@ -75,6 +75,16 @@ function App() {
                   )
                 }
               />
+              {/* <Route
+                path={`/profile/${userName}`}
+                element={
+                  user ? (
+                    <Profile setUser={setUser} />
+                  ) : (
+                    <Navigate to="../auth" />
+                  )
+                }
+              /> */}
             </Routes>
           </div>
         </NotificationsProvider>

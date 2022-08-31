@@ -4,7 +4,7 @@ import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal/ProfileModal";
 import AuthContext from "../../auth/context";
 
-const MyProfileCard = (props) => {
+const MyProfileCard = ({ userProfile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userContext = useContext(AuthContext);
 
@@ -28,26 +28,26 @@ const MyProfileCard = (props) => {
           <span>
             <b>Status: </b>
           </span>
-          <span>In a relationship</span>
+          {userProfile && <span>{userProfile.relationship}</span>}
         </div>
         <div>
           <span>
             <b>Lives in: </b>
           </span>
-          <span>Kampala</span>
+          {userProfile && <span>{userProfile.address}</span>}
         </div>
 
         <div>
           <span>
             <b>Family/Clan: </b>
           </span>
-          <span>Reuben</span>
+          {userProfile && <span>{userProfile.family}</span>}
         </div>
         <div>
           <span>
             <b>Profession: </b>
           </span>
-          <span>Medic</span>
+          {userProfile && <span>{userProfile.profession}</span>}
         </div>
         <button
           className="button lg-button"
