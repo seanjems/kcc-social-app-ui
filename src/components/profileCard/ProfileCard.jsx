@@ -1,61 +1,66 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import CoverPic from "../../img/cover.jpg";
-import ProfilePic from "../../img/profileImg.jpg";
 import "./ProfileCard.css";
 
 import { useNavigate } from "react-router-dom";
 
-const ProfileCard = ({ isOnProfileScreen = false }) => {
+const ProfileCard = ({ userProfile, isOnProfileScreen = false }) => {
   const myProfileScreen = isOnProfileScreen;
   const navigate = useNavigate();
   return (
     <div className="ProfileCard">
       <div className="ProfileImages">
-        <img src={CoverPic} alt="" />
-        <img src={ProfilePic} alt="" />
+        {userProfile && <img src={userProfile.coverPicUrl} alt="" />}
+        {userProfile && <img src={userProfile.profilePicUrl} alt="" />}
       </div>
 
       <div className="ProfileName">
-        <span onClick={() => navigate("../profile")}>Ruth Kokusiima</span>
-        <span>Deaconess/Singer/Youth choir</span>
-      </div>
-      <div className="followStatus">
-        <hr />
-        <div>
-          <div className="follow">
-            <span>512</span>
-            <span>Followers</span>
-          </div>
-          <div className="vl"></div>
-          <div className="follow">
-            <span>17</span>
-            <span>Following</span>
-          </div>
-          {myProfileScreen && (
-            <>
-              <div className="vl"></div>
-              <div className="follow">
-                <span>25</span>
-                <span>Posts</span>
-              </div>
-            </>
-          )}
-        </div>
-        <hr />
-        <div className="AboutMe">
-          A hopeful believer, a singer and a proud member of Reuben Family. My
-          Jesus reigns!!
-        </div>
-
-        {myProfileScreen ? (
-          ""
-        ) : (
-          <span className="Myprofile" onClick={() => navigate("../profile")}>
-            My Profile
+        {userProfile && (
+          <span onClick={() => navigate("../profile")}>
+            {`${userProfile.firstName} ${userProfile.lastname}`}
           </span>
         )}
+        {userProfile && (
+          <span>{`${userProfile.family ? userProfile.family : ""} ${
+            userProfile.family && userProfile.localChurch ? "|" : ""
+          } ${userProfile.localChurch ? userProfile.localChurch : ""}`}</span>
+        )}
       </div>
+      {userProfile && (
+        <div className="followStatus">
+          <hr />
+          <div>
+            <div className="follow">
+              <span>{userProfile.followers}</span>
+              <span>Followers</span>
+            </div>
+            <div className="vl"></div>
+            <div className="follow">
+              <span>{userProfile.following}</span>
+              <span>Following</span>
+            </div>
+            {myProfileScreen && (
+              <>
+                <div className="vl"></div>
+                <div className="follow">
+                  <span>{userProfile.totalPosts}</span>
+                  <span>Posts</span>
+                </div>
+              </>
+            )}
+          </div>
+          <hr />
+          <div className="AboutMe">{userProfile.aboutme}</div>
+
+          {myProfileScreen ? (
+            ""
+          ) : (
+            <span className="Myprofile" onClick={() => navigate("../profile")}>
+              My Profile
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 };

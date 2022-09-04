@@ -1,37 +1,46 @@
 import { Modal, useMantineTheme } from "@mantine/core";
 
 import { UilPen, UilTimes } from "@iconscout/react-unicons";
-import { Form, Formik } from "formik";
-import { useContext, useRef, useState } from "react";
+import { Field, Form, Formik } from "formik";
+import { useContext, useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
 import profile from "../../api/profile";
 import AuthContext from "../../auth/context";
-import CoverPic from "../../img/cover.jpg";
-import ProfilePic from "../../img/profileImg.jpg";
 
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { IconX } from "@tabler/icons";
 import ErrorTextComponent from "../Reusables/ErrorTextComponent";
 
-function ProfileModal({ isModalOpen, setIsModalOpen }) {
+function ProfileModal({
+  userProfile,
+  isModalOpen,
+  setIsModalOpen,
+  profileUpdated,
+}) {
   const theme = useMantineTheme();
   const dpRef = useRef();
   const coverPicRef = useRef();
   const userContext = useContext(AuthContext);
 
-  const [coverPicUrl, setCoverPicUrl] = useState(CoverPic);
-  const [dpUrl, setdpUrl] = useState(ProfilePic);
+  const [coverPicUrl, setCoverPicUrl] = useState("45");
+  const [dpUrl, setdpUrl] = useState("46");
 
   const [profilepic, setProfilePic] = useState(null);
   const [coverpic, setCoverPic] = useState(null);
+
+  //useeffect
+  useEffect(() => {
+    setCoverPicUrl(userProfile?.coverPicUrl);
+    setdpUrl(userProfile?.profilePicUrl);
+  }, [userProfile]);
 
   const handleProfileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
       setdpUrl(URL.createObjectURL(img));
       setProfilePic(img);
-      console.log("new profile image properties", img);
+      //  console.log("new profile image properties", img);
     }
   };
   const handleCoverChange = (event) => {
@@ -39,7 +48,7 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
       let img = event.target.files[0];
       setCoverPicUrl(URL.createObjectURL(img));
       setCoverPic(img);
-      console.log("new cover image properties", img);
+      //  console.log("new cover image properties", img);
     }
   };
 
@@ -111,22 +120,39 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
         autoClose: 2000,
         style: { zIndex: "99999999" },
       });
-    }, 3000);
+    }, 1000);
 
     //close modal
     setIsModalOpen(false);
+    profileUpdated();
   };
 
   //validationObjects
   const updateProfileFormValidation = Yup.object().shape({
     firstName: Yup.string().required().min(3).max(25).label("First Name"),
     lastname: Yup.string().required().min(3).max(25).label("Last Name"),
-    family: Yup.string().min(3).max(15).label("Church family/Clan"),
-    relationship: Yup.string().min(3).max(10).label("Relationship status"),
-    profession: Yup.string().min(3).max(10).label("Work/Profession"),
-    aboutme: Yup.string().min(10).max(50).label("About me"),
+    family: Yup.string().min(3).nullable().max(15).label("Church family/Clan"),
+    relationship: Yup.string()
+      .min(3)
+      .nullable()
+      .max(15)
+      .label("Relationship status"),
+    profession: Yup.string().min(3).nullable().max(15).label("Work/Profession"),
+    aboutme: Yup.string().min(10).max(50).nullable().label("About me"),
   });
-
+  const initialValues = {
+    firstName: "",
+    lastname: "",
+    address: "",
+    family: "",
+    status: "",
+    profession: "",
+    aboutme: "",
+    localChurch: "",
+    contacts: "",
+    favouriteVerse: "",
+    relationship: "",
+  };
   return (
     <Modal
       overlayColor={
@@ -142,23 +168,13 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
       style={{ overflowY: "scroll", maxHeight: "90%" }}
     >
       <Formik
-        initialValues={{
-          firstName: "",
-          lastname: "",
-          address: "",
-          family: "",
-          status: "",
-          profession: "",
-          aboutme: "",
-          localChurch: "",
-          contacts: "",
-          favouriteVerse: "",
-          relationship: 0,
-        }}
+        initialValues={userProfile || initialValues}
         onSubmit={(values, resetForm) => {
           handleUpdateProfile(values);
           resetForm({ values: "" });
+          setIsModalOpen(false);
         }}
+        enableReinitialize
         validationSchema={updateProfileFormValidation}
       >
         {({ handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
@@ -238,8 +254,8 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
                   visible={touched.relationship}
                 />
                 <ErrorTextComponent
-                  error={errors.Profession}
-                  visible={touched.Profession}
+                  error={errors.profession}
+                  visible={touched.profession}
                 />
                 <ErrorTextComponent
                   error={errors.aboutme}
@@ -247,7 +263,7 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
                 />
               </div>
               <div>
-                <input
+                <Field
                   type="text"
                   name="firstName"
                   placeholder="First Name"
@@ -256,7 +272,7 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
                   onBlur={() => setFieldTouched("firstName")}
                 />
 
-                <input
+                <Field
                   type="text"
                   name="lastname"
                   placeholder="Last Name"
@@ -266,7 +282,7 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
                 />
               </div>
               <div>
-                <input
+                <Field
                   type="text"
                   name="address"
                   placeholder="Lives in"
@@ -276,7 +292,7 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
                 />
               </div>
               <div>
-                <input
+                <Field
                   type="text"
                   name="family"
                   placeholder=" Church Family/Clan"
@@ -286,7 +302,7 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
                 />
               </div>
               <div>
-                <input
+                <Field
                   type="text"
                   name="relationship"
                   placeholder="Relationship status"
@@ -295,16 +311,16 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
                   onBlur={() => setFieldTouched("relationship")}
                 />
 
-                <input
+                <Field
                   type="text"
                   name="profession"
                   placeholder="Profession"
-                  onChange={handleChange("Profession")}
-                  onBlur={() => setFieldTouched("Profession")}
+                  onChange={handleChange("profession")}
+                  onBlur={() => setFieldTouched("profession")}
                 />
               </div>
               <div>
-                <input
+                <Field
                   type="text"
                   name="aboutme"
                   placeholder="About me"
@@ -331,7 +347,7 @@ function ProfileModal({ isModalOpen, setIsModalOpen }) {
                 <button
                   className="button sign-button"
                   type="submit"
-                  onSubmit={handleSubmit}
+                  //onClick={console.log(errors)}
                 >
                   Update
                 </button>

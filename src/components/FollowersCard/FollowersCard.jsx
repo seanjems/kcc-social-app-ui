@@ -1,23 +1,35 @@
 import React from "react";
 
-import { Followers } from "../../Data/FollowersData";
 import "./FollowersCard.css";
-const FollowersCard = () => {
+const FollowersCard = ({ toFollowList, handleFollow }) => {
   return (
     <div className="FollowersCard">
       <h3>Who is following you</h3>
-      {Followers.map((follower) => (
-        <div className="follower" key={follower.username}>
-          <div>
-            <img src={follower.img} alt="" />
-            <div className="followername">
-              <span className="FollowerName">{follower.name}</span>
-              <span>@{follower.username}</span>
-            </div>
-          </div>
-          <button className="f-button button">Follow</button>
-        </div>
-      ))}
+      {toFollowList && (
+        <>
+          {toFollowList.slice(0, 6).map((follower, id) => {
+            return (
+              <div className="follower" key={id}>
+                <div>
+                  <img src={follower.profilePicUrl} alt="" />
+                  <div className="followername">
+                    <span className="FollowerName">{`${
+                      follower.firstName ? follower.firstName : ""
+                    } ${follower.lastname ? follower.lastname : ""}`}</span>
+                    {follower.userName && <span>@{follower.userName}</span>}
+                  </div>
+                </div>
+                <button
+                  className="f-button button"
+                  onClick={() => handleFollow(id)}
+                >
+                  Follow
+                </button>
+              </div>
+            );
+          })}
+        </>
+      )}
     </div>
   );
 };

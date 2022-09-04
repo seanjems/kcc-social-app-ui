@@ -1,30 +1,40 @@
+import { showNotification } from "@mantine/notifications";
 import React, { useContext, useEffect, useState } from "react";
-import "./Profile.css";
+import profile from "../../api/profile";
+import AuthContext from "../../auth/context";
+import FollowersCard from "../../components/FollowersCard/FollowersCard";
 import LogoSearch from "../../components/logoSearch//LogoSearch";
 import MyProfileCard from "../../components/MyProfileCard/MyProfileCard";
-import FollowersCard from "../../components/FollowersCard/FollowersCard";
-import ProfileCard from "../../components/profileCard/ProfileCard";
 import PostsCard from "../../components/PostsCard/PostsCard";
-import RightSide from "../../components/RightSide/RightSide";
 import PostShare from "../../components/PostShare/PostShare";
-import AuthContext from "../../auth/context";
+import ProfileCard from "../../components/profileCard/ProfileCard";
+import RightSide from "../../components/RightSide/RightSide";
 import PostsData from "../../Data/PostsData";
-import posts from "../../api/posts";
-import profile from "../../api/profile";
-import { showNotification, updateNotification } from "@mantine/notifications";
+import "./Profile.css";
+import { IconX } from "@tabler/icons";
 
 const Profile = ({ userProfileId }) => {
   const userContext = useContext(AuthContext);
   const [fetchList, setFetchList] = useState([]);
-  const [userProfile, setUserProfile] = useState(null);
+  const [userProfile, setUserProfile] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [refetchProfile, setRefetchProfile] = useState(false);
+  const [toFollowList, setToFollowList] = useState(null);
+  const [updateToFollow, setUpdateToFollow] = useState(false);
 
   useEffect(() => {
     userContext.existingLogin();
     getItems();
     getUserProfile();
-  }, []);
+  }, [refetchProfile]);
 
+  useEffect(() => {
+    getToFollow();
+  }, [updateToFollow]);
+
+  const profileUpdated = () => {
+    setRefetchProfile(!refetchProfile);
+  };
   const getItems = async (userProfileId) => {
     var userId = userProfileId ? userProfileId : userContext.user.UserId;
     // console.log("userId and user context", userContext, userId);
@@ -34,6 +44,63 @@ const Profile = ({ userProfileId }) => {
 
     setFetchList(list);
     setIsLoading(false);
+  };
+
+  const handleFollow = async (idx) => {
+    var toFollowListBackup = JSON.parse(JSON.stringify(toFollowList));
+    var toFollowListCopy = [...toFollowList];
+    toFollowListCopy.splice(idx, 1);
+    console.log(
+      "after splicing the array",
+      toFollowListCopy,
+      toFollowListBackup
+    );
+    setToFollowList(toFollowListCopy);
+
+    //update backend server
+
+    var result = await profile.tryCreateFollowerToggle({
+      toFollowId: toFollowListBackup[idx]?.userId,
+    });
+
+    if (!result.ok) {
+      showNotification({
+        id: "save-data",
+        icon: <IconX size={16} />,
+        title: "Error",
+        message: `${result.status ? result.status : ""} ${result.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        style: { zIndex: "999999" },
+      });
+      setToFollowList(toFollowListBackup);
+      return;
+    }
+
+    //refetch follow suggestions if all followed
+    if (toFollowListBackup.length === 1) {
+      setUpdateToFollow(!updateToFollow);
+    }
+  };
+  const getToFollow = async () => {
+    //var userId = userProfileId ? userProfileId : userContext.user.UserId;
+    // console.log("userId and user context", userContext, userId);
+
+    var result = await profile.tryGetTofollow();
+    if (!result.ok) {
+      showNotification({
+        id: "save-data",
+        icon: <IconX size={16} />,
+        title: "Error",
+        message: `${result.status ? result.status : ""} ${result.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        style: { zIndex: "999999" },
+      });
+      return;
+    }
+
+    setToFollowList(result.data);
   };
 
   const getUserProfile = async (userProfileId) => {
@@ -62,18 +129,24 @@ const Profile = ({ userProfileId }) => {
     <div className="Profile">
       <div className="ProfileLeft">
         <LogoSearch />
-        <MyProfileCard userProfile={userProfile} />
-        <FollowersCard />
+        <MyProfileCard
+          userProfile={userProfile}
+          profileUpdated={profileUpdated}
+        />
+        <FollowersCard
+          toFollowList={toFollowList}
+          handleFollow={handleFollow}
+        />
       </div>
-      <dv className="ProfileCenter">
-        <ProfileCard isOnProfileScreen={true} />
+      <div className="ProfileCenter">
+        <ProfileCard isOnProfileScreen={true} userProfile={userProfile} />
         <PostShare />
         {!isLoading ? (
           <PostsCard fetchList={fetchList} />
         ) : (
           <span> Loading ...</span>
         )}
-      </dv>
+      </div>
       <div className="ProfileRight">
         <RightSide />
       </div>

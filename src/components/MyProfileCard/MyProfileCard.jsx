@@ -4,7 +4,7 @@ import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal/ProfileModal";
 import AuthContext from "../../auth/context";
 
-const MyProfileCard = ({ userProfile }) => {
+const MyProfileCard = ({ userProfile, profileUpdated }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userContext = useContext(AuthContext);
 
@@ -21,6 +21,8 @@ const MyProfileCard = ({ userProfile }) => {
         <ProfileModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+          userProfile={userProfile}
+          profileUpdated={profileUpdated}
         />
       </div>
       <div className="detail">

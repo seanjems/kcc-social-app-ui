@@ -5,11 +5,11 @@ import ProfileCard from "../profileCard/ProfileCard";
 
 import "./ProfileSide.css";
 
-const ProfileSide = () => {
+const ProfileSide = ({ userProfile }) => {
   return (
     <div className="ProfileSide">
       <LogoSearch />
-      <ProfileCard />
+      <ProfileCard userProfile={userProfile} />
       <FollowersCard />
     </div>
   );

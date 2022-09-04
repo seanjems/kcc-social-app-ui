@@ -6,13 +6,18 @@ import PostsData from "../../Data/PostsData";
 import "./Home.css";
 import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
+import profile from "../../api/profile";
+import { showNotification } from "@mantine/notifications";
 
 export const Home = () => {
   const userContext = useContext(AuthContext);
   const [fetchList, setFetchList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
+
   useEffect(() => {
     getItems();
+    getUserProfile();
   }, []);
 
   const getItems = async () => {
@@ -21,6 +26,28 @@ export const Home = () => {
 
     setFetchList(list);
     setIsLoading(false);
+  };
+  const getUserProfile = async (userProfileId) => {
+    var userId = userProfileId ? userProfileId : userContext.user.UserId;
+    console.log("userId and user context", userContext, userId);
+
+    // call api
+
+    var user = await profile.tryGetUserProfile(userId);
+    if (!user.ok) {
+      setUserProfile(null);
+      showNotification({
+        id: "user-data",
+        title: "Error",
+        message: `${user.status} ${user.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        // style: { zIndex: "999999" },
+      });
+      return;
+    }
+
+    setUserProfile(user.data);
   };
   const handleLike = async (idx) => {
     var fetchListCopy = [...fetchList];
@@ -56,13 +83,13 @@ export const Home = () => {
 
   return (
     <div className="Home">
-      <ProfileSide />
+      <ProfileSide userProfile={userProfile} />
       {!isLoading ? (
         <PostSide fetchList={fetchList} handleLike={handleLike} />
       ) : (
         <span> Loading...</span>
       )}
-      <RightSide />
+      <RightSide userProfile={userProfile} />
     </div>
   );
 };
