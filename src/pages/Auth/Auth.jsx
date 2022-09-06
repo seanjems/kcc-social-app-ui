@@ -82,11 +82,11 @@ const Auth = (props) => {
     const result = await authorization.tryLogin(email, password);
     console.log(result);
     if (!result?.data?.userToken) return setLoginFailed(true);
-    console.log(result.data.userToken);
+    //  console.log(result.data.userToken);
     const user = jwtDecode(result.data.userToken);
 
     const cleanItem = JSON.parse(user.user);
-    console.log(cleanItem);
+    //console.log(cleanItem);
     userContext.setUser(cleanItem);
     user && localStorage.setItem("token", result.data.userToken);
     //http headers

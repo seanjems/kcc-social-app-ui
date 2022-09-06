@@ -18,7 +18,7 @@ const RightSide = () => {
         <img src={Home} alt="" onClick={() => navigate("../home")} />
         <UilSetting />
         <img src={Notification} alt="" />
-        <img src={Messages} alt="" />
+        <img src={Messages} alt="" onClick={() => navigate("../chat")} />
       </div>
 
       <TrendCard />

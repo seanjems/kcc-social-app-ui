@@ -23,7 +23,7 @@ const Profile = ({ userProfileId }) => {
   const [updateToFollow, setUpdateToFollow] = useState(false);
 
   useEffect(() => {
-    userContext.existingLogin();
+    // userContext.existingLogin();
     getItems();
     getUserProfile();
   }, [refetchProfile]);
