@@ -3,7 +3,7 @@ import { useRef } from "react";
 // import { addMessage, getMessages } from "../../api/MessageRequests";
 // import { getUser } from "../../api/UserRequests";
 import "./ChatBox.css";
-import { format } from "timeago";
+import { format } from "timeago.js";
 import InputEmoji from "react-input-emoji";
 
 const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
@@ -60,10 +60,16 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
 
   // Receive Message from parent component
   useEffect(() => {
-    // console.log("Message Arrived: ", receivedMessage)
-    // if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
-    //   setMessages([...messages, receivedMessage]);
-    // }
+    console.log("Message Arrived: ", receivedMessage);
+    if (
+      receivedMessage !== null &&
+      ((receivedMessage.senderId === chat.userId &&
+        receivedMessage.receiverId == currentUser) ||
+        (receivedMessage.receiverId === chat.userId &&
+          receivedMessage.senderId == currentUser))
+    ) {
+      setMessages([...messages, receivedMessage]);
+    }
   }, [receivedMessage]);
 
   const scroll = useRef();
@@ -110,8 +116,8 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                         : "message"
                     }
                   >
-                    <span>{message.text}</span>{" "}
-                    <span>{format(message.createdAt)}</span>
+                    <span>{message.message}</span>{" "}
+                    <span>{format(new Date(message.createdAt))}</span>
                   </div>
                 </>
               ))}

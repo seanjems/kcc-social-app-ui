@@ -39,9 +39,6 @@ const Chat = () => {
 
   //get deafult conversations
   const getFollowing = async () => {
-    //var userId = userProfileId ? userProfileId : userContext.user.UserId;
-    // console.log("userId and user context", userContext, userId);
-
     var result = await profile.tryGetFollowing();
     if (!result.ok) {
       showNotification({
@@ -84,6 +81,23 @@ const Chat = () => {
     // const online = onlineUsers.find((user) => user.userId === chatMember);
     // return online ? true : false;
   };
+  const fetchSingleUser = async (userId) => {
+    var result = await profile.tryGetSpecificUser(userId);
+    if (!result.ok) {
+      showNotification({
+        id: "save-data",
+        icon: <IconX size={16} />,
+        title: "Error",
+        message: `${result.status ? result.status : ""} ${result.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        style: { zIndex: "999999" },
+      });
+      return;
+    }
+
+    setChats([...chats, result.data]);
+  };
 
   ///SIGNALR
   const InitiateConnection = async () => {
@@ -96,20 +110,32 @@ const Chat = () => {
         .configureLogging(LogLevel.Information)
         .build();
 
-      connection.on("ReceiveMessage", (user, message) => {
-        console.log("message from server", user, message);
-        setMessages((messages) => [...messages, { user, message }]);
-
-        connection.on("ReceiveUsers", (listOfUsers) => {
-          console.log("users list refreshed", listOfUsers);
-          setOnlineUsers(listOfUsers);
-        });
-
-        connection.onclose((e) => {
-          setConnection(null);
-        });
+      connection.on(
+        "ReceiveMessage",
+        (senderId, receiverId, message, createdAt) => {
+          console.log(
+            "message from server",
+            senderId,
+            receiverId,
+            message,
+            createdAt
+          );
+          setReceivedMessage({ senderId, receiverId, message, createdAt });
+          console.log("received message .... in the state", receivedMessage);
+          setMessages((messages) => [
+            ...messages,
+            { senderId, receiverId, message, createdAt },
+          ]);
+        }
+      );
+      connection.on("ReceiveUsers", (listOfUsers) => {
+        console.log("users list refreshed", listOfUsers);
+        setOnlineUsers(listOfUsers);
       });
 
+      connection.onclose((e) => {
+        setConnection(null);
+      });
       await connection.start();
       await connection.invoke("StartConnection");
 
@@ -122,7 +148,7 @@ const Chat = () => {
 
   //send message
   const sendMessageToServer = async (sendMessageObj) => {
-    console.log("before reconnecting", connection?.connection?.connectionId);
+    //console.log("before reconnecting", connection?.connection?.connectionId);
     try {
       if (!connection.connection.connectionId) {
         console.log("reInvoiking connection");
@@ -138,6 +164,7 @@ const Chat = () => {
       console.log(e);
     }
   };
+  console.log("received message .... in the state", receivedMessage);
   console.log(messages);
   return (
     <div className="Chat">
