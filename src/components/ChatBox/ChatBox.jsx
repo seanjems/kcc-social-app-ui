@@ -15,20 +15,19 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
     setNewMessage(newMessage);
   };
 
-  // fetching data for header
-  useEffect(() => {
-    // const userId = chat?.members?.find((id) => id !== currentUser);
-    // const getUserData = async () => {
-    //   try {
-    //     const { data } = await getUser(userId);
-    //     setUserData(data);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // if (chat !== null) getUserData();
-  }, [chat, currentUser]);
+  // fetching conversation info
 
+  // //send message
+  // const GetConversationId = async (SenderId, ReceiverId) => {
+  //   try {
+  //     await connection.invoke("GetConversationId", {
+  //       SenderId: SenderId,
+  //       ReceiverId: ReceiverId,
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
   // fetch messages
   useEffect(() => {
     // const fetchMessages = async () => {
@@ -49,25 +48,14 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
 
   // Send Message
   const handleSend = async (e) => {
-    //   e.preventDefault()
-    //   const message = {
-    //     senderId : currentUser,
-    //     text: newMessage,
-    //     chatId: chat._id,
-    // }
-    // const receiverId = chat.members.find((id)=>id!==currentUser);
-    // // send message to socket server
-    // setSendMessage({...message, receiverId})
-    // // send message to database
-    // try {
-    //   const { data } = await addMessage(message);
-    //   setMessages([...messages, data]);
-    //   setNewMessage("");
-    // }
-    // catch
-    // {
-    //   console.log("error")
-    // }
+    e.preventDefault();
+
+    const receiverId = chat.userId;
+    if (!newMessage || !receiverId) return;
+    console.log("sending this to server user, msg", receiverId, newMessage);
+    // send message to signalR
+    setSendMessage({ MessageText: newMessage, ReceiverId: receiverId });
+    setNewMessage("");
   };
 
   // Receive Message from parent component
@@ -90,14 +78,14 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
               <div className="follower">
                 <div>
                   <img
-                    src={process.env.REACT_APP_DEFAULT_PROFILE_IMAGE}
+                    src={chat.profilePicUrl}
                     alt="Profile"
                     className="followerImage"
                     style={{ width: "50px", height: "50px" }}
                   />
                   <div className="name" style={{ fontSize: "0.9rem" }}>
                     <span>
-                      {userData?.firstname} {userData?.lastname}
+                      {chat?.firstName} {chat?.lastName}
                     </span>
                   </div>
                 </div>

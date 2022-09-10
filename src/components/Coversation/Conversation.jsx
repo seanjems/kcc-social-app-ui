@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import "../../pages/Chat/Chat.css";
+
 // import { useDispatch } from "react-redux";
 // import { getUser } from "../../api/UserRequests";
 const Conversation = ({ data, currentUser, online }) => {
@@ -7,7 +9,7 @@ const Conversation = ({ data, currentUser, online }) => {
   // const dispatch = useDispatch();
 
   useEffect(() => {
-    const userId = data.members.find((id) => id !== currentUser);
+    //const userId = data.members.find((id) => id !== currentUser);
     const getUserData = async () => {
       // try
       // {
@@ -29,14 +31,14 @@ const Conversation = ({ data, currentUser, online }) => {
         <div>
           {online && <div className="online-dot"></div>}
           <img
-            src={process.env.REACT_APP_DEFAULT_PROFILE_IMAGE}
+            src={data.profilePicUrl}
             alt="Profile"
             className="followerImage"
             style={{ width: "50px", height: "50px" }}
           />
           <div className="name" style={{ fontSize: "0.8rem" }}>
             <span>
-              {userData?.firstname} {userData?.lastname}
+              {data?.firstName} {data?.lastName}
             </span>
             <span style={{ color: online ? "#51e200" : "" }}>
               {online ? "Online" : "Offline"}

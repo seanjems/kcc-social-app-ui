@@ -3,12 +3,14 @@ import apiClient from "./apiClient";
 const endpointUpdateProfile = "api/Authorization/UpdateUser";
 const endpointGetProfile = "api/Authorization/GetUserProfile/";
 const endpointGetTofollow = "api/Follower/GetfollowerSuggest";
+const endpointGetFollowing = "api/Follower/GetUsersFollowing";
 const endpointCreateFollowerToggle = "api/Follower/CreateFollower";
 
 const tryUpdateProfile = (formData) =>
   apiClient.put(endpointUpdateProfile, formData);
 
 const tryGetTofollow = () => apiClient.get(endpointGetTofollow);
+const tryGetFollowing = () => apiClient.get(endpointGetFollowing);
 const tryCreateFollowerToggle = (followObj) =>
   apiClient.post(endpointCreateFollowerToggle, followObj);
 
@@ -21,4 +23,5 @@ export default {
   tryGetUserProfile,
   tryGetTofollow,
   tryCreateFollowerToggle,
+  tryGetFollowing,
 };

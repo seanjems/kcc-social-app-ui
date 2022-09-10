@@ -19,11 +19,25 @@ function App() {
   const [from, setFrom] = useState(
     location?.key === "default" ? location.pathname : "../home"
   );
-  console.log("locationa and from value", location, from);
+  //console.log("locationa and from value", location, from);
   const existingLogin = () => {
     var token = localStorage.getItem("token");
+    if (!token) return;
+    // console.log(token);
+
     const user = token ? jwtDecode(token) : null;
 
+    var tokenExp = user?.exp;
+    // console.log(
+    //   "times today",
+    //   parseInt(Date.now().toString().substring(0, 10)),
+    //   tokenExp
+    // );
+    if (parseInt(Date.now().toString().substring(0, 10)) >= tokenExp) {
+      localStorage.removeItem("token");
+      setUser(null);
+      return;
+    }
     const cleanItem = user ? JSON.parse(user.user) : null;
     setUser(cleanItem);
   };

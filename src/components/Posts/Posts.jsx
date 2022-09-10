@@ -99,7 +99,7 @@ const Posts = ({ data, idx, handleLike }) => {
     formData.append("id", comId);
     formData.append("commentDesc", text);
 
-    //console.log(formData, "formdata Headers....");
+    // console.log(formData, "formdata Headers....");
 
     const result = await comments.tryPutComment(formData);
 

@@ -8,18 +8,14 @@ import "./RightSide.css";
 import TrendCard from "../TrendCard/TrendCard";
 import ShareModal from "../ShareModal/ShareModal";
 import { useNavigate } from "react-router-dom";
+import NavIcons from "../NavIcons/NavIcons";
 
 const RightSide = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   return (
     <div className="RightSide">
-      <div className="navIcons">
-        <img src={Home} alt="" onClick={() => navigate("../home")} />
-        <UilSetting />
-        <img src={Notification} alt="" />
-        <img src={Messages} alt="" onClick={() => navigate("../chat")} />
-      </div>
+      <NavIcons />
 
       <TrendCard />
       <button
