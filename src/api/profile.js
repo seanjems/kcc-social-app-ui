@@ -4,7 +4,7 @@ const endpointUpdateProfile = "api/Authorization/UpdateUser";
 const endpointGetProfile = "api/Authorization/GetUserProfile/";
 const endpointGetTofollow = "api/Follower/GetfollowerSuggest";
 const endpointGetFollowing = "api/Follower/GetUsersFollowing";
-const endpointGetSingleUser = "api/Follower/GetUser/";
+const endpointGetSingleUser = "api/Follower/GetSpecificUser/";
 const endpointCreateFollowerToggle = "api/Follower/CreateFollower";
 
 const tryUpdateProfile = (formData) =>
@@ -13,7 +13,7 @@ const tryUpdateProfile = (formData) =>
 const tryGetTofollow = () => apiClient.get(endpointGetTofollow);
 const tryGetFollowing = () => apiClient.get(endpointGetFollowing);
 const tryGetSpecificUser = (userId) =>
-  apiClient.get(`${endpointGetSingleUser}userId`);
+  apiClient.get(`${endpointGetSingleUser}${userId}`);
 const tryCreateFollowerToggle = (followObj) =>
   apiClient.post(endpointCreateFollowerToggle, followObj);
 

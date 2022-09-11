@@ -44,9 +44,9 @@ const ChatBox = ({
       messagesDeep.map((newMessag) => {
         if (
           newMessag !== null &&
-          ((newMessag.senderId === chat.userId &&
+          ((newMessag.senderId === chat?.userId &&
             newMessag.receiverId === currentUser) ||
-            (newMessag.receiverId === chat.userId &&
+            (newMessag.receiverId === chat?.userId &&
               newMessag.senderId === currentUser))
         ) {
           newFilter = [...newFilter, newMessag];
@@ -79,9 +79,9 @@ const ChatBox = ({
     //console.log("Message Arrived: ", receivedMessage);
     if (
       receivedMessage !== null &&
-      ((receivedMessage.senderId === chat.userId &&
+      ((receivedMessage.senderId === chat?.userId &&
         receivedMessage.receiverId === currentUser) ||
-        (receivedMessage.receiverId === chat.userId &&
+        (receivedMessage.receiverId === chat?.userId &&
           receivedMessage.senderId === currentUser))
     ) {
       setMessages([...messages, receivedMessage]);
@@ -140,7 +140,9 @@ const ChatBox = ({
             </div>
             {/* chat-sender */}
             <div className="chat-sender">
-              <div onClick={() => imageRef.current.click()}>+</div>
+              <div onClick={() => imageRef.current.click()} hidden={true}>
+                +
+              </div>
               <InputEmoji value={newMessage} onChange={handleChange} />
               <div className="send-button button" onClick={handleSend}>
                 Send

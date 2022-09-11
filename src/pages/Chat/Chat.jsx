@@ -34,8 +34,10 @@ const Chat = () => {
   const userId = userContext.user.UserId;
   // Get the chat in chat section
   useEffect(() => {
-    getFollowing();
-  }, []);
+    if (connection?.connection?.connectionId) {
+      RequestForChatHeadsRefresh();
+    }
+  }, [connection]);
 
   //get deafult conversations
   const getFollowing = async () => {
@@ -55,9 +57,10 @@ const Chat = () => {
 
     setChats(result.data);
   };
-
+  // consoSle.log("plain line chats", chats);
   // Connect to SignalR
   useEffect(() => {
+    console.log("reinvoiking connection from use effect");
     InitiateConnection();
   }, [userContext.user.UserId]);
 
@@ -68,21 +71,13 @@ const Chat = () => {
     }
   }, [sendMessage, connection]);
 
-  // Get the message from socket server
-  useEffect(() => {
-    // socket.current.on("recieve-message", (data) => {
-    //   console.log(data);
-    //   setReceivedMessage(data);
-    // });
-  }, []);
-
   const checkOnlineStatus = (chat) => {
     // const chatMember = chat.members.find((member) => member !== user._id);
     // const online = onlineUsers.find((user) => user.userId === chatMember);
     // return online ? true : false;
   };
-  const fetchSingleUser = async (userId) => {
-    var result = await profile.tryGetSpecificUser(userId);
+  const fetchSingleUser = async (followerId) => {
+    var result = await profile.tryGetSpecificUser(followerId);
     if (!result.ok) {
       showNotification({
         id: "save-data",
@@ -95,8 +90,8 @@ const Chat = () => {
       });
       return;
     }
-
-    setChats([...chats, result.data]);
+    console.log(chats);
+    //setChats([result.data, ...chats]);
   };
 
   ///SIGNALR
@@ -113,19 +108,37 @@ const Chat = () => {
       connection.on(
         "ReceiveMessage",
         (senderId, receiverId, message, createdAt) => {
+          console.log("received message .... ", {
+            senderId,
+            receiverId,
+            message,
+            createdAt,
+          });
+          //update chats if new incoming chat
+
+          var newArray = chats.filter(function (el) {
+            return el.userId === senderId || el.userId === userId;
+          });
+          if (newArray.length === 0) {
+            RequestForChatHeadsRefresh();
+          }
+
           setReceivedMessage({ senderId, receiverId, message, createdAt });
-          console.log("received message .... in the state", receivedMessage);
 
           setMessages((messages) => [
             ...messages,
             { senderId, receiverId, message, createdAt },
           ]);
-          console.log(messages, "this is the original backup");
+          console.log(chats, "this is the chat object");
         }
       );
       connection.on("ReceiveUsers", (listOfUsers) => {
         console.log("users list refreshed", listOfUsers);
         setOnlineUsers(listOfUsers);
+      });
+      connection.on("ReceiveChatHeads", (chatHeads) => {
+        console.log("chatheadsRefreshed", chatHeads);
+        setChats(chatHeads);
       });
 
       connection.onclose((e) => {
@@ -143,10 +156,14 @@ const Chat = () => {
 
   //send message
   const sendMessageToServer = async (sendMessageObj) => {
-    //console.log("before reconnecting", connection?.connection?.connectionId);
+    console.log(
+      "before reconnecting this is the connection",
+      connection?.connection?.connectionId,
+      connection
+    );
     try {
-      if (!connection.connection.connectionId) {
-        console.log("reInvoiking connection");
+      if (!connection) {
+        console.log("reInvoiking connection from send message");
         await InitiateConnection();
         return;
       }
@@ -155,6 +172,22 @@ const Chat = () => {
       }
       await connection.invoke("SendMessage", sendMessageObj);
       setSendMessage(null);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //send requestChats fromServer
+  const RequestForChatHeadsRefresh = async () => {
+    //console.log("before reconnecting", connection?.connection?.connectionId);
+    try {
+      if (!connection) {
+        // console.log("reInvoiking connection");
+        // await InitiateConnection();
+        return;
+      }
+
+      await connection.invoke("RefreshChatHeads");
     } catch (e) {
       console.log(e);
     }
