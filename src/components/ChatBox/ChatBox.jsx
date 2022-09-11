@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useRef } from "react";
 // import { addMessage, getMessages } from "../../api/MessageRequests";
 // import { getUser } from "../../api/UserRequests";
@@ -6,7 +6,13 @@ import "./ChatBox.css";
 import { format } from "timeago.js";
 import InputEmoji from "react-input-emoji";
 
-const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
+const ChatBox = ({
+  chat,
+  currentUser,
+  setSendMessage,
+  receivedMessage,
+  messagesBackup,
+}) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -30,15 +36,25 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   // };
   // fetch messages
   useEffect(() => {
-    // const fetchMessages = async () => {
-    //   try {
-    //     const { data } = await getMessages(chat._id);
-    //     setMessages(data);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // if (chat !== null) fetchMessages();
+    setMessages([]);
+    console.log("in here original messages", messagesBackup);
+    const messagesDeep = JSON.parse(JSON.stringify(messagesBackup));
+    if (messagesDeep) {
+      var newFilter = [];
+      messagesDeep.map((newMessag) => {
+        if (
+          newMessag !== null &&
+          ((newMessag.senderId === chat.userId &&
+            newMessag.receiverId === currentUser) ||
+            (newMessag.receiverId === chat.userId &&
+              newMessag.senderId === currentUser))
+        ) {
+          newFilter = [...newFilter, newMessag];
+          console.log("newFilter here ......", newFilter);
+        }
+      });
+      setMessages(newFilter);
+    }
   }, [chat]);
 
   // Always scroll to last Message
@@ -60,13 +76,13 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
 
   // Receive Message from parent component
   useEffect(() => {
-    console.log("Message Arrived: ", receivedMessage);
+    //console.log("Message Arrived: ", receivedMessage);
     if (
       receivedMessage !== null &&
       ((receivedMessage.senderId === chat.userId &&
-        receivedMessage.receiverId == currentUser) ||
+        receivedMessage.receiverId === currentUser) ||
         (receivedMessage.receiverId === chat.userId &&
-          receivedMessage.senderId == currentUser))
+          receivedMessage.senderId === currentUser))
     ) {
       setMessages([...messages, receivedMessage]);
     }
@@ -106,8 +122,8 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
             </div>
             {/* chat-body */}
             <div className="chat-body">
-              {messages.map((message) => (
-                <>
+              {messages?.map((message, idx) => (
+                <Fragment key={idx}>
                   <div
                     ref={scroll}
                     className={
@@ -119,7 +135,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                     <span>{message.message}</span>{" "}
                     <span>{format(new Date(message.createdAt))}</span>
                   </div>
-                </>
+                </Fragment>
               ))}
             </div>
             {/* chat-sender */}

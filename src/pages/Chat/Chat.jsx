@@ -113,19 +113,14 @@ const Chat = () => {
       connection.on(
         "ReceiveMessage",
         (senderId, receiverId, message, createdAt) => {
-          console.log(
-            "message from server",
-            senderId,
-            receiverId,
-            message,
-            createdAt
-          );
           setReceivedMessage({ senderId, receiverId, message, createdAt });
           console.log("received message .... in the state", receivedMessage);
+
           setMessages((messages) => [
             ...messages,
             { senderId, receiverId, message, createdAt },
           ]);
+          console.log(messages, "this is the original backup");
         }
       );
       connection.on("ReceiveUsers", (listOfUsers) => {
@@ -164,8 +159,8 @@ const Chat = () => {
       console.log(e);
     }
   };
-  console.log("received message .... in the state", receivedMessage);
-  console.log(messages);
+  // console.log("received message .... in the state", receivedMessage);
+  // console.log(messages);
   return (
     <div className="Chat">
       {/* Left Side */}
@@ -203,6 +198,7 @@ const Chat = () => {
           currentUser={userId}
           setSendMessage={setSendMessage}
           receivedMessage={receivedMessage}
+          messagesBackup={messages}
         />
       </div>
     </div>
