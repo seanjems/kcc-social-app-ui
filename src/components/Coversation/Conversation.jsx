@@ -31,7 +31,11 @@ const Conversation = ({ data, currentUser, online }) => {
         <div>
           {online && <div className="online-dot"></div>}
           <img
-            src={data.profilePicUrl}
+            src={
+              data.profilePicUrl.startsWith("media")
+                ? `${process.env.REACT_PUBLIC_API_URL}/data.profilePicUrl`
+                : data.profilePicUrl
+            }
             alt="Profile"
             className="followerImage"
             style={{ width: "50px", height: "50px" }}

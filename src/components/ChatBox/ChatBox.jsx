@@ -37,7 +37,7 @@ const ChatBox = ({
   // fetch messages
   useEffect(() => {
     setMessages([]);
-    console.log("in here original messages", messagesBackup);
+    // console.log("in here original messages", messagesBackup);
     const messagesDeep = JSON.parse(JSON.stringify(messagesBackup));
     if (messagesDeep) {
       var newFilter = [];
@@ -50,7 +50,7 @@ const ChatBox = ({
               newMessag.senderId === currentUser))
         ) {
           newFilter = [...newFilter, newMessag];
-          console.log("newFilter here ......", newFilter);
+          // console.log("newFilter here ......", newFilter);
         }
       });
       setMessages(newFilter);
@@ -140,7 +140,10 @@ const ChatBox = ({
             </div>
             {/* chat-sender */}
             <div className="chat-sender">
-              <div onClick={() => imageRef.current.click()} hidden={true}>
+              <div
+                onClick={() => imageRef.current.click()}
+                style={{ display: "none" }}
+              >
                 +
               </div>
               <InputEmoji value={newMessage} onChange={handleChange} />

@@ -6,6 +6,7 @@ const endpointGetTofollow = "api/Follower/GetfollowerSuggest";
 const endpointGetFollowing = "api/Follower/GetUsersFollowing";
 const endpointGetSingleUser = "api/Follower/GetSpecificUser/";
 const endpointCreateFollowerToggle = "api/Follower/CreateFollower";
+const endpointGetExistingChats = "api/Chats/GetChatsPerUser?page=";
 
 const tryUpdateProfile = (formData) =>
   apiClient.put(endpointUpdateProfile, formData);
@@ -19,6 +20,8 @@ const tryCreateFollowerToggle = (followObj) =>
 
 const tryGetUserProfile = (userId) =>
   apiClient.get(`${endpointGetProfile}${userId}`);
+const tryGetExistingChats = (page = 1) =>
+  apiClient.get(`${endpointGetExistingChats}${page}`);
 // const tryLikePost = (postLikeObj) =>
 //   apiClient.post(endpointLikePost, postLikeObj);
 export default {
@@ -28,4 +31,5 @@ export default {
   tryCreateFollowerToggle,
   tryGetFollowing,
   tryGetSpecificUser,
+  tryGetExistingChats,
 };

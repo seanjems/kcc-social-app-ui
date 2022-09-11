@@ -40,8 +40,14 @@ const Chat = () => {
   }, [connection]);
 
   //get deafult conversations
-  const getFollowing = async () => {
-    var result = await profile.tryGetFollowing();
+
+  useEffect(() => {
+    if (chats.length > 0) {
+      getUserChats(1);
+    }
+  }, [chats]);
+  const getUserChats = async (page) => {
+    var result = await profile.tryGetExistingChats(page);
     if (!result.ok) {
       showNotification({
         id: "save-data",
@@ -54,8 +60,8 @@ const Chat = () => {
       });
       return;
     }
-
-    setChats(result.data);
+    setReceivedMessage(result.data);
+    setMessages(result.data);
   };
   // consoSle.log("plain line chats", chats);
   // Connect to SignalR
@@ -129,7 +135,7 @@ const Chat = () => {
             ...messages,
             { senderId, receiverId, message, createdAt },
           ]);
-          console.log(chats, "this is the chat object");
+          // console.log(chats, "this is the chat object");
         }
       );
       connection.on("ReceiveUsers", (listOfUsers) => {
