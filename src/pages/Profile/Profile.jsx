@@ -69,7 +69,37 @@ const Profile = ({ userProfileId }) => {
     setFetchList(result.data);
     setIsLoading(false);
   };
+  const handleLike = async (idx) => {
+    var fetchListCopy = [...fetchList];
+    // console.log(
+    //   "initiating likes with fetchlistcopy and idx",
+    //   fetchListCopy,
+    //   idx,
+    //   fetchListCopy[idx]
+    // );
 
+    //create deep copy backup
+    const originalValues = JSON.parse(JSON.stringify(fetchList));
+    const currentState = fetchListCopy[idx]?.liked;
+    fetchListCopy[idx].liked = !currentState;
+    fetchListCopy[idx].likes = currentState
+      ? fetchListCopy[idx]?.likes - 1
+      : fetchListCopy[idx]?.likes + 1;
+    setFetchList(fetchListCopy);
+    // call api
+    const userId = userContext.user.UserId;
+    var like = await posts.tryLikePost({
+      postId: fetchListCopy[idx]?.id,
+      userId: userId,
+    });
+    if (!like.ok) {
+      setFetchList(originalValues);
+      return;
+    }
+    fetchListCopy[idx].liked = !currentState;
+    fetchListCopy[idx].likes = like.data.likes;
+    setFetchList(fetchListCopy);
+  };
   const handleFollow = async (idx) => {
     var toFollowListBackup = JSON.parse(JSON.stringify(toFollowList));
     var toFollowListCopy = [...toFollowList];
@@ -166,7 +196,7 @@ const Profile = ({ userProfileId }) => {
         <ProfileCard isOnProfileScreen={true} userProfile={userProfile} />
         <PostShare />
         {!isLoading ? (
-          <PostsCard fetchList={fetchList} />
+          <PostsCard fetchList={fetchList} handleLike={handleLike} />
         ) : (
           <span> Loading ...</span>
         )}
