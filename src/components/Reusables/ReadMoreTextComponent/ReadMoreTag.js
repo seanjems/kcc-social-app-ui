@@ -9,7 +9,6 @@ const ReadMoreTag = ({
   max,
   readMoreTextOption = "Read More",
 }) => {
-  console.log("🚀 ~ file: ReadMoreTag.js ~ line 12 ~ text", text);
   let args = [text, min, ideal, max];
 
   const [primaryText, secondaryText] = ReadmoreTrimer(...args);
@@ -62,7 +61,6 @@ const ReadMoreTag = ({
       </div>
     );
   }
-  console.log("🚀 ~ file: ReadMoreTag.js ~ line 37 ~ displayText", displayText);
   return displayText;
 };
 

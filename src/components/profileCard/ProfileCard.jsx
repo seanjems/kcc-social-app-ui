@@ -16,7 +16,9 @@ const ProfileCard = ({ userProfile, isOnProfileScreen = false }) => {
       <div className="ProfileName">
         {userProfile && (
           <span onClick={() => navigate("../profile")}>
-            {`${userProfile.firstName} ${userProfile.lastname}`}
+            {`${userProfile.firstName && userProfile.firstName} ${
+              userProfile.lastname && userProfile.lastname
+            }`}
           </span>
         )}
         {userProfile && (

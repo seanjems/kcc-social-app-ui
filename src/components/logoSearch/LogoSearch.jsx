@@ -80,7 +80,10 @@ const LogoSearch = ({ setSelectedItemCallBack }) => {
       {userResult && (
         <div
           className="Chat-list"
-          style={{ maxHeight: "25rem", overflowY: "scroll" }}
+          style={{
+            maxHeight: "25rem",
+            overflowY: "scroll",
+          }}
         >
           {userResult.map((chat, idx) => (
             <div
