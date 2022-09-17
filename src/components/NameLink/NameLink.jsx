@@ -7,7 +7,7 @@ const NameLink = ({ dataObj, callBackFn }) => {
 
   TimeAgo.addLocale(en);
   const timeAgo = new TimeAgo("en-US");
-  console.log("🚀 ~ file: NameLink.jsx ~ line 6 ~ NameLink ~ data", data);
+  // console.log("🚀 ~ file: NameLink.jsx ~ line 6 ~ NameLink ~ data", data);
 
   // const daysAgo = (pastDate) => {
   //   const date1 = new Date();
@@ -17,7 +17,7 @@ const NameLink = ({ dataObj, callBackFn }) => {
   //   console.log(diffTime + " milliseconds");
   //   console.log(diffDays + " days");
   // };
-  console.log(data);
+  //console.log(data);
   return (
     <>
       <div className="follower ">
@@ -64,11 +64,11 @@ const NameLink = ({ dataObj, callBackFn }) => {
               <small className="text-secondary">
                 {timeAgo.format(new Date(dataObj.createdAt), "twitter")}
               </small>
-            )}
+            )}{" "}
             {/* {console.log(
-              "🚀 ~ file: NameLink.jsx ~ line 63 ~ NameLink ~ createdAt",
-              data.createdAt
-            )} */}
+            // "🚀 ~ file: NameLink.jsx ~ line 63 ~ NameLink ~ createdAt",
+            // data.createdAt
+            // )} */}
           </div>
         </div>
       </div>

@@ -8,23 +8,54 @@ import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
 import profile from "../../api/profile";
 import { showNotification } from "@mantine/notifications";
+import { useParams } from "react-router-dom";
 
 export const Home = () => {
   const userContext = useContext(AuthContext);
   const [fetchList, setFetchList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [userProfile, setUserProfile] = useState({});
+  const [selectedPostDetail, setSelectedPostDetail] = useState(null);
 
+  let { postId } = useParams();
+
+  //console.log("🚀 ~ file: Home.jsx ~ line 21 ~ Home ~ postId", postId);
   useEffect(() => {
+    setSelectedPostDetail(null);
+    if (postId) {
+      getSingleItem(postId);
+    }
     getItems();
     getUserProfile();
-  }, []);
+  }, [useParams().postId]);
 
   const getItems = async () => {
     setIsLoading(true);
     var list = await PostsData();
 
     setFetchList(list);
+    setIsLoading(false);
+  };
+  const getSingleItem = async (postId) => {
+    setIsLoading(true);
+
+    // call api
+
+    var result = await posts.tryGetSinglePost(postId);
+    if (!result.ok) {
+      setUserProfile(null);
+      showNotification({
+        id: "user-data",
+        title: "Error",
+        message: `${result.status && result.status} ${result.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        // style: { zIndex: "999999" },
+      });
+      return;
+    }
+
+    setSelectedPostDetail(result.data);
     setIsLoading(false);
   };
   const getUserProfile = async (userProfileId) => {
@@ -89,6 +120,7 @@ export const Home = () => {
           fetchList={fetchList}
           handleLike={handleLike}
           setFetchList={setFetchList}
+          selectedPostDetail={selectedPostDetail}
         />
       ) : (
         <span> Loading...</span>

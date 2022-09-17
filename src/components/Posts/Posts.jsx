@@ -16,8 +16,7 @@ import posts from "../../api/posts";
 import NameLink from "../NameLink/NameLink";
 import { useNavigate } from "react-router-dom";
 
-const Posts = ({ data, idx, handleLike }) => {
-  console.log("🚀 ~ file: Posts.jsx ~ line 20 ~ Posts ~ data", data);
+const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
   const userContext = useContext(AuthContext);
 
   const [postComments, setPostComments] = useState([]);
@@ -168,8 +167,22 @@ const Posts = ({ data, idx, handleLike }) => {
         <b>{data.name}</b>
       </span> */}
       <NameLink dataObj={data} callBackFn={handleSelectProfile} />
-      {data.desc && <span>{data.desc}</span>}
-      {data.img && <img src={data.img} alt="" />}
+      {data.desc && (
+        <span
+          className="cursorPointer"
+          onClick={() => navigate(`../post/${data.id}`)}
+        >
+          {data.desc}
+        </span>
+      )}
+      {data.img && (
+        <img
+          src={data.img}
+          alt=""
+          className="cursorPointer"
+          onClick={() => navigate(`../post/${data.id}`)}
+        />
+      )}
       <div className="shareOptions">
         <img
           src={data.liked ? Liked : Like}

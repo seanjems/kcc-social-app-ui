@@ -11,10 +11,13 @@ const tryGetAllPostPaged = (page, userProfileId, userName = null) =>
   apiClient.get(
     `${endpointCreatePost}?page=${page}&userProfileId=${userProfileId}&userName=${userName}`
   );
+const tryGetSinglePost = (postId) =>
+  apiClient.get(`${endpointGetallPostPaged}/${postId}`);
 const tryLikePost = (postLikeObj) =>
   apiClient.post(endpointLikePost, postLikeObj);
 export default {
   tryCreatePost,
   tryGetAllPostPaged,
   tryLikePost,
+  tryGetSinglePost,
 };

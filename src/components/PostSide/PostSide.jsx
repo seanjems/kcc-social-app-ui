@@ -8,6 +8,7 @@ const PostSide = ({
   isLoading,
   setIsLoading,
   handleLike,
+  selectedPostDetail,
 }) => {
   return (
     <div className="PostSide">
@@ -17,7 +18,11 @@ const PostSide = ({
         isLoading={isLoading}
         setIsLoading={setIsLoading}
       />
-      <PostsCard fetchList={fetchList} handleLike={handleLike} />
+      <PostsCard
+        fetchList={fetchList}
+        handleLike={handleLike}
+        selectedPostDetail={selectedPostDetail}
+      />
     </div>
   );
 };

@@ -125,6 +125,16 @@ function App() {
                   path="/:userName"
                   element={user ? <Profile /> : <Navigate to="../auth" />}
                 />
+                <Route
+                  path="/post/:postId"
+                  element={
+                    user ? (
+                      <Home setUser={setUser} />
+                    ) : (
+                      <Navigate to="../auth" />
+                    )
+                  }
+                />
                 {/* <Route
                 path={`/profile/${userName}`}
                 element={
