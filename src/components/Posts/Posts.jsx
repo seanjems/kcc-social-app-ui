@@ -15,6 +15,7 @@ import { IconX } from "@tabler/icons";
 import posts from "../../api/posts";
 import NameLink from "../NameLink/NameLink";
 import { useNavigate } from "react-router-dom";
+import ReadMoreTag from "../Reusables/ReadMoreTextComponent/ReadMoreTag";
 
 const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
   const userContext = useContext(AuthContext);
@@ -172,7 +173,13 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
           className="cursorPointer"
           onClick={() => navigate(`../post/${data.id}`)}
         >
-          {data.desc}
+          <ReadMoreTag
+            text={data.desc}
+            min={350}
+            max={360}
+            ideal={355}
+            readMoreTextOption="...read more"
+          />
         </span>
       )}
       {data.img && (
