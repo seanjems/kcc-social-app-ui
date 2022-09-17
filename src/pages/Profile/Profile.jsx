@@ -12,7 +12,7 @@ import RightSide from "../../components/RightSide/RightSide";
 import PostsData from "../../Data/PostsData";
 import "./Profile.css";
 import { IconX } from "@tabler/icons";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import posts from "../../api/posts";
 
 const Profile = ({ userProfileId }) => {
@@ -25,6 +25,7 @@ const Profile = ({ userProfileId }) => {
   const [updateToFollow, setUpdateToFollow] = useState(false);
   const [postsPage, setPostsPage] = useState(1);
   let { userName } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // userContext.existingLogin();
@@ -182,7 +183,9 @@ const Profile = ({ userProfileId }) => {
   return (
     <div className="Profile">
       <div className="ProfileLeft">
-        <LogoSearch />
+        <LogoSearch
+          setSelectedItemCallBack={(data) => navigate(`/${data?.userName}`)}
+        />
         <MyProfileCard
           userProfile={userProfile}
           profileUpdated={profileUpdated}
