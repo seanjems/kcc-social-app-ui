@@ -13,20 +13,29 @@ import AuthContext from "../../auth/context";
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
 import posts from "../../api/posts";
+import NameLink from "../NameLink/NameLink";
+import { useNavigate } from "react-router-dom";
 
 const Posts = ({ data, idx, handleLike }) => {
+  console.log("🚀 ~ file: Posts.jsx ~ line 20 ~ Posts ~ data", data);
   const userContext = useContext(AuthContext);
 
   const [postComments, setPostComments] = useState([]);
   const [postCommentsBackup, setPostCommentsBackup] = useState([]);
   const [commentPage, setCommentPage] = useState(0);
   const [currentData, setCurrentData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (commentPage > 0) {
       handleGetComment();
     }
   }, [commentPage]);
+
+  const handleSelectProfile = (data) => {
+    console.log(data, "data from call back");
+    navigate(`/${data?.userName}`);
+  };
 
   const handleGetComment = async () => {
     var postId = data?.id;
@@ -155,9 +164,10 @@ const Posts = ({ data, idx, handleLike }) => {
   };
   return (
     <div className="Posts">
-      <span>
+      {/* <span>
         <b>{data.name}</b>
-      </span>
+      </span> */}
+      <NameLink dataObj={data} callBackFn={handleSelectProfile} />
       {data.desc && <span>{data.desc}</span>}
       {data.img && <img src={data.img} alt="" />}
       <div className="shareOptions">

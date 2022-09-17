@@ -10,6 +10,7 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
+import { showNotification } from "@mantine/notifications";
 
 const PostShare = ({ fetchList, setFetchList }) => {
   const [image, setImage] = useState(null);
@@ -17,6 +18,8 @@ const PostShare = ({ fetchList, setFetchList }) => {
   const imageRef = useRef();
   const shareTextInput = useRef();
   const userContext = useContext(AuthContext);
+
+  const user = userContext.user;
 
   const onImageChanged = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -54,9 +57,23 @@ const PostShare = ({ fetchList, setFetchList }) => {
     //   setCreatePostErrors(result.data);
     //   return;
     // }
-
+    if (!result.ok) {
+      showNotification({
+        id: "user-data",
+        title: "Error",
+        message: `${user.status} ${user.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        // style: { zIndex: "999999" },
+      });
+      return;
+    }
     //add to posts array
     var currentData = [...fetchList];
+    console.log(
+      "🚀 ~ file: PostShare.jsx ~ line 70 ~ handleCreatePost ~ fetchList",
+      fetchList
+    );
     currentData.unshift(result.data);
     setFetchList(currentData);
     console.log(result.data, "this is the new istem we are pushing");
@@ -135,6 +152,7 @@ const PostShare = ({ fetchList, setFetchList }) => {
                       setUploadFile(null);
                     }}
                   />
+                  {console.log(image.image)}
                   <img src={image.image} alt="" />
                 </div>
               )}

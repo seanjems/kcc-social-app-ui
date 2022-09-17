@@ -40,7 +40,6 @@ const Chat = () => {
   }, [connection]);
 
   //get deafult conversations
-
   useEffect(() => {
     if (chats.length > 0) {
       getUserChats(1);
@@ -98,6 +97,13 @@ const Chat = () => {
     }
     console.log(chats);
     //setChats([result.data, ...chats]);
+  };
+  const handleSearchResult = async (selectedSearchResult) => {
+    if (selectedSearchResult && selectedSearchResult.userId) {
+      const oldChats = [...chats];
+
+      setChats([selectedSearchResult, ...oldChats]);
+    }
   };
 
   ///SIGNALR
@@ -170,6 +176,16 @@ const Chat = () => {
     try {
       if (!connection) {
         console.log("reInvoiking connection from send message");
+        showNotification({
+          id: "save-data2",
+          icon: <IconX size={16} />,
+          title: "Network Error",
+          message: "Trying to reconnect",
+          loading: true,
+          autoClose: true,
+          disallowClose: false,
+          style: { zIndex: "999999" },
+        });
         await InitiateConnection();
         return;
       }
@@ -204,7 +220,7 @@ const Chat = () => {
     <div className="Chat">
       {/* Left Side */}
       <div className="Left-side-chat">
-        <LogoSearch />
+        <LogoSearch setSelectedItemCallBack={handleSearchResult} />
         <div className="Chat-container">
           <h2>Chats</h2>
           <div className="Chat-list">

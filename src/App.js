@@ -11,6 +11,7 @@ import jwtDecode from "jwt-decode";
 
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   //redirect after login to intended page
@@ -119,6 +120,10 @@ function App() {
                       <p>There's nothing here!</p>
                     </main>
                   }
+                />
+                <Route
+                  path="/:userName"
+                  element={user ? <Profile /> : <Navigate to="../auth" />}
                 />
                 {/* <Route
                 path={`/profile/${userName}`}

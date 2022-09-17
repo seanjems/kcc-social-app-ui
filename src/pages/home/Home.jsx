@@ -85,7 +85,11 @@ export const Home = () => {
     <div className="Home">
       <ProfileSide userProfile={userProfile} />
       {!isLoading ? (
-        <PostSide fetchList={fetchList} handleLike={handleLike} />
+        <PostSide
+          fetchList={fetchList}
+          handleLike={handleLike}
+          setFetchList={setFetchList}
+        />
       ) : (
         <span> Loading...</span>
       )}

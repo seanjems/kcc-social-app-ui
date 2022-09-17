@@ -7,9 +7,9 @@ const endpointLikePost = "api/Likes";
 const tryCreatePost = (formData) =>
   apiClient.post(endpointCreatePost, formData);
 
-const tryGetAllPostPaged = (page, userProfileId) =>
+const tryGetAllPostPaged = (page, userProfileId, userName = null) =>
   apiClient.get(
-    `${endpointCreatePost}?page=${page}&userProfileId=${userProfileId}`
+    `${endpointCreatePost}?page=${page}&userProfileId=${userProfileId}&userName=${userName}`
   );
 const tryLikePost = (postLikeObj) =>
   apiClient.post(endpointLikePost, postLikeObj);

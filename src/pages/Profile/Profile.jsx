@@ -12,6 +12,8 @@ import RightSide from "../../components/RightSide/RightSide";
 import PostsData from "../../Data/PostsData";
 import "./Profile.css";
 import { IconX } from "@tabler/icons";
+import { useParams } from "react-router-dom";
+import posts from "../../api/posts";
 
 const Profile = ({ userProfileId }) => {
   const userContext = useContext(AuthContext);
@@ -21,12 +23,14 @@ const Profile = ({ userProfileId }) => {
   const [refetchProfile, setRefetchProfile] = useState(false);
   const [toFollowList, setToFollowList] = useState(null);
   const [updateToFollow, setUpdateToFollow] = useState(false);
+  const [postsPage, setPostsPage] = useState(1);
+  let { userName } = useParams();
 
   useEffect(() => {
     // userContext.existingLogin();
-    getItems();
+    getItems(userName);
     getUserProfile();
-  }, [refetchProfile]);
+  }, [refetchProfile, postsPage]);
 
   useEffect(() => {
     getToFollow();
@@ -35,14 +39,34 @@ const Profile = ({ userProfileId }) => {
   const profileUpdated = () => {
     setRefetchProfile(!refetchProfile);
   };
-  const getItems = async (userProfileId) => {
-    var userId = userProfileId ? userProfileId : userContext.user.UserId;
+  const getItems = async (userProfileName) => {
+    var userId = userProfileName ? null : userContext.user.UserId;
+    var userProfileName = userProfileName;
     // console.log("userId and user context", userContext, userId);
 
     setIsLoading(true);
-    var list = await PostsData(1, userId);
+    const result = await posts.tryGetAllPostPaged(
+      postsPage,
+      userId,
+      userProfileName
+    );
+    if (!result.ok) {
+      showNotification({
+        id: "save-data",
+        icon: <IconX size={16} />,
+        title: "Error",
+        message: `${result.status ? result.status : ""} ${result.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        style: { zIndex: "999999" },
+      });
+    }
 
-    setFetchList(list);
+    //console.log("fetch posts result", result.data);
+
+    // var list = await PostsData(postsPage, userId, userProfileName);
+
+    setFetchList(result.data);
     setIsLoading(false);
   };
 
