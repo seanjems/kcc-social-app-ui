@@ -24,6 +24,8 @@ const Profile = ({ userProfileId }) => {
   const [toFollowList, setToFollowList] = useState(null);
   const [updateToFollow, setUpdateToFollow] = useState(false);
   const [postsPage, setPostsPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   let { userName } = useParams();
   const navigate = useNavigate();
 
@@ -31,7 +33,7 @@ const Profile = ({ userProfileId }) => {
     // userContext.existingLogin();
     getItems(userName);
     getUserProfile(userName);
-  }, [refetchProfile, postsPage]);
+  }, [refetchProfile]);
 
   useEffect(() => {
     getToFollow();
@@ -40,12 +42,21 @@ const Profile = ({ userProfileId }) => {
   const profileUpdated = () => {
     setRefetchProfile(!refetchProfile);
   };
+
+  //infinite scroling
+  useEffect(() => {
+    if (postsPage > 1 && !isLoading && hasMore) {
+      return getItems(userName);
+    }
+  }, [postsPage]);
+
   const getItems = async (userProfileName) => {
     var userId = userProfileName ? null : userContext.user.UserId;
     var userProfileName = userProfileName;
     // console.log("userId and user context", userContext, userId);
 
     setIsLoading(true);
+    setHasMore(true);
     const result = await posts.tryGetAllPostPaged(
       postsPage,
       userId,
@@ -63,12 +74,20 @@ const Profile = ({ userProfileId }) => {
       });
     }
 
-    //console.log("fetch posts result", result.data);
+    if (!result.data.length) {
+      setHasMore(false);
+      setIsLoading(false);
+      return;
+    }
+    //create deep copy backup
+    const originalValues = JSON.parse(JSON.stringify(fetchList));
+    const copy2 = [...originalValues, ...result.data];
 
-    // var list = await PostsData(postsPage, userId, userProfileName);
-
-    setFetchList(result.data);
+    setFetchList(copy2);
     setIsLoading(false);
+
+    // setFetchList(result.data);
+    // setIsLoading(false);
   };
   const handleLike = async (idx) => {
     var fetchListCopy = [...fetchList];
@@ -201,8 +220,15 @@ const Profile = ({ userProfileId }) => {
       <div className="ProfileCenter">
         <ProfileCard isOnProfileScreen={true} userProfile={userProfile} />
         <PostShare userProfile={userProfile} />
-        {!isLoading ? (
-          <PostsCard fetchList={fetchList} handleLike={handleLike} />
+        {!isLoading || fetchList.length ? (
+          <PostsCard
+            fetchList={fetchList}
+            handleLike={handleLike}
+            setPageNumber={setPostsPage}
+            pageNumber={postsPage}
+            isLoading={isLoading}
+            hasMore={hasMore}
+          />
         ) : (
           <span> Loading ...</span>
         )}

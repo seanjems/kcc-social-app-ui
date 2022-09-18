@@ -12,6 +12,7 @@ const PostSide = ({
   userProfile,
   setPageNumber,
   pageNumber,
+  hasMore,
 }) => {
   return (
     <div className="PostSide">
@@ -28,6 +29,8 @@ const PostSide = ({
         selectedPostDetail={selectedPostDetail}
         setPageNumber={setPageNumber}
         pageNumber={pageNumber}
+        isLoading={isLoading}
+        hasMore={hasMore}
       />
     </div>
   );

@@ -38,6 +38,7 @@ export const Home = () => {
       return getItems();
     }
   }, [pageNumber]);
+  console.log("🚀 ~ file: Home.jsx ~ line 41 ~ Home ~ pageNumber", pageNumber);
 
   const getItems = async () => {
     setIsLoading(true);
@@ -59,6 +60,7 @@ export const Home = () => {
     }
     if (!result.data.length) {
       setHasMore(false);
+      setIsLoading(false);
       return;
     }
     //create deep copy backup
@@ -147,7 +149,7 @@ export const Home = () => {
   return (
     <div className="Home">
       <ProfileSide userProfile={userProfile} />
-      {fetchList.length ? (
+      {fetchList.length || !isLoading ? (
         <PostSide
           fetchList={fetchList}
           handleLike={handleLike}
@@ -156,6 +158,8 @@ export const Home = () => {
           userProfile={userProfile}
           setPageNumber={setPageNumber}
           pageNumber={pageNumber}
+          isLoading={isLoading}
+          hasMore={hasMore}
         />
       ) : (
         <span> Loading...</span>
