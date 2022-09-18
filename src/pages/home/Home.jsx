@@ -121,6 +121,7 @@ export const Home = () => {
           handleLike={handleLike}
           setFetchList={setFetchList}
           selectedPostDetail={selectedPostDetail}
+          userProfile={userProfile}
         />
       ) : (
         <span> Loading...</span>

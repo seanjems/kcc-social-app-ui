@@ -30,7 +30,7 @@ const Profile = ({ userProfileId }) => {
   useEffect(() => {
     // userContext.existingLogin();
     getItems(userName);
-    getUserProfile();
+    getUserProfile(userName);
   }, [refetchProfile, postsPage]);
 
   useEffect(() => {
@@ -158,13 +158,16 @@ const Profile = ({ userProfileId }) => {
     setToFollowList(result.data);
   };
 
-  const getUserProfile = async (userProfileId) => {
-    var userId = userProfileId ? userProfileId : userContext.user.UserId;
-    console.log("userId and user context", userContext, userId);
+  const getUserProfile = async (userProfileName) => {
+    var userId = userProfileName ? null : userContext.user.UserId;
+    var userProfileName = userProfileName;
+
+    // var userId = userProfileId ? userProfileId : userContext.user.UserId;
+    // console.log("userId and user context", userContext, userId);
 
     // call api
 
-    var user = await profile.tryGetUserProfile(userId);
+    var user = await profile.tryGetUserProfile(userId, userProfileName);
     if (!user.ok) {
       setUserProfile(null);
       showNotification({
@@ -197,7 +200,7 @@ const Profile = ({ userProfileId }) => {
       </div>
       <div className="ProfileCenter">
         <ProfileCard isOnProfileScreen={true} userProfile={userProfile} />
-        <PostShare />
+        <PostShare userProfile={userProfile} />
         {!isLoading ? (
           <PostsCard fetchList={fetchList} handleLike={handleLike} />
         ) : (

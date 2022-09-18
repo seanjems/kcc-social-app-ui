@@ -3,6 +3,7 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 
 const NameLink = ({ dataObj, callBackFn }) => {
+  console.log("🚀 ~ file: NameLink.jsx ~ line 6 ~ NameLink ~ dataObj", dataObj);
   const data = dataObj.creatorUSer;
 
   TimeAgo.addLocale(en);

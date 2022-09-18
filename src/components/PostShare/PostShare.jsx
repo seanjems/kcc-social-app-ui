@@ -12,12 +12,16 @@ import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
 import { showNotification } from "@mantine/notifications";
 
-const PostShare = ({ fetchList, setFetchList }) => {
+const PostShare = ({ fetchList, setFetchList, userProfile }) => {
   const [image, setImage] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
   const imageRef = useRef();
   const shareTextInput = useRef();
   const userContext = useContext(AuthContext);
+  // console.log(
+  // "🚀 ~ file: PostShare.jsx ~ line 21 ~ PostShare ~ userContext",
+  // userContext
+  // );
 
   const user = userContext.user;
 
@@ -70,10 +74,10 @@ const PostShare = ({ fetchList, setFetchList }) => {
     }
     //add to posts array
     var currentData = [...fetchList];
-    console.log(
-      "🚀 ~ file: PostShare.jsx ~ line 70 ~ handleCreatePost ~ fetchList",
-      fetchList
-    );
+    // console.log(
+    // "🚀 ~ file: PostShare.jsx ~ line 70 ~ handleCreatePost ~ fetchList",
+    // fetchList
+    // );
     currentData.unshift(result.data);
     setFetchList(currentData);
     console.log(result.data, "this is the new istem we are pushing");
@@ -97,7 +101,7 @@ const PostShare = ({ fetchList, setFetchList }) => {
         <Form>
           <div className="PostShare">
             <div>
-              <img src={ProfileImage} alt="" />
+              <img src={userProfile?.profilePicUrl} alt="" />
               <div className="shareInput">
                 <input
                   type="textarea"

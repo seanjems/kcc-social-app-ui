@@ -1,7 +1,7 @@
 import apiClient from "./apiClient";
 
 const endpointUpdateProfile = "api/Authorization/UpdateUser";
-const endpointGetProfile = "api/Authorization/GetUserProfile/";
+const endpointGetProfile = "api/Authorization/GetUserProfile";
 const endpointGetTofollow = "api/Follower/GetfollowerSuggest";
 const endpointGetFollowing = "api/Follower/GetUsersFollowing";
 const endpointGetSingleUser = "api/Follower/GetSpecificUser/";
@@ -19,8 +19,10 @@ const tryGetSpecificUser = (userId) =>
 const tryCreateFollowerToggle = (followObj) =>
   apiClient.post(endpointCreateFollowerToggle, followObj);
 
-const tryGetUserProfile = (userId) =>
-  apiClient.get(`${endpointGetProfile}${userId}`);
+const tryGetUserProfile = (userId, userProfileName) =>
+  apiClient.get(
+    `${endpointGetProfile}?id=${userId}&userName=${userProfileName}`
+  );
 const tryGetExistingChats = (page = 1) =>
   apiClient.get(`${endpointGetExistingChats}${page}`);
 const trySearchUsers = (searchterm, page = 1) =>

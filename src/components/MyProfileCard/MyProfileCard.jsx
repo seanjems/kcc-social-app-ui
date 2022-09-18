@@ -5,19 +5,39 @@ import ProfileModal from "../ProfileModal/ProfileModal";
 import AuthContext from "../../auth/context";
 
 const MyProfileCard = ({ userProfile, profileUpdated }) => {
+  console.log(
+    "🚀 ~ file: MyProfileCard.jsx ~ line 8 ~ MyProfileCard ~ userProfile",
+    userProfile
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userContext = useContext(AuthContext);
+
+  const IsCurrentUsersProfile = () => {
+    return userProfile.userId === userContext.user.UserId;
+  };
 
   return (
     <div className="MyProfileCard">
       <div>
-        <h4>Your Info</h4>
+        {(userProfile.lastname || userProfile.firstName) && (
+          <h4>
+            {IsCurrentUsersProfile()
+              ? "Your Bio"
+              : `${
+                  userProfile.lastname
+                    ? userProfile.lastname
+                    : userProfile.firstName
+                }'s Bio`}
+          </h4>
+        )}
 
-        <UilPen
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        />
+        {IsCurrentUsersProfile() && (
+          <UilPen
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          />
+        )}
         <ProfileModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}

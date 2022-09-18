@@ -9,6 +9,7 @@ const PostSide = ({
   setIsLoading,
   handleLike,
   selectedPostDetail,
+  userProfile,
 }) => {
   return (
     <div className="PostSide">
@@ -17,6 +18,7 @@ const PostSide = ({
         setFetchList={setFetchList}
         isLoading={isLoading}
         setIsLoading={setIsLoading}
+        userProfile={userProfile}
       />
       <PostsCard
         fetchList={fetchList}
