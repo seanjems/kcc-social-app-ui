@@ -11,7 +11,7 @@ const NavIcons = () => {
   return (
     <div className="navIcons">
       <img src={Home} alt="" onClick={() => navigate("../home")} />
-      <UilSetting />
+      <UilSetting style={{ height: "2rem", width: "2rem" }} />
       <img src={Notification} alt="" />
       <img src={Messages} alt="" onClick={() => navigate("../chat")} />
     </div>

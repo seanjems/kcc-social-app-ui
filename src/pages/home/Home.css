@@ -1,10 +1,12 @@
 .Home{
     display: grid;
     gap: 1rem;
-    grid-template-columns: 20% auto 20%;
+    grid-template-columns: 20rem auto 20rem;
     position: relative;
 }
-
+.mobileLauncher{
+    display: none;
+}
 /* .Home>:nth-child(1){
     flex: 1;
     
@@ -17,3 +19,56 @@
     flex: 1;
     
 } */
+.hideMobile{
+    display: block;
+}
+
+@media screen and (max-width:1500px){
+    .Home{        
+        grid-template-columns:  auto 20rem;     
+    }
+
+    .ProfileSide{
+        display:none
+    }
+
+}
+@media screen and (max-width:930px){
+    .Home{
+        
+        grid-template-columns:  auto;
+     
+    }
+    .RightSide {
+        display:none
+    }
+
+}
+@media screen and (max-width:494px){
+    
+    /* .PostShare  {
+        display:none
+    } */
+   
+    .hideMobile{
+        display: none;
+      }
+      .Auth{
+        max-height: 90vh;
+      }
+      .ProfileCenter{
+        max-height: 90vh;
+      }
+      .PostSide{
+        max-height: 90vh;
+      }
+      .mobileLauncher{
+        display: block;
+        background-color: white;
+
+      }
+      .navIcons{
+        justify-content: space-around;
+        background-color: white;
+      }
+}

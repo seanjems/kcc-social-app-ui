@@ -40,6 +40,7 @@ const Auth = (props) => {
   const [createUserFailed, setCreateUserFailed] = useState(false);
   const [createUserErrors, setCreateUserErrors] = useState([]);
 
+  const mobile = window.innerWidth <= 768 ? true : false;
   const handleCreateUser = async (createUserInput) => {
     var { password, emailAddress, userName, name, surname } = createUserInput;
     //set username
@@ -218,6 +219,47 @@ const Auth = (props) => {
                   error="Invalid Username and/or Password"
                   visible={loginFailed}
                 />
+                {mobile && (
+                  <div className="validationsSmall">
+                    <ErrorTextComponent
+                      error={errors.name}
+                      visible={touched.name}
+                    />
+
+                    <ErrorTextComponent
+                      error={errors.surname}
+                      visible={touched.surname}
+                    />
+                  </div>
+                )}
+
+                {mobile && (
+                  <ErrorTextComponent
+                    error={errors.userName}
+                    visible={touched.userName}
+                    className="validationsSmall"
+                  />
+                )}
+                {mobile && (
+                  <ErrorTextComponent
+                    error={errors.userName}
+                    visible={touched.userName}
+                    className="validationsLarge"
+                  />
+                )}
+                {mobile && (
+                  <div className="validationsSmall">
+                    <ErrorTextComponent
+                      error={errors.password}
+                      visible={touched.password}
+                    />
+
+                    <ErrorTextComponent
+                      error={errors.confirmpass}
+                      visible={touched.confirmpass}
+                    />
+                  </div>
+                )}
                 <h2>Sign up</h2>
                 <div>
                   <input
@@ -236,17 +278,18 @@ const Auth = (props) => {
                     onBlur={() => setFieldTouched("surname")}
                   />
                 </div>
-                <div>
-                  <ErrorTextComponent
-                    error={errors.name}
-                    visible={touched.name}
-                  />
-
-                  <ErrorTextComponent
-                    error={errors.surname}
-                    visible={touched.surname}
-                  />
-                </div>
+                {!mobile && (
+                  <div className="validationsLarge">
+                    <ErrorTextComponent
+                      error={errors.name}
+                      visible={touched.name}
+                    />
+                    <ErrorTextComponent
+                      error={errors.surname}
+                      visible={touched.surname}
+                    />
+                  </div>
+                )}
                 <div>
                   <input
                     type="text"
@@ -255,10 +298,13 @@ const Auth = (props) => {
                     className="formInput"
                   />
                 </div>
-                <ErrorTextComponent
-                  error={errors.userName}
-                  visible={touched.userName}
-                />
+                {!mobile && (
+                  <ErrorTextComponent
+                    error={errors.userName}
+                    visible={touched.userName}
+                    className="validationsLarge"
+                  />
+                )}
                 <div>
                   <input
                     type="password"
@@ -273,17 +319,19 @@ const Auth = (props) => {
                     className="formInput"
                   />
                 </div>
-                <div>
-                  <ErrorTextComponent
-                    error={errors.password}
-                    visible={touched.password}
-                  />
+                {!mobile && (
+                  <div className="validationsLarge">
+                    <ErrorTextComponent
+                      error={errors.password}
+                      visible={touched.password}
+                    />
 
-                  <ErrorTextComponent
-                    error={errors.confirmpass}
-                    visible={touched.confirmpass}
-                  />
-                </div>
+                    <ErrorTextComponent
+                      error={errors.confirmpass}
+                      visible={touched.confirmpass}
+                    />
+                  </div>
+                )}
                 <span onClick={() => setHasAccount(!hasAccount)}>
                   Already have an account? Login
                 </span>

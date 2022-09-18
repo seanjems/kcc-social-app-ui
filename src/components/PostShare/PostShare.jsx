@@ -119,19 +119,25 @@ const PostShare = ({ fetchList, setFetchList, userProfile }) => {
                 onClick={() => imageRef.current.click()}
               >
                 <UilScenery />
-                Photo
+                <span className="hideMobile">Photo</span>
               </div>
               <div className="option" style={{ color: "var(--video)" }}>
                 <UilPlayCircle />
-                Video
+                <span className="hideMobile">Video</span>
               </div>
-              <div className="option" style={{ color: "var(--location)" }}>
+              <div
+                className="option hideMobile"
+                style={{ color: "var(--location)" }}
+              >
                 <UilLocationPoint />
-                Location
+                <span className="hideMobile">Location</span>
               </div>
-              <div className="option" style={{ color: "var(--shedule)" }}>
+              <div
+                className="option hideMobile"
+                style={{ color: "var(--shedule)" }}
+              >
                 <UilSchedule />
-                Schedule
+                <span className="hideMobile">Schedule</span>
               </div>
               <button className="button ps-button" type="submit">
                 Share

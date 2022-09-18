@@ -197,7 +197,7 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
           onClick={() => handleLike(idx)}
         />
         {data && (
-          <small>
+          <small className="hideMobile">
             {data.likes} {data.likes === 1 ? "Like" : "Likes"}
           </small>
         )}
@@ -209,11 +209,13 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
               commentPage > 0 ? setCommentPage(0) : setCommentPage(1);
             }}
           >
-            {data.comments} {data.comments === 1 ? "Comment" : "Comments"}
+            <span className="hideMobile">
+              {data.comments} {data.comments === 1 ? "Comment" : "Comments"}
+            </span>
           </small>
         )}
         <img src={Share} alt="" />
-        <small>
+        <small className="hideMobile">
           {data.shares} {data.shares === 1 ? "Share" : "Shares"}
         </small>
       </div>

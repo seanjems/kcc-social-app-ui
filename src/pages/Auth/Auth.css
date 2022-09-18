@@ -61,7 +61,7 @@
     gap:  0.5rem;
     flex: 1;
     width: 100%;
-    min-width: 20rem;
+    
 }
 
 .inputForm>form>div>input{
@@ -76,11 +76,6 @@
     padding: 1rem;
 }
 
-.sign-button {
-    padding: 0.5rem 2rem;
-    align-self: flex-end;
-    margin-top: 2rem;
-}
 
 
 
@@ -91,4 +86,50 @@
     padding-top: 1rem;
     color: var(--video);
 }
+.validationsSmall{
+    display: none;
+}
+.validationsLarge{
+display: block;
+}
 
+@media screen and (max-width:768px){
+    .Auth{
+        flex-direction: column;
+   max-height: 100vh;
+    justify-content: center;
+    align-items: center; 
+    gap: 2rem;
+    position: relative;
+    overflow-y: scroll;
+    }
+
+    .a-left{
+    
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .a-left>div>h1{
+        font-size: 2rem;
+        align-self: center;
+    }
+
+    .inputForm>form>div{
+      flex-direction: column;
+        justify-content: center;
+      
+    }
+    .validationsSmall{
+        display: block;
+    }
+    .validationsLarge{
+    display: none;
+    }
+    .button{
+        padding:  2px;
+    }
+}

@@ -12,6 +12,7 @@ import jwtDecode from "jwt-decode";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import "bootstrap/dist/css/bootstrap.min.css";
+import NavIcons from "./components/NavIcons/NavIcons";
 
 function App() {
   //redirect after login to intended page
@@ -46,6 +47,7 @@ function App() {
   useEffect(() => {
     existingLogin();
   }, []);
+  const mobile = window.innerWidth <= 768 ? true : false;
 
   return (
     <AuthContext.Provider value={{ user, setUser, existingLogin }}>
@@ -56,8 +58,12 @@ function App() {
         zIndex={2077}
       >
         <>
-          <NotificationsProvider position="top-right" zIndex={2077}>
-            <div className="App">
+          <NotificationsProvider
+            position="top-right"
+            zIndex={2077}
+            className={mobile ? "mainAppSections" : ""}
+          >
+            <div className="App container">
               <div className="blurs">
                 <div className="blur" style={{ top: "-18%", right: "0" }}></div>
                 <div
@@ -146,6 +152,10 @@ function App() {
                 }
               /> */}
               </Routes>
+            </div>
+
+            <div>
+              <NavIcons className="mobileLauncher" />
             </div>
           </NotificationsProvider>
         </>
