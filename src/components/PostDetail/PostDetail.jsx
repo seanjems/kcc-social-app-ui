@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import "./Posts.css";
+// import "./Posts.css";
 import { CommentSection } from "react-comments-section";
 import "react-comments-section/dist/index.css";
 
@@ -15,17 +15,19 @@ import { IconX } from "@tabler/icons";
 import posts from "../../api/posts";
 import NameLink from "../NameLink/NameLink";
 import { useNavigate } from "react-router-dom";
-import ReadMoreTag from "../Reusables/ReadMoreTextComponent/ReadMoreTag";
 
-const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
+const PostDetail = ({ dataObj }) => {
+  //   console.log("🚀 ~ file: Posts.jsx ~ line 20 ~ Posts ~ data", data);
   const userContext = useContext(AuthContext);
 
   const [postComments, setPostComments] = useState([]);
   const [postCommentsBackup, setPostCommentsBackup] = useState([]);
-  const [commentPage, setCommentPage] = useState(0);
+  const [commentPage, setCommentPage] = useState(1);
   const [currentData, setCurrentData] = useState([]);
+  const [data, setData] = useState(dataObj);
   const navigate = useNavigate();
 
+  useState(() => setData(dataObj), [dataObj]);
   useEffect(() => {
     if (commentPage > 0) {
       handleGetComment();
@@ -35,6 +37,41 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
   const handleSelectProfile = (data) => {
     console.log(data, "data from call back");
     navigate(`/${data?.userName}`);
+  };
+
+  const handleLike = async () => {
+    var fetchListCopy = { ...data };
+    console.log(
+      "🚀 ~ file: PostDetail.jsx ~ line 44 ~ handleLike ~ data",
+      data
+    );
+
+    const originalValues = JSON.parse(JSON.stringify({ ...data }));
+    const currentState = fetchListCopy?.liked;
+    fetchListCopy.liked = !currentState;
+    fetchListCopy.likes = currentState
+      ? fetchListCopy?.likes - 1
+      : fetchListCopy?.likes + 1;
+    setData(fetchListCopy);
+    console.log(
+      "🚀 ~ file: PostDetail.jsx ~ line 53 ~ handleLike ~ fetchListCopy",
+      fetchListCopy
+    );
+    // call api
+    const userId = userContext.user.UserId;
+    var like = await posts.tryLikePost({
+      postId: fetchListCopy?.id,
+      userId: userId,
+    });
+    console.log(
+      "🚀 ~ file: PostDetail.jsx ~ line 60 ~ handleLike ~ like",
+      like
+    );
+    if (!like.ok) {
+      setData(originalValues);
+      return;
+    }
+    //setData(list.data)
   };
 
   const handleGetComment = async () => {
@@ -168,33 +205,19 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
         <b>{data.name}</b>
       </span> */}
       <NameLink dataObj={data} callBackFn={handleSelectProfile} />
-      {data.desc && (
-        <span
-          className="cursorPointer"
-          onClick={() => navigate(`../post/${data.id}`)}
-        >
-          <ReadMoreTag
-            text={data.desc}
-            min={350}
-            max={360}
-            ideal={355}
-            readMoreTextOption="...read more"
-          />
-        </span>
-      )}
+      {data.desc && <span>{data.desc}</span>}
       {data.img && (
         <img
           src={data.img}
           alt=""
-          className="cursorPointer"
-          onClick={() => navigate(`../post/${data.id}`)}
+          style={{ width: "100%", height: "100%", maxHeight: "100%" }}
         />
       )}
       <div className="shareOptions">
         <img
           src={data.liked ? Liked : Like}
           alt=""
-          onClick={() => handleLike(idx)}
+          onClick={() => handleLike()}
         />
         {data && (
           <small>
@@ -217,53 +240,52 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
           {data.shares} {data.shares === 1 ? "Share" : "Shares"}
         </small>
       </div>
-      {commentPage > 0 && (
-        <CommentSection
-          currentUser={{
-            currentUserId: userContext.user.UserId,
-            currentUserImg:
-              "https://ui-avatars.com/api/name=Riya&background=random",
-            currentUserProfile: "http://localhost:3000/home",
-            currentUserFullName: userContext.user.FullName,
-          }}
-          hrStyle={{ border: "0.5px solid #ff0072" }}
-          commentData={postComments}
-          logIn={{
-            loginLink: "http://localhost:3001/",
-            signupLink: "http://localhost:3001/",
-          }}
-          // customImg="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F13%2F2015%2F04%2F05%2Ffeatured.jpg&q=60"
-          inputStyle={{ border: "1px solid rgb(208 208 208)" }}
-          formStyle={{ backgroundColor: "white" }}
-          submitBtnStyle={{
-            border: "1px solid black",
-            backgroundColor: "black",
-            padding: "7px 15px",
-          }}
-          customNoComment={() => <></>}
-          cancelBtnStyle={{
-            border: "1px solid gray",
-            backgroundColor: "gray",
-            color: "white",
-            padding: "7px 15px",
-          }}
-          titleStyle={{
-            display: "none",
-          }}
-          advancedInput={false}
-          onSubmitAction={(data) => handlePostComment(data)}
-          onReplyAction={(data) => handlePostComment(data, true)}
-          onEditAction={(data) => handleEditComment(data)}
-          onDeleteAction={(data) => handleDeleteComment(data)}
-          currentData={(data) => setCurrentData(data)}
-          replyInputStyle={{
-            borderBottom: "1px solid black",
-            color: "black",
-          }}
-        />
-      )}
+
+      <CommentSection
+        currentUser={{
+          currentUserId: userContext.user.UserId,
+          currentUserImg:
+            "https://ui-avatars.com/api/name=Riya&background=random",
+          currentUserProfile: "http://localhost:3000/home",
+          currentUserFullName: userContext.user.FullName,
+        }}
+        hrStyle={{ border: "0.5px solid #ff0072" }}
+        commentData={postComments}
+        logIn={{
+          loginLink: "http://localhost:3001/",
+          signupLink: "http://localhost:3001/",
+        }}
+        // customImg="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F13%2F2015%2F04%2F05%2Ffeatured.jpg&q=60"
+        inputStyle={{ border: "1px solid rgb(208 208 208)" }}
+        formStyle={{ backgroundColor: "white" }}
+        submitBtnStyle={{
+          border: "1px solid black",
+          backgroundColor: "black",
+          padding: "7px 15px",
+        }}
+        customNoComment={() => <></>}
+        cancelBtnStyle={{
+          border: "1px solid gray",
+          backgroundColor: "gray",
+          color: "white",
+          padding: "7px 15px",
+        }}
+        titleStyle={{
+          display: "none",
+        }}
+        advancedInput={false}
+        onSubmitAction={(data) => handlePostComment(data)}
+        onReplyAction={(data) => handlePostComment(data, true)}
+        onEditAction={(data) => handleEditComment(data)}
+        onDeleteAction={(data) => handleDeleteComment(data)}
+        currentData={(data) => setCurrentData(data)}
+        replyInputStyle={{
+          borderBottom: "1px solid black",
+          color: "black",
+        }}
+      />
     </div>
   );
 };
 
-export default Posts;
+export default PostDetail;

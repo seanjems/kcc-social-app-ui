@@ -1,0 +1,11 @@
+.ProfilePicsActionBtns{
+    position: absolute;
+    color: rgb(255, 255, 255);
+    background-color: rgba(39, 44, 48, 0.75);
+    backdrop-filter: blur(4px);
+    transition-property: background-color, box-shadow;
+    transition-property: background-color, box-shadow;
+    backdrop-filter: blur(4px);
+}
+
+

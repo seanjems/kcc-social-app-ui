@@ -4,23 +4,45 @@ import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal/ProfileModal";
 import AuthContext from "../../auth/context";
 
-const MyProfileCard = (props) => {
+const MyProfileCard = ({ userProfile, profileUpdated }) => {
+  // console.log(
+  // "🚀 ~ file: MyProfileCard.jsx ~ line 8 ~ MyProfileCard ~ userProfile",
+  // userProfile
+  // );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userContext = useContext(AuthContext);
+
+  const IsCurrentUsersProfile = () => {
+    return userProfile.userId === userContext.user.UserId;
+  };
 
   return (
     <div className="MyProfileCard">
       <div>
-        <h4>Your Info</h4>
+        {(userProfile.lastname || userProfile.firstName) && (
+          <h4>
+            {IsCurrentUsersProfile()
+              ? "Your Bio"
+              : `${
+                  userProfile.lastname
+                    ? userProfile.lastname
+                    : userProfile.firstName
+                }'s Bio`}
+          </h4>
+        )}
 
-        <UilPen
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        />
+        {IsCurrentUsersProfile() && (
+          <UilPen
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          />
+        )}
         <ProfileModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+          userProfile={userProfile}
+          profileUpdated={profileUpdated}
         />
       </div>
       <div className="detail">
@@ -28,26 +50,26 @@ const MyProfileCard = (props) => {
           <span>
             <b>Status: </b>
           </span>
-          <span>In a relationship</span>
+          {userProfile && <span>{userProfile.relationship}</span>}
         </div>
         <div>
           <span>
             <b>Lives in: </b>
           </span>
-          <span>Kampala</span>
+          {userProfile && <span>{userProfile.address}</span>}
         </div>
 
         <div>
           <span>
             <b>Family/Clan: </b>
           </span>
-          <span>Reuben</span>
+          {userProfile && <span>{userProfile.family}</span>}
         </div>
         <div>
           <span>
             <b>Profession: </b>
           </span>
-          <span>Medic</span>
+          {userProfile && <span>{userProfile.profession}</span>}
         </div>
         <button
           className="button lg-button"

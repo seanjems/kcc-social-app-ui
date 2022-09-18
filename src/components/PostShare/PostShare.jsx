@@ -10,16 +10,20 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
-import postsDataContext from "../../auth/postDataContext";
+import { showNotification } from "@mantine/notifications";
 
-const PostShare = () => {
+const PostShare = ({ fetchList, setFetchList, userProfile }) => {
   const [image, setImage] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
   const imageRef = useRef();
   const shareTextInput = useRef();
   const userContext = useContext(AuthContext);
+  // console.log(
+  // "🚀 ~ file: PostShare.jsx ~ line 21 ~ PostShare ~ userContext",
+  // userContext
+  // );
 
-  const postsContext = useContext(postsDataContext);
+  const user = userContext.user;
 
   const onImageChanged = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -52,17 +56,36 @@ const PostShare = () => {
     const result = await posts.tryCreatePost(formData);
 
     console.log("create user result", result);
-    if (result.ok) {
-      //add to posts array
-      var currentData = [...postsContext.fetchList];
-      currentData.unshift(result.data);
-      postsContext.setFetchList(currentData);
-
-      //clear form
-      setImage(null);
-      shareTextInput.current.value = "";
-      setUploadFile(null);
+    // if (!result.ok) {
+    //   setCreatePostFailed(true);
+    //   setCreatePostErrors(result.data);
+    //   return;
+    // }
+    if (!result.ok) {
+      showNotification({
+        id: "user-data",
+        title: "Error",
+        message: `${user.status} ${user.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        // style: { zIndex: "999999" },
+      });
+      return;
     }
+    //add to posts array
+    var currentData = [...fetchList];
+    // console.log(
+    // "🚀 ~ file: PostShare.jsx ~ line 70 ~ handleCreatePost ~ fetchList",
+    // fetchList
+    // );
+    currentData.unshift(result.data);
+    setFetchList(currentData);
+    console.log(result.data, "this is the new istem we are pushing");
+
+    //clear form
+    setImage(null);
+    shareTextInput.current.value = "";
+    setUploadFile(null);
   };
 
   return (
@@ -78,12 +101,12 @@ const PostShare = () => {
         <Form>
           <div className="PostShare">
             <div>
-              <img src={ProfileImage} alt="" />
+              <img src={userProfile?.profilePicUrl} alt="" />
               <div className="shareInput">
                 <input
                   type="textarea"
                   ref={shareTextInput}
-                  placeHolder="Share something . . .!"
+                  placeholder="Share something . . .!"
                   onChange={handleChange("description")}
                   onBlur={() => setFieldTouched("description")}
                 ></input>
@@ -133,6 +156,7 @@ const PostShare = () => {
                       setUploadFile(null);
                     }}
                   />
+                  {console.log(image.image)}
                   <img src={image.image} alt="" />
                 </div>
               )}

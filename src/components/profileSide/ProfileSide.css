@@ -6,6 +6,7 @@
         overflow: auto;
         height: 100vh;
         z-index: 1;
+        width: 100%;
 
         scrollbar-width: none;
         /* Firefox */

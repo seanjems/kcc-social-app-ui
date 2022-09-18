@@ -62,3 +62,7 @@ overflow: -moz-scrollbars-none; /* for old fire fox scroll bars*/
   display: none;
 }
 
+.cursorPointer{
+  cursor: pointer;
+}
+

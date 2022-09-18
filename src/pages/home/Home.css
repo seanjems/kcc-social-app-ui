@@ -1,11 +1,11 @@
 .Home{
-    
-    display: flex;
+    display: grid;
     gap: 1rem;
-    z-index: 10;
+    grid-template-columns: 20% auto 20%;
+    position: relative;
 }
 
-.Home>:nth-child(1){
+/* .Home>:nth-child(1){
     flex: 1;
     
 }
@@ -16,4 +16,4 @@
 .Home>:nth-child(3){
     flex: 1;
     
-}
+} */

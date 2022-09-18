@@ -1,48 +1,72 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useCallback } from "react";
+import { useRef } from "react";
+import PostDetail from "../PostDetail/PostDetail";
 
-import PostsData from "../../Data/PostsData";
 import Posts from "../Posts/Posts";
 import "./PostsCard.css";
-import { useContext } from "react";
-import postsDataContext from "../../auth/postDataContext";
 
-const PostsCard = () => {
-  const postsContext = useContext(postsDataContext);
-  const [scrollPosition, setScrollPosition] = useState(0);
+const PostsCard = ({
+  fetchList,
+  isLoading,
+  setPageNumber,
+  pageNumber,
+  handleLike,
+  selectedPostDetail,
+  hasMore,
+}) => {
+  const observer = useRef();
+  const lastPostElementRef = useCallback(
+    (node) => {
+      // console.log("🚀 ~ file: PostsCard.jsx ~ line 21 ~ node", node);
+      // console.log("🚀 ~ file: PostsCard.jsx ~ line 23 ~ isLoading", isLoading);
+      // console.log("🚀 ~ file: PostsCard.jsx ~ line 23 ~ hasMore", hasMore);
+      if (isLoading || !hasMore) return;
 
-  useEffect(() => {
-    getItems();
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        // console.log(
+        //   "🚀 ~ file: PostsCard.jsx ~ line 24 ~ observer.current=newIntersectionObserver ~ entries",
+        //   entries
+        // );
+        if (entries[0].isIntersecting) {
+          setPageNumber((prevPageNumber) => prevPageNumber + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading]
+  );
 
-    // //listen to page scrolls
-    // window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // return () => {
-    //   window.removeEventListener("scroll", handleScroll);
-    // };
-  }, []);
-  // const handleScroll = () => {
-  //   const position = window.pageYOffset;
-  //   setScrollPosition(position);
-  // };
-  const getItems = async () => {
-    postsContext.setIsLoading(true);
-    var list = await PostsData();
-
-    postsContext.setFetchList(list);
-    postsContext.setIsLoading(false);
-    console.log(list, "4567890-ihgc");
-  };
-
-  //console.log("scroll position", scrollPosition);
-  return (
-    !postsContext.isLoading && (
-      <div className="PostsCard">
-        {postsContext.fetchList.map((data) => (
-          <Posts data={data} />
-        ))}
-      </div>
-    )
+  return fetchList ? (
+    <div className="PostsCard">
+      {selectedPostDetail ? (
+        <PostDetail dataObj={selectedPostDetail} handleLike={handleLike} />
+      ) : (
+        fetchList?.map((data, idx) => {
+          if (fetchList.length === idx + 1) {
+            // console.log(
+            //   "🚀 ~ file: PostsCard.jsx ~ line 40 ~ fetchList?.map ~ fetchList.length",
+            //   fetchList.length
+            // );
+            return (
+              <div ref={lastPostElementRef} key={idx}>
+                <Posts data={data} handleLike={handleLike} idx={idx} />
+              </div>
+            );
+          } else {
+            return (
+              <div key={idx}>
+                <Posts data={data} handleLike={handleLike} idx={idx} />
+              </div>
+            );
+          }
+        })
+      )}
+    </div>
+  ) : (
+    ""
   );
 };
 
-export default PostsCard;
+export default React.memo(PostsCard);
