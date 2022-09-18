@@ -3,7 +3,7 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 
 const NameLink = ({ dataObj, callBackFn }) => {
-  console.log("🚀 ~ file: NameLink.jsx ~ line 6 ~ NameLink ~ dataObj", dataObj);
+  // console.log("🚀 ~ file: NameLink.jsx ~ line 6 ~ NameLink ~ dataObj", dataObj);
   const data = dataObj.creatorUSer;
 
   TimeAgo.addLocale(en);
@@ -25,14 +25,7 @@ const NameLink = ({ dataObj, callBackFn }) => {
         <div>
           {/* {online && <div className="online-dot"></div>} */}
           <img
-            src={
-              "https://www.seekpng.com/png/detail/143-1435868_headshot-silhouette-person-placeholder.png"
-              //   data?.profilePicUrl?.startsWith("media")
-              //     ? `${process.env.REACT_PUBLIC_API_URL}/${data?.profilePicUrl}`
-              //     : !data?.profilePicUrl
-              //     ? process.env.REACT_APP_DEFAULT_PROFILE_IMAGE
-              //     : data?.profilePicUrl
-            }
+            src={data?.profilePicUrl}
             alt="Profile"
             className="followerImage"
             style={{ width: "50px", height: "50px" }}

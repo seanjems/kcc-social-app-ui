@@ -10,6 +10,8 @@ const PostSide = ({
   handleLike,
   selectedPostDetail,
   userProfile,
+  setPageNumber,
+  pageNumber,
 }) => {
   return (
     <div className="PostSide">
@@ -24,6 +26,8 @@ const PostSide = ({
         fetchList={fetchList}
         handleLike={handleLike}
         selectedPostDetail={selectedPostDetail}
+        setPageNumber={setPageNumber}
+        pageNumber={pageNumber}
       />
     </div>
   );

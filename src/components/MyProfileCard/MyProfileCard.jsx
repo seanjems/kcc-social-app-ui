@@ -5,10 +5,10 @@ import ProfileModal from "../ProfileModal/ProfileModal";
 import AuthContext from "../../auth/context";
 
 const MyProfileCard = ({ userProfile, profileUpdated }) => {
-  console.log(
-    "🚀 ~ file: MyProfileCard.jsx ~ line 8 ~ MyProfileCard ~ userProfile",
-    userProfile
-  );
+  // console.log(
+  // "🚀 ~ file: MyProfileCard.jsx ~ line 8 ~ MyProfileCard ~ userProfile",
+  // userProfile
+  // );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userContext = useContext(AuthContext);
 

@@ -9,13 +9,16 @@ import posts from "../../api/posts";
 import profile from "../../api/profile";
 import { showNotification } from "@mantine/notifications";
 import { useParams } from "react-router-dom";
+import { useRef } from "react";
 
 export const Home = () => {
   const userContext = useContext(AuthContext);
+  const [pageNumber, setPageNumber] = useState(1);
   const [fetchList, setFetchList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [userProfile, setUserProfile] = useState({});
   const [selectedPostDetail, setSelectedPostDetail] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
 
   let { postId } = useParams();
 
@@ -29,11 +32,40 @@ export const Home = () => {
     getUserProfile();
   }, [useParams().postId]);
 
+  //infinite scroling
+  useEffect(() => {
+    if (pageNumber > 1 && !isLoading && hasMore) {
+      return getItems();
+    }
+  }, [pageNumber]);
+
   const getItems = async () => {
     setIsLoading(true);
-    var list = await PostsData();
+    setHasMore(true);
+    // call api
 
-    setFetchList(list);
+    var result = await posts.tryGetAllPostPaged(pageNumber);
+    if (!result.ok) {
+      setUserProfile(null);
+      showNotification({
+        id: "user-data",
+        title: "Error",
+        message: `${result.status && result.status} ${result.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        // style: { zIndex: "999999" },
+      });
+      return;
+    }
+    if (!result.data.length) {
+      setHasMore(false);
+      return;
+    }
+    //create deep copy backup
+    const originalValues = JSON.parse(JSON.stringify(fetchList));
+    const copy2 = [...originalValues, ...result.data];
+
+    setFetchList(copy2);
     setIsLoading(false);
   };
   const getSingleItem = async (postId) => {
@@ -115,13 +147,15 @@ export const Home = () => {
   return (
     <div className="Home">
       <ProfileSide userProfile={userProfile} />
-      {!isLoading ? (
+      {fetchList.length ? (
         <PostSide
           fetchList={fetchList}
           handleLike={handleLike}
           setFetchList={setFetchList}
           selectedPostDetail={selectedPostDetail}
           userProfile={userProfile}
+          setPageNumber={setPageNumber}
+          pageNumber={pageNumber}
         />
       ) : (
         <span> Loading...</span>
