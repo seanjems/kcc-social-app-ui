@@ -102,6 +102,7 @@
    
     display: flex;
     flex-direction: column;
+    min-height: 100%;
   }
    .follower.conversation>div>.name{
     display: block;
@@ -111,7 +112,8 @@
    }
    .Right-side-chat2{
     display: block;
-    position: relative
+    position: relative;
+    min-height: 100%;
    }
    .Left-side-chat2{
     display: none;

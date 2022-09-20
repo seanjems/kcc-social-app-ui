@@ -59,96 +59,102 @@ function App() {
         zIndex={2077}
       >
         <>
-          <NotificationsProvider
-            position="top-right"
-            zIndex={2077}
-            className={mobile ? "mainAppSections" : ""}
-          >
-            <div className="App container">
-              <div className="blurs">
-                <div className="blur" style={{ top: "-18%", right: "0" }}></div>
-                <div
-                  className="blur"
-                  style={{ top: "45%", left: "-8rem " }}
-                ></div>
-              </div>
+          <NotificationsProvider position="top-right" zIndex={2077}>
+            <div className={mobile ? "mainAppSections" : ""}>
+              <div className="App container">
+                <div className="blurs">
+                  <div
+                    className="blur"
+                    style={{ top: "-18%", right: "0" }}
+                  ></div>
+                  <div
+                    className="blur"
+                    style={{ top: "45%", left: "-8rem " }}
+                  ></div>
+                </div>
 
-              <Routes>
-                <Route
-                  path="/auth"
-                  element={
-                    user ? (
-                      <Navigate to={from} replace />
-                    ) : (
-                      <Auth setUser={setUser} />
-                    )
-                  }
-                />
+                <Routes>
+                  <Route
+                    path="/auth"
+                    element={
+                      user ? (
+                        <Navigate to={from} replace />
+                      ) : (
+                        <Auth setUser={setUser} />
+                      )
+                    }
+                  />
 
-                <Route
-                  path="/profile"
-                  element={
-                    user ? (
-                      <Profile setUser={setUser} user={user} />
-                    ) : (
-                      <Navigate to="../auth" replace />
-                    )
-                  }
-                />
-                <Route
-                  path="/chat"
-                  element={user ? <Chat /> : <Navigate to="../auth" replace />}
-                />
-                <Route
-                  path="/"
-                  element={
-                    user ? (
-                      <Navigate to="home" replace />
-                    ) : (
-                      <Navigate to="/auth" />
-                    )
-                  }
-                />
+                  <Route
+                    path="/profile"
+                    element={
+                      user ? (
+                        <Profile setUser={setUser} user={user} />
+                      ) : (
+                        <Navigate to="../auth" replace />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/chat"
+                    element={
+                      user ? <Chat /> : <Navigate to="../auth" replace />
+                    }
+                  />
+                  <Route
+                    path="/"
+                    element={
+                      user ? (
+                        <Navigate to="home" replace />
+                      ) : (
+                        <Navigate to="/auth" />
+                      )
+                    }
+                  />
 
-                <Route
-                  path="/home"
-                  element={
-                    user ? (
-                      <Home setUser={setUser} />
-                    ) : (
-                      <Navigate to="../auth" replace />
-                    )
-                  }
-                />
-                <Route
-                  path="/search"
-                  element={
-                    user ? <MobileSearch /> : <Navigate to="../auth" replace />
-                  }
-                />
-                <Route
-                  path="*"
-                  element={
-                    <main style={{ padding: "1rem" }}>
-                      <p>There's nothing here!</p>
-                    </main>
-                  }
-                />
-                <Route
-                  path="/:userName"
-                  element={user ? <Profile /> : <Navigate to="../auth" />}
-                />
-                <Route
-                  path="/post/:postId"
-                  element={
-                    user ? (
-                      <Home setUser={setUser} />
-                    ) : (
-                      <Navigate to="../auth" />
-                    )
-                  }
-                />
-                {/* <Route
+                  <Route
+                    path="/home"
+                    element={
+                      user ? (
+                        <Home setUser={setUser} />
+                      ) : (
+                        <Navigate to="../auth" replace />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/search"
+                    element={
+                      user ? (
+                        <MobileSearch />
+                      ) : (
+                        <Navigate to="../auth" replace />
+                      )
+                    }
+                  />
+                  <Route
+                    path="*"
+                    element={
+                      <main style={{ padding: "1rem" }}>
+                        <p>There's nothing here!</p>
+                      </main>
+                    }
+                  />
+                  <Route
+                    path="/:userName"
+                    element={user ? <Profile /> : <Navigate to="../auth" />}
+                  />
+                  <Route
+                    path="/post/:postId"
+                    element={
+                      user ? (
+                        <Home setUser={setUser} />
+                      ) : (
+                        <Navigate to="../auth" />
+                      )
+                    }
+                  />
+                  {/* <Route
                 path={`/profile/${userName}`}
                 element={
                   user ? (
@@ -158,11 +164,14 @@ function App() {
                   )
                 }
               /> */}
-              </Routes>
-            </div>
+                </Routes>
+              </div>
 
-            <div>
-              <NavIcons className="mobileLauncher" isLauncherBar={true} />
+              {mobile && (
+                <div>
+                  <NavIcons className="mobileLauncher" isLauncherBar={true} />
+                </div>
+              )}
             </div>
           </NotificationsProvider>
         </>
