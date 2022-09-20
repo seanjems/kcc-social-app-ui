@@ -1,7 +1,7 @@
-.Home{
-    display: grid;
+.Home2{
+    display: flex;
     gap: 1rem;
-    grid-template-columns: 20rem auto 20rem;
+    flex-direction: column;
     position: relative;
 }
 

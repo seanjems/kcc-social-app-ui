@@ -97,3 +97,28 @@
     display: none;
    }
 }
+@media screen and (max-width:494px){
+  .Chat {
+   
+    display: flex;
+    flex-direction: column;
+  }
+   .follower.conversation>div>.name{
+    display: block;
+   }
+   .Right-side-chat{
+    display:none
+   }
+   .Right-side-chat2{
+    display: block;
+    position: relative
+   }
+   .Left-side-chat2{
+    display: none;
+   }
+   .App{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+   }
+}

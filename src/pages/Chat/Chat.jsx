@@ -7,26 +7,26 @@ import RightSide from "../../components/RightSide/RightSide";
 import AuthContext from "../../auth/context";
 
 import "./Chat.css";
-// import { useEffect } from "react";
-// import { userChats } from "../../api/ChatRequests";
-// import { useDispatch, useSelector } from "react-redux";
-// import { io } from "socket.io-client";
 
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import profile from "../../api/profile";
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
+const mobile = window.innerWidth <= 494 ? true : false;
 
 const Chat = () => {
-  // const dispatch = useDispatch();
-  // const socket = useRef();
-  // const { user } = useSelector((state) => state.authReducer.authData);
-
   const [chats, setChats] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [sendMessage, setSendMessage] = useState(null);
   const [receivedMessage, setReceivedMessage] = useState(null);
+  const [toggleToMobileRight, setToggleToMobileRight] = useState(true);
+  const [browserHistoryBackup, setBrowserHistoryBackup] = useState(null);
+  console.log(
+    "🚀 ~ file: Chat.jsx ~ line 24 ~ Chat ~ toggleToMobileRight",
+    toggleToMobileRight
+  );
+  const [toggleNow, setToggleNow] = useState();
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
@@ -38,6 +38,38 @@ const Chat = () => {
       RequestForChatHeadsRefresh();
     }
   }, [connection]);
+
+  //configure back button for mobile
+  function closeQuickView() {
+    console.log("we have been called to close");
+    mobile && setToggleToMobileRight(false); // do whatever you need to close this component
+  }
+
+  useEffect(() => {
+    if (mobile) {
+      // Add a fake history event so that the back button does nothing if pressed once
+      window.history.pushState(
+        "fake-route",
+        document.title,
+        window.location.href
+      );
+      setBrowserHistoryBackup(1);
+
+      window.addEventListener("popstate", closeQuickView);
+    }
+
+    // Here is the cleanup when this component unmounts
+    return () => {
+      if (mobile) {
+        window.removeEventListener("popstate", closeQuickView);
+        // If we left without using the back button, aka by using a button on the page, we need to clear out that fake history event
+        if (window.history.state === "fake-route") {
+          window.history.back();
+        }
+        setBrowserHistoryBackup(null);
+      }
+    };
+  }, [toggleNow]);
 
   //get deafult conversations
   useEffect(() => {
@@ -69,6 +101,13 @@ const Chat = () => {
     InitiateConnection();
   }, [userContext.user.UserId]);
 
+  //check if screen is mobile
+
+  useEffect(() => {
+    if (mobile) {
+      setToggleToMobileRight(!toggleToMobileRight);
+    }
+  }, [toggleNow]);
   // Send Message to socket server
   useEffect(() => {
     if (sendMessage) {
@@ -219,7 +258,9 @@ const Chat = () => {
   return (
     <div className="Chat">
       {/* Left Side */}
-      <div className="Left-side-chat">
+      <div
+        className={toggleToMobileRight ? "Left-side-chat2" : "Left-side-chat"}
+      >
         <LogoSearch setSelectedItemCallBack={handleSearchResult} />
         <div className="Chat-container">
           <h2>Chats</h2>
@@ -229,6 +270,8 @@ const Chat = () => {
                 key={idx}
                 onClick={() => {
                   setCurrentChat(chat);
+                  setToggleNow(!toggleNow);
+                  !browserHistoryBackup && setBrowserHistoryBackup(1);
                 }}
               >
                 <Conversation
@@ -244,10 +287,14 @@ const Chat = () => {
 
       {/* Right Side */}
 
-      <div className="Right-side-chat">
-        <div style={{ width: "20rem", alignSelf: "flex-end" }}>
-          <NavIcons />
-        </div>
+      <div
+        className={toggleToMobileRight ? "Right-side-chat2" : "Right-side-chat"}
+      >
+        {!mobile && (
+          <div style={{ width: "20rem", alignSelf: "flex-end" }}>
+            <NavIcons />
+          </div>
+        )}
         <ChatBox
           chat={currentChat}
           currentUser={userId}

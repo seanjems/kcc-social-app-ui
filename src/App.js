@@ -13,6 +13,7 @@ import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavIcons from "./components/NavIcons/NavIcons";
+import { MobileSearch } from "./pages/MobileSearch/MobileSearch";
 
 function App() {
   //redirect after login to intended page
@@ -120,6 +121,12 @@ function App() {
                   }
                 />
                 <Route
+                  path="/search"
+                  element={
+                    user ? <MobileSearch /> : <Navigate to="../auth" replace />
+                  }
+                />
+                <Route
                   path="*"
                   element={
                     <main style={{ padding: "1rem" }}>
@@ -155,7 +162,7 @@ function App() {
             </div>
 
             <div>
-              <NavIcons className="mobileLauncher" />
+              <NavIcons className="mobileLauncher" isLauncherBar={true} />
             </div>
           </NotificationsProvider>
         </>

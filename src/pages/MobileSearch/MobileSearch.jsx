@@ -1,17 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import PostSide from "../../components/PostSide/PostSide";
 import ProfileSide from "../../components/profileSide/ProfileSide";
 import RightSide from "../../components/RightSide/RightSide";
 import PostsData from "../../Data/PostsData";
-import "./Home.css";
+import "./MobileSearch.css";
 import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
 import profile from "../../api/profile";
 import { showNotification } from "@mantine/notifications";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
+import LogoSearch from "../../components/logoSearch/LogoSearch";
+import TrendCard from "../../components/TrendCard/TrendCard";
 
-export const Home = () => {
+export const MobileSearch = () => {
   const userContext = useContext(AuthContext);
   const [pageNumber, setPageNumber] = useState(1);
   const [fetchList, setFetchList] = useState([]);
@@ -19,10 +21,12 @@ export const Home = () => {
   const [userProfile, setUserProfile] = useState({});
   const [selectedPostDetail, setSelectedPostDetail] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+  const navigate = useNavigate();
 
   let { postId } = useParams();
   let {pathname} = useLocation()
 const isMobileSearch = pathname==="/search";
+  console.log("🚀 ~ file: Home.jsx ~ line 26 ~ Home ~ isMobileSearch", isMobileSearch)
   //console.log("🚀 ~ file: Home.jsx ~ line 21 ~ Home ~ postId", postId);
   useEffect(() => {
     setSelectedPostDetail(null);
@@ -39,7 +43,7 @@ const isMobileSearch = pathname==="/search";
       return getItems();
     }
   }, [pageNumber]);
-  console.log("🚀 ~ file: Home.jsx ~ line 41 ~ Home ~ pageNumber", pageNumber);
+  // console.log("🚀 ~ file: Home.jsx ~ line 41 ~ Home ~ pageNumber", pageNumber);
 
   const getItems = async () => {
     setIsLoading(true);
@@ -148,8 +152,11 @@ const isMobileSearch = pathname==="/search";
   };
 
   return (
-    <div className="Home">
-      <ProfileSide userProfile={userProfile} />
+    <div className="Home2">
+      
+     <LogoSearch setSelectedItemCallBack={(data) => navigate(`/${data?.userName}`)}/>
+     {/* {!isMobileSearch&& <Fragment>
+
       {fetchList.length || !isLoading ? (
         <PostSide
           fetchList={fetchList}
@@ -165,7 +172,10 @@ const isMobileSearch = pathname==="/search";
       ) : (
         <span> Loading...</span>
       )}
-      <RightSide userProfile={userProfile} />
+      </Fragment>} */}
+
+    <TrendCard />
+     
     </div>
   );
 };
