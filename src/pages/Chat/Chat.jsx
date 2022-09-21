@@ -159,12 +159,19 @@ const Chat = () => {
       connection.on(
         "ReceiveMessage",
         (senderId, receiverId, message, createdAt) => {
-          console.log("received message .... ", {
+          console.log(
+            "🚀 ~ file: Chat.jsx ~ line 162 ~ InitiateConnection ~ senderId, receiverId, message, createdAt",
             senderId,
             receiverId,
             message,
-            createdAt,
-          });
+            createdAt
+          );
+          // console.log("received message .... ", {
+          //   senderId,
+          //   receiverId,
+          //   message,
+          //   createdAt,
+          // });
           //update chats if new incoming chat
 
           var newArray = chats.filter(function (el) {
@@ -180,7 +187,10 @@ const Chat = () => {
             ...messages,
             { senderId, receiverId, message, createdAt },
           ]);
-          // console.log(chats, "this is the chat object");
+          console.log(
+            "🚀 ~ file: Chat.jsx ~ line 187 ~ InitiateConnection ~ messages",
+            messages
+          );
         }
       );
       connection.on("ReceiveUsers", (listOfUsers) => {

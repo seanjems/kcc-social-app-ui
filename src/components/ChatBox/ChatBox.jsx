@@ -90,6 +90,13 @@ const ChatBox = ({
 
   const scroll = useRef();
   const imageRef = useRef();
+
+  function convertUTCDateToLocalDate(date) {
+    var newDate = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60 * 1000
+    );
+    return newDate;
+  }
   return (
     <>
       <div className="ChatBox-container">
@@ -133,7 +140,15 @@ const ChatBox = ({
                     }
                   >
                     <span>{message.message}</span>{" "}
-                    <span>{format(new Date(message.createdAt))}</span>
+                    <span>
+                      {format(
+                        convertUTCDateToLocalDate(new Date(message.createdAt))
+                      )}
+                    </span>
+                    {/* {console.log(
+                      "🚀 ~ file: ChatBox.jsx ~ line 137 ~ message.createdAt",
+                      message.createdAt
+                    )} */}
                   </div>
                 </Fragment>
               ))}

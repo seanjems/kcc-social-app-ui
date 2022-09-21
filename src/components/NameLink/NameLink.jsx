@@ -57,6 +57,10 @@ const NameLink = ({ dataObj, callBackFn }) => {
             {dataObj.createdAt && (
               <small className="text-secondary">
                 {timeAgo.format(new Date(dataObj.createdAt), "twitter")}
+                {console.log(
+                  "🚀 ~ file: NameLink.jsx ~ line 60 ~ NameLink ~ dataObj.createdAt",
+                  dataObj.createdAt
+                )}
               </small>
             )}{" "}
             {/* {console.log(
