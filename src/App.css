@@ -71,6 +71,9 @@
 .cursorPointer {
   cursor: pointer;
 }
+.container{
+  padding-top: 00.5rem !important;
+}
 
 @media screen and (max-width:494px) {
   .mobileLauncher {
@@ -83,7 +86,6 @@
   .mainAppSections>:nth-child(1) {
     position: relative;
     margin-bottom: 64px;
-    border: #EF5757 1px solid;
     min-height: 100%;
   }
 .mainAppSections{

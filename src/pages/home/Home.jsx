@@ -73,8 +73,7 @@ export const Home = () => {
     }
     //if it was a hard refresh
     if (postPageNumber === 1) {
-      setFetchList(result.data);
-      return;
+      setFetchList([]);
     }
     //create deep copy backup
     const originalValues = JSON.parse(JSON.stringify(fetchList));
