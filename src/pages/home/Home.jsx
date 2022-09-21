@@ -19,10 +19,11 @@ export const Home = () => {
   const [userProfile, setUserProfile] = useState({});
   const [selectedPostDetail, setSelectedPostDetail] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+  const [reSetPosts, setReSetPosts] = useState(null);
 
   let { postId } = useParams();
-  let {pathname} = useLocation()
-const isMobileSearch = pathname==="/search";
+  let { pathname } = useLocation();
+  const isMobileSearch = pathname === "/search";
   //console.log("🚀 ~ file: Home.jsx ~ line 21 ~ Home ~ postId", postId);
   useEffect(() => {
     setSelectedPostDetail(null);
@@ -33,20 +34,26 @@ const isMobileSearch = pathname==="/search";
     getUserProfile();
   }, [useParams().postId]);
 
+  //hard rest posts on create post
+  useEffect(() => {
+    reSetPosts && getItems();
+  }, [reSetPosts]);
+
   //infinite scroling
   useEffect(() => {
     if (pageNumber > 1 && !isLoading && hasMore) {
       return getItems();
     }
   }, [pageNumber]);
-  console.log("🚀 ~ file: Home.jsx ~ line 41 ~ Home ~ pageNumber", pageNumber);
 
-  const getItems = async () => {
+  // console.log("🚀 ~ file: Home.jsx ~ line 41 ~ Home ~ pageNumber", pageNumber);
+
+  const getItems = async (postPageNumber = null) => {
     setIsLoading(true);
     setHasMore(true);
     // call api
-
-    var result = await posts.tryGetAllPostPaged(pageNumber);
+    postPageNumber = postPageNumber ?? pageNumber;
+    var result = await posts.tryGetAllPostPaged(postPageNumber);
     if (!result.ok) {
       setUserProfile(null);
       showNotification({
@@ -62,6 +69,11 @@ const isMobileSearch = pathname==="/search";
     if (!result.data.length) {
       setHasMore(false);
       setIsLoading(false);
+      return;
+    }
+    //if it was a hard refresh
+    if (postPageNumber === 1) {
+      setFetchList(result.data);
       return;
     }
     //create deep copy backup
@@ -161,11 +173,12 @@ const isMobileSearch = pathname==="/search";
           pageNumber={pageNumber}
           isLoading={isLoading}
           hasMore={hasMore}
+          setReSetPosts={setReSetPosts}
         />
       ) : (
         <span> Loading...</span>
       )}
-      <RightSide userProfile={userProfile} />
+      <RightSide userProfile={userProfile} setReSetPosts={setReSetPosts} />
     </div>
   );
 };

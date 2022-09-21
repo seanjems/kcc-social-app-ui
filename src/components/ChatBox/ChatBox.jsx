@@ -145,10 +145,6 @@ const ChatBox = ({
                         convertUTCDateToLocalDate(new Date(message.createdAt))
                       )}
                     </span>
-                    {/* {console.log(
-                      "🚀 ~ file: ChatBox.jsx ~ line 137 ~ message.createdAt",
-                      message.createdAt
-                    )} */}
                   </div>
                 </Fragment>
               ))}

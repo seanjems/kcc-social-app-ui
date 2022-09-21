@@ -12,7 +12,13 @@ import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
 import { showNotification } from "@mantine/notifications";
 
-const PostShare = ({ fetchList, setFetchList, userProfile }) => {
+const PostShare = ({
+  fetchList,
+  setFetchList,
+  userProfile,
+  setReSetPosts,
+  setIsModalOpen,
+}) => {
   const [image, setImage] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
   const imageRef = useRef();
@@ -50,9 +56,12 @@ const PostShare = ({ fetchList, setFetchList, userProfile }) => {
     formData.append("imageFile", imageFile);
     formData.append("description", description);
     formData.append("userId", userId);
-    console.log(formData, "formdate Headers....");
-    console.log(imageFile, "image in state");
     //validate passwords
+
+    //close modal if open
+    setIsModalOpen && setIsModalOpen(false);
+
+    //call api
     const result = await posts.tryCreatePost(formData);
 
     console.log("create user result", result);
@@ -72,15 +81,23 @@ const PostShare = ({ fetchList, setFetchList, userProfile }) => {
       });
       return;
     }
-    //add to posts array
-    var currentData = [...fetchList];
-    // console.log(
-    // "🚀 ~ file: PostShare.jsx ~ line 70 ~ handleCreatePost ~ fetchList",
-    // fetchList
-    // );
-    currentData.unshift(result.data);
-    setFetchList(currentData);
-    console.log(result.data, "this is the new istem we are pushing");
+    // //add to posts array
+    // var currentData = [...fetchList];
+    // // console.log(
+    // // "🚀 ~ file: PostShare.jsx ~ line 70 ~ handleCreatePost ~ fetchList",
+    // // fetchList
+    // // );
+    // currentData.unshift(result.data);
+    // setFetchList(currentData);
+    // console.log(result.data, "this is the new istem we are pushing");
+
+    //trigger post refresh
+    setReSetPosts((oldValue) => {
+      if (oldValue) {
+        return !oldValue;
+      }
+      return true;
+    });
 
     //clear form
     setImage(null);

@@ -10,7 +10,7 @@ import ShareModal from "../ShareModal/ShareModal";
 import { useNavigate } from "react-router-dom";
 import NavIcons from "../NavIcons/NavIcons";
 
-const RightSide = () => {
+const RightSide = ({ setReSetPosts }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   return (
@@ -26,7 +26,11 @@ const RightSide = () => {
       >
         Share
       </button>
-      <ShareModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <ShareModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        setReSetPosts={setReSetPosts}
+      />
     </div>
   );
 };

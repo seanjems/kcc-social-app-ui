@@ -19,6 +19,13 @@ const NameLink = ({ dataObj, callBackFn }) => {
   //   console.log(diffDays + " days");
   // };
   //console.log(data);
+
+  function convertUTCDateToLocalDate(date) {
+    var newDate = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60 * 1000
+    );
+    return newDate;
+  }
   return (
     <>
       <div className="follower ">
@@ -56,7 +63,11 @@ const NameLink = ({ dataObj, callBackFn }) => {
             </div>
             {dataObj.createdAt && (
               <small className="text-secondary">
-                {timeAgo.format(new Date(dataObj.createdAt), "twitter")}
+                {/* use twitter timaago style */}
+                {timeAgo.format(
+                  convertUTCDateToLocalDate(new Date(dataObj.createdAt)),
+                  "twitter"
+                )}
                 {console.log(
                   "🚀 ~ file: NameLink.jsx ~ line 60 ~ NameLink ~ dataObj.createdAt",
                   dataObj.createdAt

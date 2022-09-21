@@ -13,6 +13,7 @@ const PostSide = ({
   setPageNumber,
   pageNumber,
   hasMore,
+  setReSetPosts,
 }) => {
   return (
     <div className="PostSide">
@@ -22,6 +23,7 @@ const PostSide = ({
         isLoading={isLoading}
         setIsLoading={setIsLoading}
         userProfile={userProfile}
+        setReSetPosts={setReSetPosts}
       />
       <PostsCard
         fetchList={fetchList}

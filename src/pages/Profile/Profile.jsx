@@ -25,6 +25,7 @@ const Profile = ({ userProfileId }) => {
   const [updateToFollow, setUpdateToFollow] = useState(false);
   const [postsPage, setPostsPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [reSetPosts, setReSetPosts] = useState(null);
 
   let { userName } = useParams();
   const navigate = useNavigate();
@@ -34,6 +35,12 @@ const Profile = ({ userProfileId }) => {
     getItems(userName);
     getUserProfile(userName);
   }, [refetchProfile]);
+
+  //reset posts on post creation
+  useEffect(() => {
+    // userContext.existingLogin();
+    getItems(userName, 1);
+  }, [reSetPosts]);
 
   useEffect(() => {
     getToFollow();
@@ -50,15 +57,16 @@ const Profile = ({ userProfileId }) => {
     }
   }, [postsPage]);
 
-  const getItems = async (userProfileName) => {
+  const getItems = async (userProfileName, postPageNumber = null) => {
     var userId = userProfileName ? null : userContext.user.UserId;
     var userProfileName = userProfileName;
     // console.log("userId and user context", userContext, userId);
+    postPageNumber = postPageNumber ?? postsPage;
 
     setIsLoading(true);
     setHasMore(true);
     const result = await posts.tryGetAllPostPaged(
-      postsPage,
+      postPageNumber,
       userId,
       userProfileName
     );
@@ -77,6 +85,11 @@ const Profile = ({ userProfileId }) => {
     if (!result.data.length) {
       setHasMore(false);
       setIsLoading(false);
+      return;
+    }
+    //if it was a hard refresh
+    if (postPageNumber === 1) {
+      setFetchList(result.data);
       return;
     }
     //create deep copy backup
@@ -219,7 +232,7 @@ const Profile = ({ userProfileId }) => {
       </div>
       <div className="ProfileCenter">
         <ProfileCard isOnProfileScreen={true} userProfile={userProfile} />
-        <PostShare userProfile={userProfile} />
+        <PostShare userProfile={userProfile} setReSetPosts={setReSetPosts} />
         {!isLoading || fetchList.length ? (
           <PostsCard
             fetchList={fetchList}
@@ -234,7 +247,7 @@ const Profile = ({ userProfileId }) => {
         )}
       </div>
       <div className="ProfileRight">
-        <RightSide />
+        <RightSide setReSetPosts={setReSetPosts} />
       </div>
     </div>
   );
