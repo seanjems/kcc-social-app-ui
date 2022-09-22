@@ -106,7 +106,7 @@ export const Home = () => {
   };
   const getUserProfile = async (userProfileId) => {
     var userId = userProfileId ? userProfileId : userContext.user.UserId;
-    console.log("userId and user context", userContext, userId);
+    // console.log("userId and user context", userContext, userId);
 
     // call api
 

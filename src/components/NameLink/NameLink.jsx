@@ -68,10 +68,10 @@ const NameLink = ({ dataObj, callBackFn }) => {
                   convertUTCDateToLocalDate(new Date(dataObj.createdAt)),
                   "twitter"
                 )}
-                {console.log(
+                {/* {console.log(
                   "🚀 ~ file: NameLink.jsx ~ line 60 ~ NameLink ~ dataObj.createdAt",
                   dataObj.createdAt
-                )}
+                )} */}
               </small>
             )}{" "}
             {/* {console.log(

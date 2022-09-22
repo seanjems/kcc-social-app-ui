@@ -12,32 +12,33 @@ import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import profile from "../../api/profile";
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
+import ChatContext from "../../auth/ChatContext";
 const mobile = window.innerWidth <= 494 ? true : false;
 
 const Chat = () => {
-  const [chats, setChats] = useState([]);
-  const [onlineUsers, setOnlineUsers] = useState([]);
+  const {
+    connection,
+    messages,
+    setMessages,
+    receivedMessage,
+    setReceivedMessage,
+    InitiateConnection,
+    setChats,
+    chats,
+  } = useContext(ChatContext);
+
   const [currentChat, setCurrentChat] = useState(null);
   const [sendMessage, setSendMessage] = useState(null);
-  const [receivedMessage, setReceivedMessage] = useState(null);
   const [toggleToMobileRight, setToggleToMobileRight] = useState(true);
   const [browserHistoryBackup, setBrowserHistoryBackup] = useState(null);
-  console.log(
-    "🚀 ~ file: Chat.jsx ~ line 24 ~ Chat ~ toggleToMobileRight",
-    toggleToMobileRight
-  );
+  // console.log(
+  // "🚀 ~ file: Chat.jsx ~ line 24 ~ Chat ~ toggleToMobileRight",
+  // toggleToMobileRight
+  // );
   const [toggleNow, setToggleNow] = useState();
 
-  const [connection, setConnection] = useState();
-  const [messages, setMessages] = useState([]);
   const userContext = useContext(AuthContext);
   const userId = userContext.user.UserId;
-  // Get the chat in chat section
-  useEffect(() => {
-    if (connection?.connection?.connectionId) {
-      RequestForChatHeadsRefresh();
-    }
-  }, [connection]);
 
   //configure back button for mobile
   function closeQuickView() {
@@ -91,14 +92,16 @@ const Chat = () => {
       });
       return;
     }
-    setReceivedMessage(result.data);
+    //setReceivedMessage(result.data);
     setMessages(result.data);
   };
   // consoSle.log("plain line chats", chats);
   // Connect to SignalR
   useEffect(() => {
-    console.log("reinvoiking connection from use effect");
-    InitiateConnection();
+    if (!connection) {
+      console.log("reinvoiking connection from use effect");
+      InitiateConnection();
+    }
   }, [userContext.user.UserId]);
 
   //check if screen is mobile
@@ -115,11 +118,6 @@ const Chat = () => {
     }
   }, [sendMessage, connection]);
 
-  const checkOnlineStatus = (chat) => {
-    // const chatMember = chat.members.find((member) => member !== user._id);
-    // const online = onlineUsers.find((user) => user.userId === chatMember);
-    // return online ? true : false;
-  };
   const fetchSingleUser = async (followerId) => {
     var result = await profile.tryGetSpecificUser(followerId);
     if (!result.ok) {
@@ -146,74 +144,75 @@ const Chat = () => {
   };
 
   ///SIGNALR
-  const InitiateConnection = async () => {
-    try {
-      const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:7204/chat", {
-          accessTokenFactory: () => `${localStorage.getItem("token")}`,
-        })
-        .withAutomaticReconnect()
-        .configureLogging(LogLevel.Information)
-        .build();
+  ////////////  MOVED TO APP.JS FILE/////
+  // const InitiateConnection = async () => {
+  //   try {
+  //     const connection = new HubConnectionBuilder()
+  //       .withUrl("https://localhost:7204/chat", {
+  //         accessTokenFactory: () => `${localStorage.getItem("token")}`,
+  //       })
+  //       .withAutomaticReconnect()
+  //       .configureLogging(LogLevel.Information)
+  //       .build();
 
-      connection.on(
-        "ReceiveMessage",
-        (senderId, receiverId, message, createdAt) => {
-          console.log(
-            "🚀 ~ file: Chat.jsx ~ line 162 ~ InitiateConnection ~ senderId, receiverId, message, createdAt",
-            senderId,
-            receiverId,
-            message,
-            createdAt
-          );
-          // console.log("received message .... ", {
-          //   senderId,
-          //   receiverId,
-          //   message,
-          //   createdAt,
-          // });
-          //update chats if new incoming chat
+  //     connection.on(
+  //       "ReceiveMessage",
+  //       (senderId, receiverId, message, createdAt) => {
+  //         console.log(
+  //           "🚀 ~ file: Chat.jsx ~ line 162 ~ InitiateConnection ~ senderId, receiverId, message, createdAt",
+  //           senderId,
+  //           receiverId,
+  //           message,
+  //           createdAt
+  //         );
+  //         // console.log("received message .... ", {
+  //         //   senderId,
+  //         //   receiverId,
+  //         //   message,
+  //         //   createdAt,
+  //         // });
+  //         //update chats if new incoming chat
 
-          var newArray = chats.filter(function (el) {
-            return el.userId === senderId || el.userId === userId;
-          });
-          if (newArray.length === 0) {
-            RequestForChatHeadsRefresh();
-          }
+  //         var newArray = chats.filter(function (el) {
+  //           return el.userId === senderId || el.userId === userId;
+  //         });
+  //         if (newArray.length === 0) {
+  //           RequestForChatHeadsRefresh();
+  //         }
 
-          setReceivedMessage({ senderId, receiverId, message, createdAt });
+  //         setReceivedMessage({ senderId, receiverId, message, createdAt });
 
-          setMessages((messages) => [
-            ...messages,
-            { senderId, receiverId, message, createdAt },
-          ]);
-          console.log(
-            "🚀 ~ file: Chat.jsx ~ line 187 ~ InitiateConnection ~ messages",
-            messages
-          );
-        }
-      );
-      connection.on("ReceiveUsers", (listOfUsers) => {
-        console.log("users list refreshed", listOfUsers);
-        setOnlineUsers(listOfUsers);
-      });
-      connection.on("ReceiveChatHeads", (chatHeads) => {
-        console.log("chatheadsRefreshed", chatHeads);
-        setChats(chatHeads);
-      });
+  //         setMessages((messages) => [
+  //           ...messages,
+  //           { senderId, receiverId, message, createdAt },
+  //         ]);
+  // //         console.log(
+  // //           "🚀 ~ file: Chat.jsx ~ line 187 ~ InitiateConnection ~ messages",
+  // //           messages
+  // //         );
+  //       }
+  //     );
+  //     connection.on("ReceiveUsers", (listOfUsers) => {
+  //       console.log("users list refreshed", listOfUsers);
+  //       setOnlineUsers(listOfUsers);
+  //     });
+  //     connection.on("ReceiveChatHeads", (chatHeads) => {
+  //       console.log("chatheadsRefreshed", chatHeads);
+  //       setChats(chatHeads);
+  //     });
 
-      connection.onclose((e) => {
-        setConnection(null);
-      });
-      await connection.start();
-      await connection.invoke("StartConnection");
+  //     connection.onclose((e) => {
+  //       setConnection(null);
+  //     });
+  //     await connection.start();
+  //     await connection.invoke("StartConnection");
 
-      //save connection
-      setConnection(connection);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  //     //save connection
+  //     setConnection(connection);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   //send message
   const sendMessageToServer = async (sendMessageObj) => {
@@ -249,20 +248,7 @@ const Chat = () => {
   };
 
   //send requestChats fromServer
-  const RequestForChatHeadsRefresh = async () => {
-    //console.log("before reconnecting", connection?.connection?.connectionId);
-    try {
-      if (!connection) {
-        // console.log("reInvoiking connection");
-        // await InitiateConnection();
-        return;
-      }
 
-      await connection.invoke("RefreshChatHeads");
-    } catch (e) {
-      console.log(e);
-    }
-  };
   // console.log("received message .... in the state", receivedMessage);
   // console.log(messages);
   return (
@@ -287,7 +273,10 @@ const Chat = () => {
                 <Conversation
                   data={chat}
                   currentUser={userId}
-                  online={checkOnlineStatus(chat)}
+                  online={
+                    true
+                    // checkOnlineStatus(chat)
+                  }
                 />
               </div>
             ))}
