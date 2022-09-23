@@ -72,7 +72,7 @@ function App() {
   const [chats, setChats] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [receivedMessage, setReceivedMessage] = useState(null);
-
+  const [messageBadge, setMessageBadge] = useState(0);
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
   const [internetOff, setInternetOff] = useState(false);
@@ -103,6 +103,28 @@ function App() {
   //   }, 15000);
   // };
 
+  //
+
+  // useEffect(
+  //   (receivedMessage) => {
+  //     if (receivedMessage) {
+  //       //update chatsortorder
+  //       const originalValues = JSON.parse(JSON.stringify(receivedMessage));
+  //       console.log("chat heads BEFORE mods", chats);
+  //       chats.map((user) => {
+  //         if (
+  //           user.userId === originalValues.senderId ||
+  //           user.userId === originalValues.receiverId
+  //         ) {
+  //           console.log("we have got one");
+  //           return (user["createdAt"] = originalValues.createdAt);
+  //         }
+  //       });
+  //       console.log("chat heads after mods", chats);
+  //     }
+  //   },
+  //   [receivedMessage]
+  // );
   // Get the chat in chat section
   useEffect(() => {
     if (connection?.connection?.connectionId) {
@@ -164,7 +186,10 @@ function App() {
             ...messages,
             { senderId, receiverId, message, createdAt },
           ]);
-          // console.log(
+          if (senderId !== user?.UserId) {
+            setMessageBadge((value) => value + 1);
+          }
+
           // "🚀 ~ file: Chat.jsx ~ line 187 ~ InitiateConnection ~ messages",
           // messages
           // );
@@ -207,6 +232,8 @@ function App() {
           RequestForChatHeadsRefresh,
           setChats,
           chats,
+          messageBadge,
+          setMessageBadge,
         }}
       >
         <MantineProvider

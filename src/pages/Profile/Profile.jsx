@@ -1,5 +1,5 @@
 import { showNotification } from "@mantine/notifications";
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import profile from "../../api/profile";
 import AuthContext from "../../auth/context";
 import FollowersCard from "../../components/FollowersCard/FollowersCard";
@@ -14,6 +14,9 @@ import "./Profile.css";
 import { IconX } from "@tabler/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import posts from "../../api/posts";
+import { UilPen } from "@iconscout/react-unicons";
+
+import ProfileModal from "../../components/ProfileModal/ProfileModal";
 
 const Profile = ({ userProfileId }) => {
   const userContext = useContext(AuthContext);
@@ -26,6 +29,8 @@ const Profile = ({ userProfileId }) => {
   const [postsPage, setPostsPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [reSetPosts, setReSetPosts] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const mobile = window.innerWidth <= 768 ? true : false;
 
   let { userName } = useParams();
   const navigate = useNavigate();
@@ -214,8 +219,18 @@ const Profile = ({ userProfileId }) => {
 
     setUserProfile(user.data);
   };
+
+  const IsCurrentUsersProfile = () => {
+    return userProfile.userId === userContext.user.UserId;
+  };
   return (
     <div className="Profile">
+      <ProfileModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        userProfile={userProfile}
+        profileUpdated={profileUpdated}
+      />
       <div className="ProfileLeft">
         <LogoSearch
           setSelectedItemCallBack={(data) => navigate(`/${data?.userName}`)}
@@ -229,8 +244,27 @@ const Profile = ({ userProfileId }) => {
           handleFollow={handleFollow}
         />
       </div>
-      <div className="ProfileCenter">
-        <ProfileCard isOnProfileScreen={true} userProfile={userProfile} />
+      <div className="ProfileCenter" style={{ display: "relative" }}>
+        <div style={{ position: "relative" }}>
+          {IsCurrentUsersProfile() && mobile && (
+            <UilPen
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+              style={{
+                position: "absolute",
+                right: "0.3rem",
+                top: "0.3rem",
+                zIndex: "222",
+                height: "2rem",
+                width: "2rem",
+                color: "white",
+              }}
+            />
+          )}
+
+          <ProfileCard isOnProfileScreen={true} userProfile={userProfile} />
+        </div>
         <PostShare userProfile={userProfile} setReSetPosts={setReSetPosts} />
         {!isLoading || fetchList.length ? (
           <PostsCard

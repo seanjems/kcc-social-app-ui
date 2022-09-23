@@ -21,3 +21,8 @@
     align-items: flex-start;
     cursor: pointer;
 }
+.postActions{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}

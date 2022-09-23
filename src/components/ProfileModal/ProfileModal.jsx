@@ -11,6 +11,7 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { IconX } from "@tabler/icons";
 import ErrorTextComponent from "../Reusables/ErrorTextComponent";
+import { MobileSearch } from "../../pages/MobileSearch/MobileSearch";
 
 function ProfileModal({
   userProfile,
@@ -28,6 +29,7 @@ function ProfileModal({
 
   const [profilepic, setProfilePic] = useState(null);
   const [coverpic, setCoverPic] = useState(null);
+  const mobile = window.innerWidth <= 768 ? true : false;
 
   //useeffect
   useEffect(() => {
@@ -162,7 +164,7 @@ function ProfileModal({
       }
       overlayOpacity={0.55}
       overlayBlur={0}
-      size="45%"
+      size={mobile ? "100%" : "55%"}
       opened={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       style={{ overflowY: "scroll", maxHeight: "90%" }}

@@ -26,8 +26,9 @@ const Chat = () => {
     setChats,
     chats,
     onlineUsers,
+    setMessageBadge,
   } = useContext(ChatContext);
-
+  setMessageBadge(0);
   const [currentChat, setCurrentChat] = useState(null);
   const [sendMessage, setSendMessage] = useState(null);
   const [toggleToMobileRight, setToggleToMobileRight] = useState(true);
