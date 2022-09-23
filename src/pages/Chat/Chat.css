@@ -97,7 +97,7 @@
     display: none;
    }
 }
-@media screen and (max-width:494px){
+@media screen and (max-width:760px){
   .Chat {
    
     display: flex;

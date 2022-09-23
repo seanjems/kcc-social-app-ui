@@ -75,7 +75,7 @@
   padding-top: 00.5rem !important;
 }
 
-@media screen and (max-width:494px) {
+@media screen and (max-width:768px) {
   .mobileLauncher {
     align-self: flex-end;
     background-color: white;

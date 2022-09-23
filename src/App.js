@@ -129,7 +129,7 @@ function App() {
         .withUrl("https://localhost:7204/chat", {
           accessTokenFactory: () => `${localStorage.getItem("token")}`,
         })
-        .withAutomaticReconnect()
+        //.withAutomaticReconnect()
         .configureLogging(LogLevel.Information)
         .build();
 

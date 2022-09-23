@@ -13,7 +13,7 @@ import profile from "../../api/profile";
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
 import ChatContext from "../../auth/ChatContext";
-const mobile = window.innerWidth <= 494 ? true : false;
+const mobile = window.innerWidth <= 768 ? true : false;
 
 const Chat = () => {
   const {
@@ -25,6 +25,7 @@ const Chat = () => {
     InitiateConnection,
     setChats,
     chats,
+    onlineUsers,
   } = useContext(ChatContext);
 
   const [currentChat, setCurrentChat] = useState(null);
@@ -247,6 +248,21 @@ const Chat = () => {
     }
   };
 
+  const checkOnlineStatus = (userId) => {
+    console.log(
+      "🚀 ~ file: Chat.jsx ~ line 252 ~ checkOnlineStatus ~ userId",
+      userId
+    );
+
+    const online = onlineUsers.find((user) => {
+      console.log(
+        "🚀 ~ file: Chat.jsx ~ line 255 ~ checkOnlineStatus ~ onlineUsers",
+        onlineUsers
+      );
+      return user === userId;
+    });
+    return online ? true : false;
+  };
   //send requestChats fromServer
 
   // console.log("received message .... in the state", receivedMessage);
@@ -273,10 +289,7 @@ const Chat = () => {
                 <Conversation
                   data={chat}
                   currentUser={userId}
-                  online={
-                    true
-                    // checkOnlineStatus(chat)
-                  }
+                  online={checkOnlineStatus(chat.userId)}
                 />
               </div>
             ))}
