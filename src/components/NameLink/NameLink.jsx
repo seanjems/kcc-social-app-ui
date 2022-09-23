@@ -1,6 +1,7 @@
 import React from "react";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
+import "./NameLink.css";
 
 const NameLink = ({ dataObj, callBackFn }) => {
   // console.log("🚀 ~ file: NameLink.jsx ~ line 6 ~ NameLink ~ dataObj", dataObj);

@@ -40,12 +40,12 @@ const Conversation = ({ data, currentUser, online }) => {
             className="followerImage"
             style={{ width: "50px", height: "50px" }}
           />
-          <div className="name" style={{ fontSize: "0.8rem" }}>
-            <span>
+          <div className="name d-flex flex-column">
+            <span className="fw-bold">
               {data?.firstName} {data?.lastName}
             </span>
             <span style={{ color: online ? "#51e200" : "" }}>
-              {online ? "Online" : "Offline"}
+              {online ? "Online" : ""}
             </span>
           </div>
         </div>

@@ -50,10 +50,15 @@ function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
     existingLogin();
-    if (!connection) {
-      InitiateConnection();
-    }
   }, []);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (!connection && user) {
+        InitiateConnection();
+      }
+    }, 3000);
+  }, [user]);
   const mobile = window.innerWidth <= 768 ? true : false;
 
   // SIGNAL R CONNECTION
@@ -70,8 +75,33 @@ function App() {
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
+  const [internetOff, setInternetOff] = useState(false);
   const userId = user?.UserId;
   ///SIGNALR
+
+  //detect network reconnections
+
+  // const handleInternetReconnection = async (online) => {
+  //   console.log(
+  //     "🚀 ~ file: App.js ~ line 85 ~ handleInternetReconnection ~ online",
+  //     online
+  //   );
+  //   console.log(
+  //     "🚀 ~ file: App.js ~ line 92 ~ delayDebounceFn ~ internetOff",
+  //     internetOff
+  //   );
+
+  //   const delayDebounceFn = setTimeout(() => {
+  //     if (online && user && !connection && internetOff) {
+  //       !connection && console.log("re Invoiking connection to  chat");
+  //       console.log(
+  //         "🚀 ~ file: App.js ~ line 87 ~ delayDebounceFn ~ connection",
+  //         connection
+  //       );
+  //       //!connection && InitiateConnection();
+  //     }
+  //   }, 15000);
+  // };
 
   // Get the chat in chat section
   useEffect(() => {
@@ -151,12 +181,14 @@ function App() {
 
       connection.onclose((e) => {
         setConnection(null);
+        setInternetOff(true);
       });
       await connection.start();
       await connection.invoke("StartConnection");
 
       //save connection
       setConnection(connection);
+      setInternetOff(false);
     } catch (e) {
       console.log(e);
     }
@@ -184,12 +216,12 @@ function App() {
           zIndex={2077}
         >
           <>
-            <Detector
+            {/* <Detector
               render={({ online }) => {
-                online ? console.log("online") : console.log("offline");
+                handleInternetReconnection(online);
                 return "";
               }}
-            />
+            /> */}
             <NotificationsProvider position="top-right" zIndex={2077}>
               <div className={mobile ? "mainAppSections" : ""}>
                 <div className="App container">

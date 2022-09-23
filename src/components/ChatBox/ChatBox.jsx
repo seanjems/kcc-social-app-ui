@@ -112,7 +112,7 @@ const ChatBox = ({
                     className="followerImage"
                     style={{ width: "50px", height: "50px" }}
                   />
-                  <div className="name" style={{ fontSize: "0.9rem" }}>
+                  <div className="name fw-bold" style={{ fontSize: "0.9rem" }}>
                     <span>
                       {chat?.firstName} {chat?.lastName}
                     </span>
