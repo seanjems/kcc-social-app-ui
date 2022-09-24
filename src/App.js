@@ -219,6 +219,31 @@ function App() {
     }
   };
 
+  /////////////////////////////////////////////
+  /////////////////////////////////////////////
+  /////////////////////////////////////////////
+  /////////////////////////////////////////////
+  //////THEME THEME
+  //////THEME THEME
+  //////THEME THEME
+  //////THEME THEME
+  // Get the root element
+  var rootCssVariables = document.querySelector(":root");
+
+  // // Create a function for getting a variable value
+  // function myFunction_get() {
+  //   // Get the styles (properties and values) for the root
+  //   var rs = getComputedStyle(r);
+  //   // Alert the value of the --blue variable
+  //   alert("The value of --blue is: " + rs.getPropertyValue('--blue'));
+  // }
+
+  // Create a function for setting a variable value
+  function myFunction_set() {
+    // Set the value of variable --blue to another value (in this case "lightblue")
+    rootCssVariables.style.setProperty("--blue", "lightblue");
+  }
+
   return (
     <AuthContext.Provider value={{ user, setUser, existingLogin }}>
       <ChatContext.Provider
