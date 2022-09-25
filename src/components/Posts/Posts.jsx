@@ -197,26 +197,34 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
           onClick={() => handleLike(idx)}
         />
         {data && (
-          <small className="hideMobile">
-            {data.likes} {data.likes === 1 ? "Like" : "Likes"}
+          <small className="postActions">
+            <span>{data.likes}</span>
+            <span className="hideMobile">
+              {data.likes === 1 ? "Like" : "Likes"}
+            </span>
           </small>
         )}
         <img src={Comment} alt="" />
         {data && (
           <small
+            className="postActions"
             onClick={() => {
               //console.log("coments here and data", postComments, data);
               commentPage > 0 ? setCommentPage(0) : setCommentPage(1);
             }}
           >
+            <span>{data.comments}</span>
             <span className="hideMobile">
-              {data.comments} {data.comments === 1 ? "Comment" : "Comments"}
+              {data.comments === 1 ? "Comment" : "Comments"}
             </span>
           </small>
         )}
         <img src={Share} alt="" />
-        <small className="hideMobile">
-          {data.shares} {data.shares === 1 ? "Share" : "Shares"}
+        <small className="postActions">
+          <span>{data.shares}</span>
+          <span className="hideMobile">
+            {data.shares === 1 ? "Share" : "Shares"}
+          </span>
         </small>
       </div>
       {commentPage > 0 && (
@@ -224,7 +232,7 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
           currentUser={{
             currentUserId: userContext.user.UserId,
             currentUserImg:
-              "https://ui-avatars.com/api/name=Riya&background=random",
+              "https://www.seekpng.com/png/detail/143-1435868_headshot-silhouette-person-placeholder.png",
             currentUserProfile: "http://localhost:3000/home",
             currentUserFullName: userContext.user.FullName,
           }}

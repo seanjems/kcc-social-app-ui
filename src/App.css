@@ -1,5 +1,5 @@
 :root {
-  --yellow: #f5c32c;
+  /* --yellow: #f5c32c;
   --orange: #fca61f;
   --black: #242d49;
   --gray: rgba(36, 45, 73, 0.65);
@@ -11,7 +11,23 @@
   --photo: #4CB256;
   --video: #4A4EB7;
   --location: #EF5757;
-  --shedule: #E1AE4A;
+  --shedule: #E1AE4A; */
+
+
+
+  --yellow: #0B7781;
+  --orange: #3db6c1;
+  --black: #242d49;
+  --gray: rgba(36, 45, 73, 0.65);
+  --profileShadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);
+  --hrColor: #cfcdcd;
+  --cardColor: rgba(255, 255, 255, 0.64);
+  --buttonBg: linear-gradient(98.63deg, #3db6c1 0%, #0B7781 100%);
+  --inputColor: rgba(40, 52, 62, 0.07);
+  --photo: #4CB256;
+  --video: #4A4EB7;
+  --location: #6db3ba;
+  --shedule: #64c7d0;
 
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
@@ -73,6 +89,7 @@
 }
 .container{
   padding-top: 00.5rem !important;
+  max-width: 100% !important;
 }
 
 @media screen and (max-width:768px) {
@@ -82,7 +99,7 @@
     position: absolute;
     bottom: 0px;
   }
-
+ 
   .mainAppSections>:nth-child(1) {
     position: relative;
     margin-bottom: 64px;

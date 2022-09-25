@@ -76,7 +76,9 @@
     padding: 1rem;
 }
 
-
+.sign-button{
+    padding: 0.5rem 1rem;
+}
 
 
 .inputForm>form>span{
@@ -129,7 +131,7 @@ display: block;
     .validationsLarge{
     display: none;
     }
-    .button{
-        padding:  2px;
+    .sign-button{
+        padding: 0.5rem 1rem;
     }
 }
