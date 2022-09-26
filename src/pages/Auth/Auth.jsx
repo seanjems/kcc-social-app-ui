@@ -13,6 +13,7 @@ import jwtDecode from "jwt-decode";
 import * as Yup from "yup";
 import ErrorTextComponent from "../../components/Reusables/ErrorTextComponent";
 import apiClient from "../../api/apiClient";
+import { showNotification } from "@mantine/notifications";
 
 //validationObjects
 const createUserFormValidation = Yup.object().shape({
@@ -82,7 +83,20 @@ const Auth = (props) => {
     setAccountCreated(false);
     const result = await authorization.tryLogin(email, password);
     console.log(result);
-    if (!result?.data?.userToken) return setLoginFailed(true);
+    if (!result?.ok) {
+      if (result.status === 404) {
+        return setLoginFailed(true);
+      }
+      showNotification({
+        id: "user-data",
+        title: "Error",
+        message: `${result.status && result.status} ${result.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        // style: { zIndex: "999999" },
+      });
+      return;
+    }
     //  console.log(result.data.userToken);
     const user = jwtDecode(result.data.userToken);
 

@@ -99,20 +99,29 @@
     position: absolute;
     bottom: 0px;
   }
- 
+
   .mainAppSections>:nth-child(1) {
     position: relative;
     margin-bottom: 64px;
     min-height: 100%;
   }
-.mainAppSections{
-  min-height: 100%;
-}
+
+  .mainAppSections {
+    min-height: 100%;
+  }
+
   .mainAppSections>:nth-child(2) {
     position: absolute;
     bottom: 0;
     width: 100%;
   }
+
+  /* .mainAppSections {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 100% !important;
+  } */
   
   .ChatBox-container{
     height: 90vh;
