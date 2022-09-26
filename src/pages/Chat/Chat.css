@@ -113,7 +113,8 @@
    .Right-side-chat2{
     display: block;
     position: relative;
-    min-height: 100%;
+    min-height: 80vh;
+    margin-bottom: 68px;
    }
    .Left-side-chat2{
     display: none;

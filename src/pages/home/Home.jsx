@@ -64,6 +64,12 @@ export const Home = () => {
         disallowClose: false,
         // style: { zIndex: "999999" },
       });
+      if (result.status === 401) {
+        //logout user
+        console.log(result.status);
+        userContext.setUser(null);
+        localStorage.removeItem("token");
+      }
       return;
     }
     if (!result.data.length) {

@@ -148,7 +148,7 @@ function App() {
   const InitiateConnection = async () => {
     try {
       const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:7204/chat", {
+        .withUrl(`${process.env.REACT_APP_PUBLIC_API_URL}/chat`, {
           accessTokenFactory: () => `${localStorage.getItem("token")}`,
         })
         //.withAutomaticReconnect()
