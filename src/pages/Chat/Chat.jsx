@@ -304,7 +304,7 @@ const Chat = () => {
         className={toggleToMobileRight ? "Right-side-chat2" : "Right-side-chat"}
       >
         {!mobile && (
-          <div style={{ width: "20rem", alignSelf: "flex-end" }}>
+          <div style={{ width: "20rem", marginLeft: "auto" }}>
             <NavIcons />
           </div>
         )}

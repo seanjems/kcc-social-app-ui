@@ -112,4 +112,7 @@
         overflow: scroll;
         min-height: 88vh;
     }
+    .container{
+        margin-bottom: 70px !important;
+    }
 }

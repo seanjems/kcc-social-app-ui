@@ -1,10 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 // import { addMessage, getMessages } from "../../api/MessageRequests";
 // import { getUser } from "../../api/UserRequests";
 import "./ChatBox.css";
 import { format } from "timeago.js";
 import InputEmoji from "react-input-emoji";
+import ChatContext from "../../auth/ChatContext";
 
 const ChatBox = ({
   chat,
@@ -20,7 +21,7 @@ const ChatBox = ({
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
   };
-
+  const { setIsMobileChatTyping } = useContext(ChatContext);
   // fetching conversation info
 
   // //send message
@@ -58,6 +59,7 @@ const ChatBox = ({
   }, [chat]);
 
   // Always scroll to last Message
+
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -157,7 +159,14 @@ const ChatBox = ({
               >
                 +
               </div>
-              <InputEmoji value={newMessage} onChange={handleChange} />
+              <div
+                className="w-100"
+                onFocus={() => setIsMobileChatTyping(true)}
+                onBlur={() => setIsMobileChatTyping(false)}
+              >
+                <InputEmoji value={newMessage} onChange={handleChange} />
+              </div>
+
               <div className="send-button button" onClick={handleSend}>
                 Send
               </div>

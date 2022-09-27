@@ -77,6 +77,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [internetOff, setInternetOff] = useState(false);
   const userId = user?.UserId;
+  const [isMobileChatTyping, setIsMobileChatTyping] = useState(false);
   ///SIGNALR
 
   //detect network reconnections
@@ -259,6 +260,7 @@ function App() {
           chats,
           messageBadge,
           setMessageBadge,
+          setIsMobileChatTyping,
         }}
       >
         <MantineProvider
@@ -276,7 +278,10 @@ function App() {
             /> */}
             <NotificationsProvider position="top-right" zIndex={2077}>
               <div className={mobile ? "mainAppSections" : ""}>
-                <div className="App container mb-auto">
+                <div
+                  className="App container 
+                  container container-fluid container-lg container-md container-sm container-xl container-xxl"
+                >
                   <div className="blurs">
                     <div
                       className="blur"
@@ -383,7 +388,7 @@ function App() {
                   </Routes>
                 </div>
 
-                {mobile && user && (
+                {mobile && user && !isMobileChatTyping && (
                   <div>
                     <NavIcons className="mobileLauncher" isLauncherBar={true} />
                   </div>
