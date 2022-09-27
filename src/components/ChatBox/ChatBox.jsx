@@ -251,8 +251,8 @@ const ChatBox = ({
               </div>
               {/* chat-sender */}
               <div
-                className="chat-sender w-100"
-                onClick={() => setIsMobileChatTyping(true)}
+                className="chat-sender w-100 mb-2"
+                onFocus={() => setIsMobileChatTyping(true)}
                 onBlur={() => setIsMobileChatTyping(false)}
               >
                 <div
