@@ -111,10 +111,10 @@
     display:none
    }
    .Right-side-chat2{
-    display: block;
+    /* display: block;
     position: relative;
     min-height: 80vh;
-    margin-bottom: 68px;
+    margin-bottom: 68px; */
    }
    .Left-side-chat2{
     display: none;

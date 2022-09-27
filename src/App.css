@@ -94,10 +94,10 @@
 
 @media screen and (max-width:768px) {
   .mobileLauncher {
-    align-self: flex-end;
+    /* align-self: flex-end; */
     background-color: white;
-    position: absolute;
-    bottom: 0px;
+    /* position: absolute; */
+    /* bottom: 0px; */
   }
 
   .mainAppSections>:nth-child(1) {
@@ -116,19 +116,19 @@
     width: 100%;
   }
 
-  /* .mainAppSections {
+  .mainAppSections {
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
     min-height: 100% !important;
-  } */
+  }
   
   .ChatBox-container{
     height: 90vh;
   }
-  .chat-sender{
+  /* .chat-sender{
     position: absolute;
     bottom: 0px;
     width: 100%;
-  }
+  } */
 }

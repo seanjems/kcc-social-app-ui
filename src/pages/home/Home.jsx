@@ -36,7 +36,7 @@ export const Home = () => {
 
   //hard rest posts on create post
   useEffect(() => {
-    reSetPosts && getItems();
+    (reSetPosts == true || reSetPosts == false) && getItems(1);
   }, [reSetPosts]);
 
   //infinite scroling
@@ -79,7 +79,10 @@ export const Home = () => {
     }
     //if it was a hard refresh
     if (postPageNumber === 1) {
-      setFetchList([]);
+      setFetchList(result.data);
+      setIsLoading(false);
+      setPageNumber(1);
+      return;
     }
     //create deep copy backup
     const originalValues = JSON.parse(JSON.stringify(fetchList));

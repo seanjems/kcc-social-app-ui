@@ -26,7 +26,13 @@ const NavIcons = ({ isLauncherBar }) => {
       )}
       <img src={Notification} alt="" />
       <div style={{ position: "relative" }}>
-        <img src={Messages} alt="" onClick={() => navigate("../chat")} />
+        <img
+          src={Messages}
+          alt=""
+          onClick={() =>
+            navigate(`${process.env.REACT_APP_PUBLIC_URL}/profile`)
+          }
+        />
         {messageBadge > 0 && (
           <span
             className="badge badge-dark"

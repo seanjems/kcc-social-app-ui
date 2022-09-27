@@ -1,6 +1,6 @@
 {
   "name": "sdasocial",
-  "version": "0.1.0", 
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@iconscout/react-unicons": "^1.1.6",

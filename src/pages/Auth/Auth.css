@@ -43,7 +43,11 @@
     font-weight: 400;
    
 }
-
+.moses{
+    color: blue !important;
+    font-weight: bold;
+    border: solid 2px red;
+}
 .inputForm>form{
     display: flex;
     flex-direction: column;

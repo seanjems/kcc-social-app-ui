@@ -276,7 +276,7 @@ function App() {
             /> */}
             <NotificationsProvider position="top-right" zIndex={2077}>
               <div className={mobile ? "mainAppSections" : ""}>
-                <div className="App container">
+                <div className="App container mb-auto">
                   <div className="blurs">
                     <div
                       className="blur"

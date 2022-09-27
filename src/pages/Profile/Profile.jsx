@@ -94,7 +94,10 @@ const Profile = ({ userProfileId }) => {
     }
     //if it was a hard refresh
     if (postPageNumber === 1) {
-      setFetchList([]);
+      setFetchList(result.data);
+      setPostsPage(1);
+      setIsLoading(false);
+      return;
     }
     //create deep copy backup
     const originalValues = JSON.parse(JSON.stringify(fetchList));

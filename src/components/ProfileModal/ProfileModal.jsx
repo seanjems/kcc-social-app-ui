@@ -12,6 +12,7 @@ import { IconCheck } from "@tabler/icons";
 import { IconX } from "@tabler/icons";
 import ErrorTextComponent from "../Reusables/ErrorTextComponent";
 import { MobileSearch } from "../../pages/MobileSearch/MobileSearch";
+import Resizer from "react-image-file-resizer";
 
 function ProfileModal({
   userProfile,
@@ -37,22 +38,69 @@ function ProfileModal({
     setdpUrl(userProfile?.profilePicUrl);
   }, [userProfile]);
 
-  const handleProfileChange = (event) => {
+  const handleProfileChange = async (event) => {
     if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      setdpUrl(URL.createObjectURL(img));
-      setProfilePic(img);
-      //  console.log("new profile image properties", img);
+      //let img = event.target.files[0];
+
+      try {
+        const file = event.target.files[0];
+        const img = await resizeFile(file);
+        // console.log(img);
+
+        setdpUrl(URL.createObjectURL(img));
+        setProfilePic(img);
+      } catch (err) {
+        console.log(err);
+      }
     }
+
+    // if (event.target.files && event.target.files[0]) {
+    //   let img = event.target.files[0];
+    //   setdpUrl(URL.createObjectURL(img));
+    //   setProfilePic(img);
+    //   //  console.log("new profile image properties", img);
+    // }
   };
-  const handleCoverChange = (event) => {
+  const handleCoverChange = async (event) => {
     if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      setCoverPicUrl(URL.createObjectURL(img));
-      setCoverPic(img);
-      //  console.log("new cover image properties", img);
+      //let img = event.target.files[0];
+
+      try {
+        const file = event.target.files[0];
+        const img = await resizeFile(file);
+        console.log(img);
+
+        setCoverPicUrl(URL.createObjectURL(img));
+        setCoverPic(img);
+      } catch (err) {
+        console.log(err);
+      }
     }
+
+    // if (event.target.files && event.target.files[0]) {
+    //   let img = event.target.files[0];
+    //   setCoverPicUrl(URL.createObjectURL(img));
+    //   setCoverPic(img);
+    //   //  console.log("new cover image properties", img);
+    // }
   };
+
+  //Trim image size onclient
+  const resizeFile = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        900,
+        900,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "file"
+      );
+    });
 
   //post to db
   const handleUpdateProfile = async (updateProfileInput) => {
@@ -109,7 +157,7 @@ function ProfileModal({
         });
       }, 3000);
 
-      return;
+      return false;
     }
 
     setTimeout(() => {
@@ -127,6 +175,7 @@ function ProfileModal({
     //close modal
     setIsModalOpen(false);
     profileUpdated();
+    return true;
   };
 
   //validationObjects
@@ -172,9 +221,9 @@ function ProfileModal({
       <Formik
         initialValues={userProfile || initialValues}
         onSubmit={(values, resetForm) => {
-          handleUpdateProfile(values);
-          resetForm({ values: "" });
           setIsModalOpen(false);
+          var tryUpdatingProfile = handleUpdateProfile(values);
+          tryUpdatingProfile && resetForm({ values: "" });
         }}
         enableReinitialize
         validationSchema={updateProfileFormValidation}

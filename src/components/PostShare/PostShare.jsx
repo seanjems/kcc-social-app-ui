@@ -11,6 +11,8 @@ import * as Yup from "yup";
 import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
 import { showNotification } from "@mantine/notifications";
+import Resizer from "react-image-file-resizer";
+import { useNavigate } from "react-router-dom";
 
 const PostShare = ({
   fetchList,
@@ -30,15 +32,39 @@ const PostShare = ({
   // );
 
   const user = userContext.user;
-
-  const onImageChanged = (event) => {
+  const navigate = useNavigate();
+  const onImageChanged = async (event) => {
     if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      setImage({ image: URL.createObjectURL(img) });
-      setUploadFile(img);
+      //let img = event.target.files[0];
+
+      try {
+        const file = event.target.files[0];
+        const img = await resizeFile(file);
+        console.log(img);
+
+        setImage({ image: URL.createObjectURL(img) });
+        setUploadFile(img);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
-
+  //Trim image size onclient
+  const resizeFile = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        900,
+        900,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "file"
+      );
+    });
   //validationObjects
   const createPostFormValidation = Yup.object().shape({
     description: Yup.string().required().min(3).max(2000).label("description"),
@@ -64,12 +90,6 @@ const PostShare = ({
     //call api
     const result = await posts.tryCreatePost(formData);
 
-    console.log("create user result", result);
-    // if (!result.ok) {
-    //   setCreatePostFailed(true);
-    //   setCreatePostErrors(result.data);
-    //   return;
-    // }
     if (!result.ok) {
       showNotification({
         id: "user-data",
@@ -93,6 +113,11 @@ const PostShare = ({
 
     //trigger post refresh
     setReSetPosts((oldValue) => {
+      console.log(
+        "🚀 ~ file: PostShare.jsx ~ line 116 ~ setReSetPosts ~ oldValue",
+        oldValue
+      );
+
       if (oldValue) {
         return !oldValue;
       }
@@ -118,7 +143,11 @@ const PostShare = ({
         <Form>
           <div className="PostShare">
             <div>
-              <img src={userProfile?.profilePicUrl} alt="" />
+              <img
+                src={userProfile?.profilePicUrl}
+                alt=""
+                onClick={() => navigate("../profile")}
+              />
               <div className="shareInput">
                 <input
                   type="textarea"
