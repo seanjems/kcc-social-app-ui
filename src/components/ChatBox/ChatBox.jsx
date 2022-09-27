@@ -22,6 +22,7 @@ const ChatBox = ({
     setNewMessage(newMessage);
   };
   const { setIsMobileChatTyping } = useContext(ChatContext);
+  const mobile = window.innerWidth <= 768 ? true : false;
   // fetching conversation info
 
   // //send message
@@ -103,85 +104,184 @@ const ChatBox = ({
     <>
       <div className="ChatBox-container">
         {chat ? (
-          <>
-            {/* chat-header */}
-            <div className="chat-header">
-              <div className="follower">
-                <div>
-                  <img
-                    src={chat.profilePicUrl}
-                    alt="Profile"
-                    className="followerImage"
-                    style={{ width: "50px", height: "50px" }}
-                  />
-                  <div className="name fw-bold" style={{ fontSize: "0.9rem" }}>
-                    <span>
-                      {chat?.firstName} {chat?.lastName}
-                    </span>
+          !mobile ? (
+            <>
+              {/* chat-header */}
+              <div className="chat-header">
+                <div className="follower">
+                  <div>
+                    <img
+                      src={chat.profilePicUrl}
+                      alt="Profile"
+                      className="followerImage"
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                    <div
+                      className="name fw-bold"
+                      style={{ fontSize: "0.9rem" }}
+                    >
+                      <span>
+                        {chat?.firstName} {chat?.lastName}
+                      </span>
+                    </div>
                   </div>
                 </div>
+                <hr
+                  style={{
+                    width: "95%",
+                    border: "0.1px solid #ececec",
+                    marginTop: "20px",
+                  }}
+                />
               </div>
-              <hr
-                style={{
-                  width: "95%",
-                  border: "0.1px solid #ececec",
-                  marginTop: "20px",
-                }}
-              />
-            </div>
-            {/* chat-body */}
-            <div className="chat-body">
-              {messages?.map((message, idx) => (
-                <Fragment key={idx}>
-                  <div
-                    ref={scroll}
-                    className={
-                      message.senderId === currentUser
-                        ? "message own"
-                        : "message"
-                    }
-                  >
-                    <span>{message.message}</span>{" "}
-                    <span>
-                      {format(
-                        convertUTCDateToLocalDate(new Date(message.createdAt))
-                      )}
-                    </span>
-                  </div>
-                </Fragment>
-              ))}
-            </div>
-            {/* chat-sender */}
-            <div
-              className="chat-sender"
-              onClick={() => setIsMobileChatTyping(true)}
-              onBlur={() => setIsMobileChatTyping(false)}
-            >
+              {/* chat-body */}
               <div
-                onClick={() => imageRef.current.click()}
-                style={{ display: "none" }}
+                className="chat-body"
+                onClick={() => setIsMobileChatTyping(false)}
               >
-                +
+                {messages?.map((message, idx) => (
+                  <Fragment key={idx}>
+                    <div
+                      ref={scroll}
+                      className={
+                        message.senderId === currentUser
+                          ? "message own"
+                          : "message"
+                      }
+                    >
+                      <span>{message.message}</span>{" "}
+                      <span>
+                        {format(
+                          convertUTCDateToLocalDate(new Date(message.createdAt))
+                        )}
+                      </span>
+                    </div>
+                  </Fragment>
+                ))}
               </div>
+              {/* chat-sender */}
               <div
-                className="w-100"
-                onFocus={() => setIsMobileChatTyping(true)}
+                className="chat-sender w-100"
+                onClick={() => setIsMobileChatTyping(true)}
+                onBlur={() => setIsMobileChatTyping(false)}
               >
-                <InputEmoji value={newMessage} onChange={handleChange} />
-              </div>
+                <div
+                  onClick={() => imageRef.current.click()}
+                  style={{ display: "none" }}
+                >
+                  +
+                </div>
+                <div
+                  className="w-100"
+                  onFocus={() => setIsMobileChatTyping(true)}
+                >
+                  <InputEmoji
+                    value={newMessage}
+                    onChange={handleChange}
+                    className="w-100"
+                  />
+                </div>
 
-              <div className="send-button button" onClick={handleSend}>
-                Send
+                <div className="send-button button" onClick={handleSend}>
+                  Send
+                </div>
+                <input
+                  type="file"
+                  name=""
+                  id=""
+                  style={{ display: "none" }}
+                  ref={imageRef}
+                />
+              </div>{" "}
+            </>
+          ) : (
+            <div className="p-2 d-flex justify-content-between flex-column h-100">
+              {/* chat-header */}
+              <div className="chat-header">
+                <div className="follower">
+                  <div>
+                    <img
+                      src={chat.profilePicUrl}
+                      alt="Profile"
+                      className="followerImage"
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                    <div
+                      className="name fw-bold"
+                      style={{ fontSize: "0.9rem" }}
+                    >
+                      <span>
+                        {chat?.firstName} {chat?.lastName}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <hr
+                  style={{
+                    width: "95%",
+                    border: "0.1px solid #ececec",
+                    marginTop: "20px",
+                  }}
+                />
               </div>
-              <input
-                type="file"
-                name=""
-                id=""
-                style={{ display: "none" }}
-                ref={imageRef}
-              />
-            </div>{" "}
-          </>
+              {/* chat-body */}
+              <div
+                className="chat-body mb-auto"
+                onClick={() => setIsMobileChatTyping(false)}
+              >
+                {messages?.map((message, idx) => (
+                  <Fragment key={idx}>
+                    <div
+                      ref={scroll}
+                      className={
+                        message.senderId === currentUser
+                          ? "message own"
+                          : "message"
+                      }
+                    >
+                      <span>{message.message}</span>{" "}
+                      <span>
+                        {format(
+                          convertUTCDateToLocalDate(new Date(message.createdAt))
+                        )}
+                      </span>
+                    </div>
+                  </Fragment>
+                ))}
+              </div>
+              {/* chat-sender */}
+              <div
+                className="chat-sender w-100"
+                onClick={() => setIsMobileChatTyping(true)}
+                onBlur={() => setIsMobileChatTyping(false)}
+              >
+                <div
+                  onClick={() => imageRef.current.click()}
+                  style={{ display: "none" }}
+                >
+                  +
+                </div>
+
+                <InputEmoji
+                  value={newMessage}
+                  onChange={handleChange}
+                  className="w-100"
+                  onFocus={() => setIsMobileChatTyping(true)}
+                />
+
+                <div className="send-button button" onClick={handleSend}>
+                  Send
+                </div>
+                <input
+                  type="file"
+                  name=""
+                  id=""
+                  style={{ display: "none" }}
+                  ref={imageRef}
+                />
+              </div>{" "}
+            </div>
+          )
         ) : (
           <span className="chatbox-empty-message">
             Tap on a chat to start conversation...

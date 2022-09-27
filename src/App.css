@@ -120,12 +120,12 @@
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    max-height: 99vh !important;
+    height: 90vh ;
   }
   
-  .ChatBox-container{
+  /* .ChatBox-container{
     height: 90vh;
-  }
+  } */
   /* .chat-sender{
     position: absolute;
     bottom: 0px;

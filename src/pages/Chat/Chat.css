@@ -111,18 +111,13 @@
    .Right-side-chat{
     display:none
    }
-   .Right-side-chat2{
-    display: block;
-    position: relative;
-    min-height: 88vh;
-    margin-bottom: 68px;
-   }
+ 
    .Left-side-chat2{
     display: none;
    }
-   .App{
+   /* .App{
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-   }
+   } */
 }
