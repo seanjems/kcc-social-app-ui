@@ -252,7 +252,7 @@ const ChatBox = ({
               {/* chat-sender */}
               <div
                 className="chat-sender w-100 mb-2"
-                onFocus={() => setIsMobileChatTyping(true)}
+                // onFocus={() => setIsMobileChatTyping(true)}
                 onBlur={() => setIsMobileChatTyping(false)}
               >
                 <div
@@ -266,7 +266,7 @@ const ChatBox = ({
                   value={newMessage}
                   onChange={handleChange}
                   className="w-100"
-                  onFocus={() => setIsMobileChatTyping(true)}
+                  // onFocus={() => setIsMobileChatTyping(true)}
                 />
 
                 <div className="send-button button" onClick={handleSend}>

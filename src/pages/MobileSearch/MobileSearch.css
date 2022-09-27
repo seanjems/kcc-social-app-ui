@@ -1,4 +1,4 @@
-.Home2{
+.Home2 {
     display: flex;
     gap: 1rem;
     flex-direction: column;
@@ -17,73 +17,80 @@
     flex: 1;
     
 } */
-.hideMobile{
+.hideMobile {
     display: block;
 }
 
-@media screen and (max-width:1500px){
-    .Home{        
-        grid-template-columns:  auto 20rem;     
+@media screen and (max-width:1500px) {
+    .Home {
+        grid-template-columns: auto 20rem;
     }
 
-    .ProfileSide{
-        display:none
+    .ProfileSide {
+        display: none
     }
 
 }
-@media screen and (max-width:930px){
-    .Home{
-        
-        grid-template-columns:  auto;
-     
+
+@media screen and (max-width:930px) {
+    .Home {
+
+        grid-template-columns: auto;
+
     }
-   
-   
+
+
     .RightSide {
-        display:none
+        display: none
     }
 
 }
-@media screen and (max-width:768px){
-    
+
+@media screen and (max-width:768px) {
+
     /* .PostShare  {
         display:none
     } */
-   
-    .hideMobile{
+
+    .hideMobile {
         display: none;
-      }
-      .Auth{
+    }
+
+    /* .Auth {
         max-height: 90vh;
-      }
-      .ProfileCenter{
+    } */
+
+    /* .ProfileCenter {
         max-height: 90vh;
-      }
-      .PostSide{
+    } */
+
+    /* .PostSide {
         max-height: 90vh;
-      }
-      .App{
+    } */
+
+    .App {
         display: flex;
         flex-direction: column;
         justify-content: end;
         padding-top: 1rem;
-      }
-    
-     
-      .navIcons{
+    }
+
+
+    .navIcons {
         justify-content: space-around;
         background-color: white;
-      }
-      .isMobileSearch{
-  
+    }
+
+    .isMobileSearch {
+
         display: grid;
         gap: 0rem;
         grid-template-columns: auto !important;
         position: relative;
 
-       
-  
-}
 
-      
+
+    }
+
+
 }

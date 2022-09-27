@@ -54,7 +54,7 @@
         display: none;
     }
 
-    .Auth {
+    /* .Auth {
         max-height: 90vh;
     }
 
@@ -64,7 +64,7 @@
 
     .PostSide {
         max-height: 90vh;
-    }
+    } */
 
     .App {
         display: flex;
