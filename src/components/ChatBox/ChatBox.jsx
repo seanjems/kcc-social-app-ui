@@ -152,7 +152,11 @@ const ChatBox = ({
               ))}
             </div>
             {/* chat-sender */}
-            <div className="chat-sender">
+            <div
+              className="chat-sender"
+              onClick={() => setIsMobileChatTyping(true)}
+              onBlur={() => setIsMobileChatTyping(false)}
+            >
               <div
                 onClick={() => imageRef.current.click()}
                 style={{ display: "none" }}
@@ -162,7 +166,6 @@ const ChatBox = ({
               <div
                 className="w-100"
                 onFocus={() => setIsMobileChatTyping(true)}
-                onBlur={() => setIsMobileChatTyping(false)}
               >
                 <InputEmoji value={newMessage} onChange={handleChange} />
               </div>

@@ -110,7 +110,6 @@
         /* padding: 1rem; */
         height: 80vh;
         overflow: scroll;
-        min-height: 88vh;
     }
     .container{
         margin-bottom: 70px !important;
