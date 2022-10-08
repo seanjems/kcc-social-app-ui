@@ -1,4 +1,9 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import Logo from "../../img/logo.png";
 import { UilSearch } from "@iconscout/react-unicons";
 import "./LogoSearch.css";
@@ -8,13 +13,16 @@ import profile from "../../api/profile";
 import { IconX } from "@tabler/icons";
 import { showNotification } from "@mantine/notifications";
 import { useRef } from "react";
-const LogoSearch = ({ setSelectedItemCallBack }) => {
+import { forwardRef } from "react";
+const LogoSearch = forwardRef((props, ref) => {
+  const { setSelectedItemCallBack } = props;
+
   const navigate = useNavigate();
   const [userResult, setUserResult] = useState();
   const [selectedResult, setSelectedResult] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const searchInputRef = useRef();
 
-  const textBoxRef = useRef();
   //call search user api
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -24,7 +32,7 @@ const LogoSearch = ({ setSelectedItemCallBack }) => {
         return;
       }
       searchUsers(searchTerm, 1);
-    }, 3000);
+    }, 1500);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
@@ -39,6 +47,13 @@ const LogoSearch = ({ setSelectedItemCallBack }) => {
     setSelectedItemCallBack && setSelectedItemCallBack(selectedResult);
     setUserResult(null);
   }, [selectedResult]);
+
+  //handle refs fowarded to textinput
+  useImperativeHandle(ref, () => ({
+    focusOnSearch() {
+      searchInputRef && searchInputRef.current?.focus();
+    },
+  }));
 
   //method to search users
   const searchUsers = async (keywords, page) => {
@@ -66,7 +81,7 @@ const LogoSearch = ({ setSelectedItemCallBack }) => {
         </div>
         <div className="Search">
           <input
-            ref={textBoxRef}
+            ref={searchInputRef}
             type="text"
             placeholder="#Search..."
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -103,6 +118,6 @@ const LogoSearch = ({ setSelectedItemCallBack }) => {
       )}
     </Fragment>
   );
-};
+});
 
 export default LogoSearch;

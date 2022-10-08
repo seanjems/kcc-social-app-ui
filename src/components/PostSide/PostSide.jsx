@@ -1,7 +1,9 @@
-import React from "react";
+import { IconSend } from "@tabler/icons";
+import React, { useRef } from "react";
 import PostsCard from "../PostsCard/PostsCard";
 import PostShare from "../PostShare/PostShare";
 import "./PostSide.css";
+
 const PostSide = ({
   fetchList,
   setFetchList,
@@ -15,6 +17,8 @@ const PostSide = ({
   hasMore,
   setReSetPosts,
 }) => {
+  const sharePostInputRef = useRef(null);
+
   return (
     <div className="PostSide">
       <PostShare
@@ -24,6 +28,7 @@ const PostSide = ({
         setIsLoading={setIsLoading}
         userProfile={userProfile}
         setReSetPosts={setReSetPosts}
+        ref={sharePostInputRef}
       />
       <PostsCard
         fetchList={fetchList}
@@ -34,6 +39,19 @@ const PostSide = ({
         isLoading={isLoading}
         hasMore={hasMore}
       />
+      {/* Floating start chat button */}
+      <div
+        className="floatingChatbtn showOnMobileOnly"
+        onClick={() => {
+          // // scroll.current?.scrollIntoView({ behavior: "smooth" });
+          // sharePostInputRef.current?.scrollIntoView({
+          //   behavior: "smooth",
+          // });
+          sharePostInputRef?.current?.focusOnShareInput();
+        }}
+      >
+        <IconSend size={30} />
+      </div>
     </div>
   );
 };

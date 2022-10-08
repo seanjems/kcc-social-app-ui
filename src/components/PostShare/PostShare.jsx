@@ -1,4 +1,9 @@
-import React, { useState, useRef, useContext } from "react";
+import React, {
+  useState,
+  useRef,
+  useContext,
+  useImperativeHandle,
+} from "react";
 import ProfileImage from "../../img/profileImg.jpg";
 import "./PostShare.css";
 import { UilScenery } from "@iconscout/react-unicons";
@@ -13,23 +18,37 @@ import posts from "../../api/posts";
 import { showNotification } from "@mantine/notifications";
 import Resizer from "react-image-file-resizer";
 import { useNavigate } from "react-router-dom";
+import { forwardRef } from "react";
 
-const PostShare = ({
-  fetchList,
-  setFetchList,
-  userProfile,
-  setReSetPosts,
-  setIsModalOpen,
-}) => {
+const PostShare = forwardRef((props, ref) => {
+  const {
+    fetchList,
+    setFetchList,
+    userProfile,
+    setReSetPosts,
+    setIsModalOpen,
+  } = props;
+
   const [image, setImage] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
   const imageRef = useRef();
   const shareTextInput = useRef();
   const userContext = useContext(AuthContext);
+
+  const sharePostRef = useRef();
+
   // console.log(
   // "🚀 ~ file: PostShare.jsx ~ line 21 ~ PostShare ~ userContext",
   // userContext
   // );
+
+  //handle refs fowarded to textinput
+  useImperativeHandle(ref, () => ({
+    focusOnShareInput() {
+      sharePostRef.current?.scrollIntoView({ behavior: "smooth" });
+      sharePostRef && sharePostRef.current?.focus();
+    },
+  }));
 
   const user = userContext.user;
   const navigate = useNavigate();
@@ -151,7 +170,7 @@ const PostShare = ({
               <div className="shareInput">
                 <input
                   type="textarea"
-                  ref={shareTextInput}
+                  ref={sharePostRef}
                   placeholder="Share something . . .!"
                   onChange={handleChange("description")}
                   onBlur={() => setFieldTouched("description")}
@@ -218,6 +237,6 @@ const PostShare = ({
       )}
     </Formik>
   );
-};
+});
 
 export default PostShare;

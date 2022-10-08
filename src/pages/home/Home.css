@@ -21,6 +21,9 @@
 .hideMobile {
     display: block;
 }
+.showOnMobileOnly{
+    display: none;
+}
 
 @media screen and (max-width:1500px) {
     .Home {
@@ -33,21 +36,33 @@
 
 }
 
-@media screen and (max-width:930px) {
+/* @media screen and (max-width:930px) {
     .Home {
         grid-template-columns: auto;
     }
 
-.ProfileSide {
+    .ProfileSide {
         display: none
     }
+
     .RightSide {
         display: none;
-        }
+    }
 
-}
-
+} */
 @media screen and (max-width:768px) {
+
+    .Home {
+        grid-template-columns: auto;
+    }
+
+    .ProfileSide {
+        display: none
+    }
+
+    .RightSide {
+        display: none;
+    }
 
     /* .PostShare  {
         display:none
@@ -56,7 +71,9 @@
     .hideMobile {
         display: none;
     }
-
+    .showOnMobileOnly{
+        display: block;
+    }
     /* .Auth {
         max-height: 90vh;
     }
@@ -72,7 +89,7 @@
     .App {
         display: flex;
         flex-direction: column;
-        justify-content: end;
+        /* justify-content: end; */
         padding-top: 1rem;
     }
 

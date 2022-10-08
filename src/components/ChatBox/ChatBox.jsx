@@ -5,7 +5,9 @@ import { useRef } from "react";
 import "./ChatBox.css";
 import { format } from "timeago.js";
 import InputEmoji from "react-input-emoji";
+import { IconArrowLeft } from "@tabler/icons";
 import ChatContext from "../../auth/ChatContext";
+import { useNavigate } from "react-router-dom";
 
 const ChatBox = ({
   chat,
@@ -21,7 +23,7 @@ const ChatBox = ({
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
   };
-  const { setIsMobileChatTyping } = useContext(ChatContext);
+  const navigate = useNavigate();
   const mobile = window.innerWidth <= 768 ? true : false;
   // fetching conversation info
 
@@ -111,7 +113,11 @@ const ChatBox = ({
                 <div className="follower">
                   <div>
                     <img
-                      src={chat.profilePicUrl}
+                      src={
+                        chat.profilePicUrl.startsWith("media")
+                          ? `${process.env.REACT_APP_PUBLIC_API_URL}/${chat.profilePicUrl}`
+                          : chat.profilePicUrl
+                      }
                       alt="Profile"
                       className="followerImage"
                       style={{ width: "50px", height: "50px" }}
@@ -137,7 +143,7 @@ const ChatBox = ({
               {/* chat-body */}
               <div
                 className="chat-body"
-                onClick={() => setIsMobileChatTyping(false)}
+                // onClick={() => setIsMobileChatTyping(false)}
               >
                 {messages?.map((message, idx) => (
                   <Fragment key={idx}>
@@ -162,8 +168,8 @@ const ChatBox = ({
               {/* chat-sender */}
               <div
                 className="chat-sender w-100"
-                onClick={() => setIsMobileChatTyping(true)}
-                onBlur={() => setIsMobileChatTyping(false)}
+                // onClick={() => setIsMobileChatTyping(true)}
+                // onBlur={() => setIsMobileChatTyping(false)}
               >
                 <div
                   onClick={() => imageRef.current.click()}
@@ -173,7 +179,7 @@ const ChatBox = ({
                 </div>
                 <div
                   className="w-100"
-                  onFocus={() => setIsMobileChatTyping(true)}
+                  // onFocus={() => setIsMobileChatTyping(true)}
                 >
                   <InputEmoji
                     value={newMessage}
@@ -200,8 +206,22 @@ const ChatBox = ({
               <div className="chat-header">
                 <div className="follower">
                   <div>
+                    <IconArrowLeft
+                      size={25}
+                      style={{
+                        marginRight: "0.5rem",
+                        marginLeft: "-0.5rem",
+                        padding: "4px",
+                      }}
+                      onClick={() => navigate(-1)}
+                    />
+
                     <img
-                      src={chat.profilePicUrl}
+                      src={
+                        chat.profilePicUrl.startsWith("media")
+                          ? `${process.env.REACT_APP_PUBLIC_API_URL}/${chat.profilePicUrl}`
+                          : chat.profilePicUrl
+                      }
                       alt="Profile"
                       className="followerImage"
                       style={{ width: "50px", height: "50px" }}
@@ -227,7 +247,7 @@ const ChatBox = ({
               {/* chat-body */}
               <div
                 className="chat-body mb-auto"
-                onClick={() => setIsMobileChatTyping(false)}
+                // onClick={() => setIsMobileChatTyping(false)}
               >
                 {messages?.map((message, idx) => (
                   <Fragment key={idx}>
@@ -253,7 +273,7 @@ const ChatBox = ({
               <div
                 className="chat-sender w-100 mb-2"
                 // onFocus={() => setIsMobileChatTyping(true)}
-                onBlur={() => setIsMobileChatTyping(false)}
+                // onBlur={() => setIsMobileChatTyping(false)}
               >
                 <div
                   onClick={() => imageRef.current.click()}

@@ -114,7 +114,22 @@
  
    .Left-side-chat2{
     display: none;
-   }
+    }
+    
+    .floatingChatbtn {
+      padding: 0.5rem;    
+      border-radius: 50%;
+      background-color: white;
+      position: absolute;
+      right: 2rem;
+      bottom: 4rem;
+      box-shadow: 4px 4px 4px;
+      border: 0.5px solid grey;
+    
+    }
+    .floatingChatbtn:hover{
+      background-color: transparent;
+    }
    /* .App{
     display: flex;
     flex-direction: column;

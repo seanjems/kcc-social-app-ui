@@ -33,7 +33,7 @@ const Conversation = ({ data, currentUser, online }) => {
           <img
             src={
               data.profilePicUrl.startsWith("media")
-                ? `${process.env.REACT_PUBLIC_API_URL}/${data.profilePicUrl}`
+                ? `${process.env.REACT_APP_PUBLIC_API_URL}/${data.profilePicUrl}`
                 : data.profilePicUrl
             }
             alt="Profile"

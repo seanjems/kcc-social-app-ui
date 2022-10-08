@@ -12,6 +12,7 @@ import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import profile from "../../api/profile";
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
+import { IconMessagePlus } from "@tabler/icons";
 import ChatContext from "../../auth/ChatContext";
 const mobile = window.innerWidth <= 768 ? true : false;
 
@@ -41,6 +42,8 @@ const Chat = () => {
 
   const userContext = useContext(AuthContext);
   const userId = userContext.user.UserId;
+  const { setIsMobileChatTyping } = useContext(ChatContext);
+  const searchInputRef = useRef();
 
   //configure back button for mobile
   function closeQuickView() {
@@ -113,6 +116,19 @@ const Chat = () => {
       setToggleToMobileRight(!toggleToMobileRight);
     }
   }, [toggleNow]);
+
+  //hide launcher while in detail message view
+  useEffect(() => {
+    if (toggleToMobileRight) {
+      setIsMobileChatTyping(true);
+    } else {
+      setIsMobileChatTyping(false);
+    }
+
+    return () => {
+      setIsMobileChatTyping(false);
+    };
+  }, [toggleToMobileRight]);
   // Send Message to socket server
   useEffect(() => {
     if (sendMessage) {
@@ -144,9 +160,16 @@ const Chat = () => {
       setChats([selectedSearchResult, ...oldChats]);
     }
   };
-
+  const handleStartNewChat = () => {
+    searchInputRef?.current?.scrollIntoView({ behavior: "smooth" });
+    searchInputRef?.current?.focus();
+    console.log(
+      "🚀 ~ file: Chat.jsx ~ line 166 ~ handleStartNewChat ~ searchInputRef?.current",
+      searchInputRef
+    );
+  };
   ///SIGNALR
-  ////////////  MOVED TO APP.JS FILE/////
+  ///  MOVED TO APP.JS FILE/////
   // const InitiateConnection = async () => {
   //   try {
   //     const connection = new HubConnectionBuilder()
@@ -274,7 +297,11 @@ const Chat = () => {
       <div
         className={toggleToMobileRight ? "Left-side-chat2" : "Left-side-chat"}
       >
-        <LogoSearch setSelectedItemCallBack={handleSearchResult} />
+        <LogoSearch
+          setSelectedItemCallBack={handleSearchResult}
+          ref={searchInputRef}
+        />
+
         <div className="Chat-container">
           <h2>Chats</h2>
           <div className="Chat-list">
@@ -294,6 +321,18 @@ const Chat = () => {
                 />
               </div>
             ))}
+
+            {/* Floating start chat button */}
+            <div
+              className="floatingChatbtn"
+              onClick={() => {
+                searchInputRef?.current?.focusOnSearch();
+
+                // searchInputRef?.current?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              <IconMessagePlus size={30} />
+            </div>
           </div>
         </div>
       </div>

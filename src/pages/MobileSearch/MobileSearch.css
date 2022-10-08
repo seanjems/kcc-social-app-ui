@@ -71,7 +71,7 @@
     .App {
         display: flex;
         flex-direction: column;
-        justify-content: end;
+        /* justify-content: end; */
         padding-top: 1rem;
     }
 

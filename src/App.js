@@ -284,6 +284,7 @@ function App() {
                 <div
                   className="App container 
                   container container-fluid container-lg container-md container-sm container-xl container-xxl"
+                  style={isMobileChatTyping ? {} : { marginBottom: "64px" }}
                 >
                   <div className="blurs">
                     <div

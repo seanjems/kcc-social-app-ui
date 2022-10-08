@@ -10,6 +10,7 @@ import profile from "../../api/profile";
 import { showNotification } from "@mantine/notifications";
 import { useLocation, useParams } from "react-router-dom";
 import { useRef } from "react";
+import { IconSend } from "@tabler/icons";
 
 export const Home = () => {
   const userContext = useContext(AuthContext);

@@ -109,17 +109,17 @@
     height: 100vh ;
   }
  
-  .mainAppSections>:nth-child(1) {
+  .App{
     /* position: relative; */
     margin-bottom: auto;
-    padding-bottom: auto;
+   height:100%;
   }
 
   .mainAppSections>:nth-child(2) {
-    position: relative;
+    position: fixed;
     /* height: 10vh; */
     width: 100%;
-    /* bottom: 0; */
+    bottom: 0;
     justify-content: center;
 }
 
