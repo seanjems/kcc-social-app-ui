@@ -110,15 +110,16 @@
   }
  
   .mainAppSections>:nth-child(1) {
-    position: relative;
-    margin-bottom: 10vh;
+    /* position: relative; */
+    margin-bottom: auto;
+    padding-bottom: auto;
   }
 
   .mainAppSections>:nth-child(2) {
-    position: absolute;
-    height: 10vh;
+    position: relative;
+    /* height: 10vh; */
     width: 100%;
-    bottom: 0;
+    /* bottom: 0; */
     justify-content: center;
 }
 

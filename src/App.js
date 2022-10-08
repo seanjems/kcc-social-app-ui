@@ -278,6 +278,9 @@ function App() {
             /> */}
             <NotificationsProvider position="top-right" zIndex={2077}>
               <div className={mobile ? "mainAppSections" : ""}>
+                {/* <div>Main App Section</div>
+                <div>Mobile Launcher Section</div> */}
+                {/* main appsection */}
                 <div
                   className="App container 
                   container container-fluid container-lg container-md container-sm container-xl container-xxl"
@@ -375,19 +378,10 @@ function App() {
                         )
                       }
                     />
-                    {/* <Route
-                path={`/profile/${userName}`}
-                element={
-                  user ? (
-                    <Profile setUser={setUser} />
-                  ) : (
-                    <Navigate to="../auth" />
-                  )
-                }
-              /> */}
                   </Routes>
                 </div>
 
+                {/* Mobile Launcher */}
                 {mobile && user && !isMobileChatTyping && (
                   <div>
                     <NavIcons className="mobileLauncher" isLauncherBar={true} />
