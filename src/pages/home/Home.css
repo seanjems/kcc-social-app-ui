@@ -25,16 +25,7 @@
     display: none;
 }
 
-@media screen and (max-width:1500px) {
-    .Home {
-        grid-template-columns: 18rem auto 20rem;
-    }
 
-    /* .ProfileSide {
-        display: none
-    } */
-
-}
 
 /* @media screen and (max-width:930px) {
     .Home {
