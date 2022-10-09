@@ -131,6 +131,11 @@ export const Home = () => {
         disallowClose: false,
         // style: { zIndex: "999999" },
       });
+      if (user.status === 401) {
+        //logout user
+        userContext.setUser(null);
+        localStorage.removeItem("token");
+      }
       return;
     }
 

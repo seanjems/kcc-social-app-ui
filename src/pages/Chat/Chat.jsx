@@ -29,11 +29,12 @@ const Chat = () => {
     onlineUsers,
     setMessageBadge,
   } = useContext(ChatContext);
-  setMessageBadge(0);
+
   const [currentChat, setCurrentChat] = useState(null);
   const [sendMessage, setSendMessage] = useState(null);
   const [toggleToMobileRight, setToggleToMobileRight] = useState(true);
   const [browserHistoryBackup, setBrowserHistoryBackup] = useState(null);
+  const [countDownTimer, setCountDownTimer] = useState(null);
   // console.log(
   // "🚀 ~ file: Chat.jsx ~ line 24 ~ Chat ~ toggleToMobileRight",
   // toggleToMobileRight
@@ -52,6 +53,7 @@ const Chat = () => {
   }
 
   useEffect(() => {
+    setMessageBadge(0);
     if (mobile) {
       // Add a fake history event so that the back button does nothing if pressed once
       window.history.pushState(
@@ -103,11 +105,57 @@ const Chat = () => {
   // consoSle.log("plain line chats", chats);
   // Connect to SignalR
   useEffect(() => {
+    console.log(
+      "🚀 ~ file: Chat.jsx ~ line 107 ~ useEffect ~ connection",
+      connection
+    );
+    //re invoke connection from chats
+    startTimer();
+  }, [userContext.user.UserId]);
+
+  useEffect(() => {
+    // console.log(
+    //   "🚀 ~ file: Chat.jsx ~ line 117 ~ useEffect ~ countDownTimer",
+    //   countDownTimer
+    // );
+
+    if (countDownTimer === 0) {
+      waitAndRetryConnection();
+    }
+  }, [countDownTimer]);
+  //wait timer to re initaite connection if not started by app.js
+  const startTimer = async () => {
+    // Set the date we're counting down to
+    var countDownDate = new Date().getTime() + 10000;
+
+    // Update the count down every 1 second
+    var x = setInterval(function () {
+      // Get today's date and time
+      var now = new Date().getTime();
+
+      var distance = countDownDate - now;
+
+      // Time calculations for days, hours, minutes and seconds
+
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Display the result in the element with id="demo"
+      setCountDownTimer(seconds);
+
+      //cleanup
+      if (distance < 0) {
+        clearInterval(x);
+        setCountDownTimer(0);
+      }
+    }, 1000);
+  };
+
+  const waitAndRetryConnection = async () => {
     if (!connection) {
       console.log("reinvoiking connection from use effect");
       InitiateConnection();
     }
-  }, [userContext.user.UserId]);
+  };
 
   //check if screen is mobile
 
@@ -273,10 +321,10 @@ const Chat = () => {
   };
 
   const checkOnlineStatus = (userId) => {
-    console.log(
-      "🚀 ~ file: Chat.jsx ~ line 252 ~ checkOnlineStatus ~ userId",
-      userId
-    );
+    // console.log(
+    //   "🚀 ~ file: Chat.jsx ~ line 252 ~ checkOnlineStatus ~ userId",
+    //   userId
+    // );
 
     const online = onlineUsers.find((user) => {
       console.log(
@@ -324,7 +372,7 @@ const Chat = () => {
 
             {/* Floating start chat button */}
             <div
-              className="floatingChatbtn"
+              className="floatingChatbtn showOnMobileOnly"
               onClick={() => {
                 searchInputRef?.current?.focusOnSearch();
 

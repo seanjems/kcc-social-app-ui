@@ -269,11 +269,13 @@ const ChatBox = ({
                   </Fragment>
                 ))}
               </div>
+              <div style={{ minHeight: "50px", visibility: "hidden" }}></div>
               {/* chat-sender */}
               <div
                 className="chat-sender w-100 mb-2"
                 // onFocus={() => setIsMobileChatTyping(true)}
                 // onBlur={() => setIsMobileChatTyping(false)}
+                style={{ position: "fixed", bottom: "0.3rem" }}
               >
                 <div
                   onClick={() => imageRef.current.click()}
