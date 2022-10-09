@@ -123,8 +123,30 @@
     justify-content: center;
 }
 
+/* customising the comment section */
+.overlay{
+  padding: 3px !important;
+}
  
-  
+.overlay>div>form{
+  padding: 3px !important;
+}
+.replysection>div>form{
+  padding: 3px !important;
+}
+.postBtn{
+  padding: 2px 3px !important;
+  margin-left: 3px !important;
+}
+.cancelBtn{
+  padding: 2px 3px !important;
+  margin-left: 3px !important;
+}
+
+.userImg{
+  margin: 0px 2px !important;
+}
+
   /* .ChatBox-container{
     height: 90vh;
   } */

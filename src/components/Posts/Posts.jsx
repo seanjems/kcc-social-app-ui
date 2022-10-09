@@ -204,7 +204,14 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
             </span>
           </small>
         )}
-        <img src={Comment} alt="" />
+        <img
+          src={Comment}
+          alt=""
+          onClick={() => {
+            //console.log("coments here and data", postComments, data);
+            commentPage > 0 ? setCommentPage(0) : setCommentPage(1);
+          }}
+        />
         {data && (
           <small
             className="postActions"
