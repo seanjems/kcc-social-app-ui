@@ -205,7 +205,7 @@ const PostDetail = ({ dataObj }) => {
         <b>{data.name}</b>
       </span> */}
       <NameLink dataObj={data} callBackFn={handleSelectProfile} />
-      {data.desc && <span>{data.desc}</span>}
+      {data.desc && <span dangerouslySetInnerHTML={{ __html: data.desc }} />}
       {data.img && (
         <img
           src={data.img}

@@ -92,6 +92,10 @@ const PostShare = forwardRef((props, ref) => {
   //post to db
   const handleCreatePost = async (createPostInput) => {
     var { description, imageFile } = createPostInput;
+
+    //addlinebreaks
+    description = description.replace(/\n/g, ' <br> ');
+
     //set userId
 
     const userId = userContext.user.UserId;
@@ -168,13 +172,15 @@ const PostShare = forwardRef((props, ref) => {
                 onClick={() => navigate("../profile")}
               />
               <div className="shareInput">
-                <input
+                <textarea
                   type="textarea"
                   ref={sharePostRef}
                   placeholder="Share something . . .!"
                   onChange={handleChange("description")}
                   onBlur={() => setFieldTouched("description")}
-                ></input>
+                  rows="4"
+                  style={{ width: "100%", resize: "none" }}
+                />
               </div>
             </div>
             <div className="postOptions">

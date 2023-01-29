@@ -19,7 +19,7 @@
     width: 100%;
 }
 
-.shareInput>input{
+.shareInput>textarea{
     border: none;
     outline: none;
     background: var(--inputColor);

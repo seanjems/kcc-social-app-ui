@@ -1,0 +1,141 @@
+.Auth{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center; 
+    gap: 2rem;
+    position: relative;
+}
+
+.a-left{
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.a-left>img{
+    width: 6rem;
+    max-height: 6rem;
+    object-fit: cover;
+}
+
+.a-left>div{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.a-left>div>h1{
+    font-size: 3rem;
+    background: red;
+    background-image: var(--buttonBg);
+    background-repeat: repeat;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+
+}
+
+.a-left>div>span:nth-of-type(1){
+    font-size: 0.7rem;
+    font-weight: 400;
+   
+}
+.moses{
+    color: blue !important;
+    font-weight: bold;
+    border: solid 2px red;
+}
+.inputForm>form{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background: var(--cardColor);
+    border-radius: 1rem;
+    padding: 2rem;
+    align-items: center;
+    
+}
+
+.inputForm>form>div{
+    display: flex;
+    justify-content: center;
+    gap:  0.5rem;
+    flex: 1;
+    width: 100%;
+    
+}
+
+.inputForm>form>div>input{
+   flex:1;
+}
+
+.formInput{
+    background: var(--inputColor);
+    border: none;
+    outline: none;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.sign-button{
+    padding: 0.5rem 1rem;
+}
+
+
+.inputForm>form>span{
+    font-size: 0.8rem;
+    align-self: center;
+    cursor: pointer;
+    padding-top: 1rem;
+    color: var(--video);
+}
+.validationsSmall{
+    display: none;
+}
+.validationsLarge{
+display: block;
+}
+
+@media screen and (max-width:768px){
+    .Auth{
+        flex-direction: column;
+   max-height: 100vh;
+    justify-content: center;
+    align-items: center; 
+    gap: 2rem;
+    position: relative;
+    overflow-y: scroll;
+    }
+
+    .a-left{
+    
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .a-left>div>h1{
+        font-size: 2rem;
+        align-self: center;
+    }
+
+    .inputForm>form>div{
+      flex-direction: column;
+        justify-content: center;
+      
+    }
+    .validationsSmall{
+        display: block;
+    }
+    .validationsLarge{
+    display: none;
+    }
+    .sign-button{
+        padding: 0.5rem 1rem;
+    }
+}

@@ -2,6 +2,7 @@ import apiClient from "./apiClient";
 
 const endpointLogin = "api/Authorization/Login";
 const endpointCreateUser = "api/Authorization/CreateUser";
+const endpointResetUserPassword = "api/Authorization/ResetPassword";
 
 const tryLogin = (email, password, rememberMe = false) =>
   apiClient.post(endpointLogin, {
@@ -18,8 +19,16 @@ const tryCreateUser = (password, emailAddress, userName, name, surName) =>
     name,
     surName,
   });
-
+const tryResetUserPassword = (password, emailAddress, resetToken) => {
+  console.log("🚀 ~ file: authorization.js:23 ~ resetToken", resetToken);
+  apiClient.post(endpointResetUserPassword, {
+    password,
+    emailAddress,
+    resetToken,
+  });
+};
 export default {
   tryLogin,
   tryCreateUser,
+  tryResetUserPassword,
 };

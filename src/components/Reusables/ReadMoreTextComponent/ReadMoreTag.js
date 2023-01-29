@@ -26,17 +26,15 @@ const ReadMoreTag = ({
   if (!secondaryText) {
     displayText = (
       <div className="display-text-group">
-        <span className="displayed-text">
-          {`${primaryText} ${secondaryText}`}
-        </span>
+        <span className="displayed-text" dangerouslySetInnerHTML={{ __html: `${primaryText} ${secondaryText}` }}/>
+         
       </div>
     );
   } else if (displaySecondary) {
     displayText = (
       <div className="display-text-group">
-        <span className="displayed-text" onClick={setStatus.bind()}>
-          {`${primaryText} ${secondaryText}`}
-        </span>
+        <span className="displayed-text" onClick={setStatus.bind()} dangerouslySetInnerHTML={{ __html:  `${primaryText} ${secondaryText}` }}/>
+       
         <div
           className="read-more-button show-more-option-jquery"
           onClick={setStatus.bind()}
@@ -50,7 +48,7 @@ const ReadMoreTag = ({
       <div className="display-text-group">
         <span className="displayed-text">
           {primaryText}
-          <span style={{ display: "none" }}>{secondaryText}</span>
+          <span style={{ display: "none" }} dangerouslySetInnerHTML={{ __html: secondaryText}}/>
           <div
             className="read-more-button show-more-option-jquery"
             onClick={setStatus.bind()}

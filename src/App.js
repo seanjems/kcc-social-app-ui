@@ -17,6 +17,7 @@ import { MobileSearch } from "./pages/MobileSearch/MobileSearch";
 import { Detector } from "react-detect-offline";
 import ChatContext from "./auth/ChatContext";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
 function App() {
   //redirect after login to intended page
@@ -378,6 +379,10 @@ function App() {
                           <Navigate to="../auth" />
                         )
                       }
+                    />
+                    <Route
+                      path="/resetpassword/:resettoken"
+                      element={<ResetPassword />}
                     />
                   </Routes>
                 </div>
