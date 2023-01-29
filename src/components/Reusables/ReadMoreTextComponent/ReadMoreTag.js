@@ -1,6 +1,7 @@
 import React from "react";
 import ReadmoreTrimer from "./ReadmoreTrimer";
 import { useState } from "react";
+import DOMPurify from 'dompurify';
 
 const ReadMoreTag = ({
   text,
@@ -9,9 +10,16 @@ const ReadMoreTag = ({
   max,
   readMoreTextOption = "Read More",
 }) => {
+  const PurifyLineBreaks = (text) => {
+    const purifiedText = DOMPurify.sanitize(text, {ALLOWED_TAGS: ['br']});
+    return purifiedText;
+  };
+  text = PurifyLineBreaks(text);
   let args = [text, min, ideal, max];
 
   const [primaryText, secondaryText] = ReadmoreTrimer(...args);
+
+ 
 
   //states
   const [displaySecondary, setDisplaySecondary] = useState(false);

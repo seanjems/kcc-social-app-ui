@@ -15,6 +15,8 @@ import { IconX } from "@tabler/icons";
 import posts from "../../api/posts";
 import NameLink from "../NameLink/NameLink";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from 'dompurify';
+
 
 const PostDetail = ({ dataObj }) => {
   //   console.log("🚀 ~ file: Posts.jsx ~ line 20 ~ Posts ~ data", data);
@@ -37,6 +39,11 @@ const PostDetail = ({ dataObj }) => {
   const handleSelectProfile = (data) => {
     console.log(data, "data from call back");
     navigate(`/${data?.userName}`);
+  };
+
+  const PurifyLineBreaks = (text) => {
+    const purifiedText = DOMPurify.sanitize(text, {ALLOWED_TAGS: ['br']});
+    return purifiedText;
   };
 
   const handleLike = async () => {
@@ -205,7 +212,7 @@ const PostDetail = ({ dataObj }) => {
         <b>{data.name}</b>
       </span> */}
       <NameLink dataObj={data} callBackFn={handleSelectProfile} />
-      {data.desc && <span dangerouslySetInnerHTML={{ __html: data.desc }} />}
+      {data.desc && <span dangerouslySetInnerHTML={{ __html: PurifyLineBreaks(data.desc) }} />}
       {data.img && (
         <img
           src={data.img}

@@ -19,6 +19,7 @@ import { showNotification } from "@mantine/notifications";
 import Resizer from "react-image-file-resizer";
 import { useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
+import DOMPurify from 'dompurify';
 
 const PostShare = forwardRef((props, ref) => {
   const {
@@ -49,7 +50,10 @@ const PostShare = forwardRef((props, ref) => {
       sharePostRef && sharePostRef.current?.focus();
     },
   }));
-
+  const PurifyLineBreaks = (text) => {
+    const purifiedText = DOMPurify.sanitize(text, {ALLOWED_TAGS: ['br']});
+    return purifiedText;
+  };
   const user = userContext.user;
   const navigate = useNavigate();
   const onImageChanged = async (event) => {
@@ -95,7 +99,8 @@ const PostShare = forwardRef((props, ref) => {
 
     //addlinebreaks
     description = description.replace(/\n/g, ' <br> ');
-
+    description = PurifyLineBreaks(description);
+    console.log("purified content", description);
     //set userId
 
     const userId = userContext.user.UserId;
