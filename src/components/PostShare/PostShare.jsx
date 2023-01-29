@@ -179,7 +179,7 @@ const PostShare = forwardRef((props, ref) => {
               <div className="shareInput">
                 <textarea
                   type="textarea"
-                  ref={sharePostRef}
+                  ref={shareTextInput}
                   placeholder="Share something . . .!"
                   onChange={handleChange("description")}
                   onBlur={() => setFieldTouched("description")}
