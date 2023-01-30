@@ -1,7 +1,7 @@
 import React from "react";
 import ReadmoreTrimer from "./ReadmoreTrimer";
 import { useState } from "react";
-import DOMPurify from 'dompurify';
+import TextWithTags from "../TextWithHarshTags/TextWithTags";
 
 const ReadMoreTag = ({
   text,
@@ -10,11 +10,7 @@ const ReadMoreTag = ({
   max,
   readMoreTextOption = "Read More",
 }) => {
-  const PurifyLineBreaks = (text) => {
-    const purifiedText = DOMPurify.sanitize(text, {ALLOWED_TAGS: ['br']});
-    return purifiedText;
-  };
-  text = PurifyLineBreaks(text);
+
   let args = [text, min, ideal, max];
 
   const [primaryText, secondaryText] = ReadmoreTrimer(...args);
@@ -34,14 +30,15 @@ const ReadMoreTag = ({
   if (!secondaryText) {
     displayText = (
       <div className="display-text-group">
-        <span className="displayed-text" dangerouslySetInnerHTML={{ __html: `${primaryText} ${secondaryText}` }}/>
+        
+        <span className="displayed-text"><TextWithTags  text = {`${primaryText} ${secondaryText}`}/></span>
          
       </div>
     );
   } else if (displaySecondary) {
     displayText = (
       <div className="display-text-group">
-        <span className="displayed-text" onClick={setStatus.bind()} dangerouslySetInnerHTML={{ __html:  `${primaryText} ${secondaryText}` }}/>
+        <span className="displayed-text" onClick={setStatus.bind()} ><TextWithTags  text = {`${primaryText} ${secondaryText}`}/></span>
        
         <div
           className="read-more-button show-more-option-jquery"
@@ -55,8 +52,9 @@ const ReadMoreTag = ({
     displayText = (
       <div className="display-text-group">
         <span className="displayed-text">
-          {primaryText}
-          <span style={{ display: "none" }} dangerouslySetInnerHTML={{ __html: secondaryText}}/>
+        <TextWithTags  text =  {primaryText}/>
+         
+          <span style={{ display: "none" }} ><TextWithTags  text = {`${secondaryText}`}/></span>
           <div
             className="read-more-button show-more-option-jquery"
             onClick={setStatus.bind()}

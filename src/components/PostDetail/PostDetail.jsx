@@ -16,6 +16,7 @@ import posts from "../../api/posts";
 import NameLink from "../NameLink/NameLink";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from 'dompurify';
+import TextWithTags from "../Reusables/TextWithHarshTags/TextWithTags";
 
 
 const PostDetail = ({ dataObj }) => {
@@ -212,7 +213,7 @@ const PostDetail = ({ dataObj }) => {
         <b>{data.name}</b>
       </span> */}
       <NameLink dataObj={data} callBackFn={handleSelectProfile} />
-      {data.desc && <span dangerouslySetInnerHTML={{ __html: PurifyLineBreaks(data.desc) }} />}
+      {data.desc && <TextWithTags text={PurifyLineBreaks(data.desc)}/>}
       {data.img && (
         <img
           src={data.img}

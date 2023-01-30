@@ -19,7 +19,8 @@ import { showNotification } from "@mantine/notifications";
 import Resizer from "react-image-file-resizer";
 import { useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
+import { result } from "lodash";
 
 const PostShare = forwardRef((props, ref) => {
   const {
@@ -51,7 +52,7 @@ const PostShare = forwardRef((props, ref) => {
     },
   }));
   const PurifyLineBreaks = (text) => {
-    const purifiedText = DOMPurify.sanitize(text, {ALLOWED_TAGS: ['br']});
+    const purifiedText = DOMPurify.sanitize(text, { ALLOWED_TAGS: ["br"] });
     return purifiedText;
   };
   const user = userContext.user;
@@ -72,6 +73,15 @@ const PostShare = forwardRef((props, ref) => {
       }
     }
   };
+  //extract harstags from text
+  const extractTagsToArray = (text) => {
+    const regex = /(?:^|\s)(#[a-z\d-]+)/gi;
+    const tags = text.match(regex) || [];
+    result = tags.map((tag) => tag.trim());
+    console.log("Captured tags", result);
+    return result;
+  };
+
   //Trim image size onclient
   const resizeFile = (file) =>
     new Promise((resolve) => {
@@ -98,7 +108,7 @@ const PostShare = forwardRef((props, ref) => {
     var { description, imageFile } = createPostInput;
 
     //addlinebreaks
-    description = description.replace(/\n/g, ' <br> ');
+    description = description.replace(/\n/g, " <br> ");
     description = PurifyLineBreaks(description);
     console.log("purified content", description);
     //set userId
@@ -109,6 +119,7 @@ const PostShare = forwardRef((props, ref) => {
     var formData = new FormData();
     formData.append("imageFile", imageFile);
     formData.append("description", description);
+    formData.append("hashTags", extractTagsToArray(description));
     formData.append("userId", userId);
     //validate passwords
 

@@ -37,6 +37,8 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
     navigate(`/${data?.userName}`);
   };
 
+ 
+
   const handleGetComment = async () => {
     var postId = data?.id;
     var list = await comments.tryGetCommentsPerPost(postId);
