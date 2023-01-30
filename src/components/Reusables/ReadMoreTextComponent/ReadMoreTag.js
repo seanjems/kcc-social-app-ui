@@ -15,8 +15,6 @@ const ReadMoreTag = ({
 
   const [primaryText, secondaryText] = ReadmoreTrimer(...args);
 
- 
-
   //states
   const [displaySecondary, setDisplaySecondary] = useState(false);
   const [readMoreText, setReadMoreText] = useState(readMoreTextOption);
