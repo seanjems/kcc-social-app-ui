@@ -33,6 +33,7 @@ const Profile = ({ userProfileId }) => {
   const mobile = window.innerWidth <= 768 ? true : false;
 
   let { userName } = useParams();
+  console.log("🚀 ~ file: Profile.jsx:36 ~ Profile ~ userName in the profile page", userName)
   const navigate = useNavigate();
 
   useEffect(() => {

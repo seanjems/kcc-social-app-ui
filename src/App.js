@@ -18,6 +18,7 @@ import { Detector } from "react-detect-offline";
 import ChatContext from "./auth/ChatContext";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import { HarshTagTimeline } from "./pages/HarshTags/HarshTagTimeline";
 
 function App() {
   //redirect after login to intended page
@@ -309,7 +310,16 @@ function App() {
                         )
                       }
                     />
-
+<Route
+                      path="/trending/:tag"
+                      element={
+                        user ? (
+                          <HarshTagTimeline setUser={setUser} replace/>
+                        ) : (
+                          <Navigate to="../auth" />
+                        )
+                      }
+                    />
                     <Route
                       path="/profile"
                       element={
@@ -358,18 +368,9 @@ function App() {
                         )
                       }
                     />
-                    <Route
-                      path="*"
-                      element={
-                        <main style={{ padding: "1rem" }}>
-                          <p>There's nothing here!</p>
-                        </main>
-                      }
-                    />
-                    <Route
-                      path="/:userName"
-                      element={user ? <Profile /> : <Navigate to="../auth" />}
-                    />
+                     
+                    
+                       
                     <Route
                       path="/post/:postId"
                       element={
@@ -380,11 +381,111 @@ function App() {
                         )
                       }
                     />
+                
                     <Route
                       path="/resetpassword/:resettoken"
                       element={<ResetPassword />}
                     />
+                    <Route
+                      path="/:userName"
+                      element={user ? <Profile /> : <Navigate to="../auth" />}
+                    />
+                     <Route
+                      path="*"
+                      element={
+                        <main style={{ padding: "1rem" }}>
+                          <p>There's nothing here!</p>
+                        </main>
+                      }
+                    />
                   </Routes>
+
+                  {/* <Routes>
+                    <Route
+                      path="/auth"
+                      element={
+                        user ? (
+                          <Navigate to={from} replace />
+                        ) : (
+                          <Auth setUser={setUser} />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/profile/:userName"
+                      element={
+                        user ? (
+                          <Profile setUser={setUser} user={user} />
+                        ) : (
+                          <Navigate to="../auth" replace />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/chat"
+                      element={
+                        user ? <Chat /> : <Navigate to="../auth" replace />
+                      }
+                    />
+                    <Route
+                      path="/home"
+                      element={
+                        user ? (
+                          <Home setUser={setUser} />
+                        ) : (
+                          <Navigate to="../auth" replace />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/search"
+                      element={
+                        user ? (
+                          <MobileSearch />
+                        ) : (
+                          <Navigate to="../auth" replace />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/trending/:tag"
+                      element={
+                        user ? (
+                          <HarshTagTimeline setUser={setUser} replace />
+                        ) : (
+                          <Navigate to="../auth" />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/post/:postId"
+                      element={
+                        user ? (
+                          <Home setUser={setUser} />
+                        ) : (
+                          <Navigate to="../auth" />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/resetpassword/:resettoken"
+                      element={<ResetPassword />}
+                    />
+
+                    <Route
+                      path="*"
+                      element={
+                        <main style={{ padding: "1rem" }}>
+                          <p>There's nothing here!</p>
+                        </main>
+                      }
+                    />
+                  </Routes> */}
                 </div>
 
                 {/* Mobile Launcher */}

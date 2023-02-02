@@ -33,10 +33,10 @@ const ResetPassword = (props) => {
   const [token, setToken] = useState();
 
   let { resettoken } = useParams();
-  console.log(
-    "🚀 ~ file: ResetPassword.jsx:32 ~ ResetPassword ~ useParams()",
-    useParams()
-  );
+  // console.log(
+  //   "🚀 ~ file: ResetPassword.jsx:32 ~ ResetPassword ~ useParams()",
+  //   useParams()
+  // );
   useEffect(() => {
     setToken(resettoken);
   }, []);

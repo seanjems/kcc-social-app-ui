@@ -1,0 +1,103 @@
+.HarshTagTimeline {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 20rem auto 20rem;
+    position: relative;
+    height: 100%;
+}
+
+/* .Home>:nth-child(1){
+    flex: 1;
+    
+}
+.Home>:nth-child(2){
+    flex: 3;
+    
+}
+.Home>:nth-child(3){
+    flex: 1;
+    
+} */
+.hideMobile {
+    display: block;
+}
+.showOnMobileOnly{
+    display: none;
+}
+
+
+
+/* @media screen and (max-width:930px) {
+    .Home {
+        grid-template-columns: auto;
+    }
+
+    .ProfileSide {
+        display: none
+    }
+
+    .RightSide {
+        display: none;
+    }
+
+} */
+@media screen and (max-width:768px) {
+
+    .Home {
+        grid-template-columns: auto;
+    }
+
+    .ProfileSide {
+        display: none
+    }
+
+    .RightSide {
+        display: none;
+    }
+
+    /* .PostShare  {
+        display:none
+    } */
+
+    .hideMobile {
+        display: none;
+    }
+    .showOnMobileOnly{
+        display: block;
+    }
+    /* .Auth {
+        max-height: 90vh;
+    }
+
+    .ProfileCenter {
+        max-height: 90vh;
+    }
+
+    .PostSide {
+        max-height: 90vh;
+    } */
+
+    .App {
+        display: flex;
+        flex-direction: column;
+        /* justify-content: end; */
+        padding-top: 1rem;
+    }
+
+
+    .navIcons {
+        justify-content: space-around;
+        background-color: white;
+    }
+
+    .isMobileSearch {
+
+        display: grid;
+        gap: 0rem;
+        grid-template-columns: auto !important;
+        position: relative;
+    }
+  
+
+
+}

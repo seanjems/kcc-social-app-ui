@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
 import DOMPurify from "dompurify";
 import { result } from "lodash";
+import ErrorTextComponent from  "../../components/Reusables/ErrorTextComponent"
 
 const PostShare = forwardRef((props, ref) => {
   const {
@@ -59,8 +60,7 @@ const PostShare = forwardRef((props, ref) => {
   const navigate = useNavigate();
   const onImageChanged = async (event) => {
     if (event.target.files && event.target.files[0]) {
-      //let img = event.target.files[0];
-
+      //let img = event.target.files[0]
       try {
         const file = event.target.files[0];
         const img = await resizeFile(file);
@@ -100,7 +100,7 @@ const PostShare = forwardRef((props, ref) => {
     });
   //validationObjects
   const createPostFormValidation = Yup.object().shape({
-    description: Yup.string().required().min(3).max(2000).label("description"),
+    description: Yup.string().required().min(3).max(10000).label("Post Description"),
   });
 
   //post to db
@@ -181,12 +181,21 @@ const PostShare = forwardRef((props, ref) => {
       {({ handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
         <Form>
           <div className="PostShare">
+            <div style={{marginLeft:"2rem"}}>
+
+          <ErrorTextComponent 
+                error={errors.description}
+                visible={touched.description && errors.description && (errors.description).includes("must be at most 10000 characters")}
+              />
+            </div>
+
             <div>
               <img
                 src={userProfile?.profilePicUrl}
                 alt=""
                 onClick={() => navigate("../profile")}
               />
+              
               <div className="shareInput">
                 <textarea
                   type="textarea"

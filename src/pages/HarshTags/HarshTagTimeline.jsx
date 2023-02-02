@@ -3,7 +3,7 @@ import PostSide from "../../components/PostSide/PostSide";
 import ProfileSide from "../../components/profileSide/ProfileSide";
 import RightSide from "../../components/RightSide/RightSide";
 import PostsData from "../../Data/PostsData";
-import "./Home.css";
+import "./HarshTagTimeline.css";
 import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
 import profile from "../../api/profile";
@@ -12,7 +12,9 @@ import { useLocation, useParams } from "react-router-dom";
 import { useRef } from "react";
 import { IconSend } from "@tabler/icons";
 
-export const Home = () => {
+
+export const HarshTagTimeline = ({harshTag}) => {
+  console.log("🚀 ~ file: HarshTagTimeline.jsx:17 ~ HarshTagTimeline ~ harshTag in the componet orig", harshTag)
   const userContext = useContext(AuthContext);
   const [pageNumber, setPageNumber] = useState(1);
   const [fetchList, setFetchList] = useState([]);
@@ -22,19 +24,26 @@ export const Home = () => {
   const [hasMore, setHasMore] = useState(true);
   const [reSetPosts, setReSetPosts] = useState(null);
 
-  let { postId } = useParams();
+ 
+
+  let { tag } = useParams();
+  console.log("🚀 ~ file: HarshTagTimeline.jsx:30 ~ HarshTagTimeline ~ tag", tag)
+  
+  // let { postId } = useParams();
   let { pathname } = useLocation();
-  console.log("🚀 ~ file: Home.jsx:27 ~ Home ~ pathname", pathname)
+  console.log("🚀 ~ file: HarshTagTimeline.jsx:31 ~ HarshTagTimeline ~ pathname", pathname)
+  harshTag=tag;
   const isMobileSearch = pathname === "/search";
   //console.log("🚀 ~ file: Home.jsx ~ line 21 ~ Home ~ postId", postId);
   useEffect(() => {
-    setSelectedPostDetail(null);
-    if (postId) {
-      getSingleItem(postId);
-    }
-    getItems();
+    // setSelectedPostDetail(null);
+    // if (postId) {
+    //   getSingleItem(postId);
+    // }
+    
+    getItems(1);
     getUserProfile();
-  }, [useParams().postId]);
+  }, [useParams().tag]);
 
   //hard rest posts on create post
   useEffect(() => {
@@ -55,7 +64,10 @@ export const Home = () => {
     setHasMore(true);
     // call api
     postPageNumber = postPageNumber ?? pageNumber;
-    var result = await posts.tryGetAllPostPaged(postPageNumber);
+    if (harshTag[0] === "#" && harshTag.length>1) {
+      harshTag = harshTag.substr(1);
+  }
+    var result = await posts.tryGetAllPostPerTagPaged(harshTag, postPageNumber);
     if (!result.ok) {
       setUserProfile(null);
       showNotification({
@@ -117,7 +129,8 @@ export const Home = () => {
   };
   const getUserProfile = async (userProfileId) => {
     var userId = userProfileId ? userProfileId : userContext.user.UserId;
-    // console.log("userId and user context", userContext, userId);
+    console.log("🚀 ~ file: HarshTagTimeline.jsx:130 ~ getUserProfile ~ userProfileId", userProfileId)
+  console.log("userId and user context", userContext, userId);
 
     // call api
 
