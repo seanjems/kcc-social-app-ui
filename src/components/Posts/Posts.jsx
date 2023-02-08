@@ -17,8 +17,17 @@ import posts from "../../api/posts";
 import NameLink from "../NameLink/NameLink";
 import { useNavigate } from "react-router-dom";
 import ReadMoreTag from "../Reusables/ReadMoreTextComponent/ReadMoreTag";
-import { ArrowContainer, Popover } from 'react-tiny-popover'
-import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton, WhatsappIcon, WhatsappShareButton } from "react-share";
+import { ArrowContainer, Popover } from "react-tiny-popover";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from "react-share";
+
+import ReactPlayer from "react-player/lazy";
 
 const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
   const userContext = useContext(AuthContext);
@@ -40,8 +49,6 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
     console.log(data, "data from call back");
     navigate(`/${data?.userName}`);
   };
-
- 
 
   const handleGetComment = async () => {
     var postId = data?.id;
@@ -104,9 +111,7 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
     setPostComments(result.data.result);
     setPostCommentsBackup(result.data.result);
   };
-  const handleSharingPost=()=>{
-
-  }
+  const handleSharingPost = () => {};
   const handleEditComment = async (dataToApi) => {
     console.log("data to send to the api", dataToApi);
     var { userId, comId, avatarUrl, userProfile, fullName, text, replies } =
@@ -199,6 +204,27 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
           onClick={() => navigate(`../post/${data.id}`)}
         />
       )}
+      {data.videoUrl && (
+        <div className="player-wrapper hideMobile">
+          <ReactPlayer
+            url={data.videoUrl}
+            width="100%"
+            playsinline
+            aspectRatio="16:9"
+          />
+        </div>
+      )}
+      {data.videoUrl && (
+        <div className="player-wrapper showOnMobileOnly">
+          <ReactPlayer
+            url={data.videoUrl}
+            width="100%"
+            height="100%"
+            playsinline
+            aspectRatio="16:9"
+          />
+        </div>
+      )}
       <div className="shareOptions">
         <img
           src={data.liked ? Liked : Like}
@@ -245,28 +271,71 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
               position={position}
               childRect={childRect}
               popoverRect={popoverRect}
-              arrowColor={'rgba(40, 52, 62, 0.07)'}
+              arrowColor={"rgba(40, 52, 62, 0.07)"}
               arrowSize={15}
               arrowStyle={{ opacity: 0.7 }}
-              className='popover-arrow-container'
-              arrowClassName='popover-arrow'
+              className="popover-arrow-container"
+              arrowClassName="popover-arrow"
             >
               <div
-                style={{ backgroundColor: 'rgba(40, 52, 62, 0.07)', opacity: 1 ,borderRadius:"10px",padding:"0.5rem", display:"flex", gap:"0.5rem"}}
+                style={{
+                  backgroundColor: "rgba(40, 52, 62, 0.07)",
+                  opacity: 1,
+                  borderRadius: "10px",
+                  padding: "0.5rem",
+                  display: "flex",
+                  gap: "0.5rem",
+                }}
                 onClick={() => setIsPopoverOpen(!isPopoverOpen)}
               >
-                <FacebookShareButton url = {`https://social.kampalacentraladventist.org/post/${data.id}`} quote={data?.desc?.length??0>50 ?data.desc.substring(0,50)+" ...via SDA Social ":data.desc.length?data.desc +" ...via SDA Social": "Via SDA Social"}><FacebookIcon size={25} round /></FacebookShareButton>
-                <WhatsappShareButton url = {`https://social.kampalacentraladventist.org/post/${data.id}`} title={data?.desc?.length??0>50 ?data.desc.substring(0,50)+" ...via SDA Social ":data.desc.length?data.desc +" ...via SDA Social": "Via SDA Social"}><WhatsappIcon size={25} round /></WhatsappShareButton>
-                <TwitterShareButton url = {`https://social.kampalacentraladventist.org/post/${data.id}`} title={data?.desc?.length??0>50 ?data.desc.substring(0,50)+" ...via SDA Social ":data.desc.length?data.desc +" ...via SDA Social": "Via SDA Social"}><TwitterIcon size={25} round /></TwitterShareButton>
-                <span onClick={()=>handleSharingPost(data.id)}><img src={Logo} style={{width:"2rem"}} alt=""/></span>
+                <FacebookShareButton
+                  url={`https://social.kampalacentraladventist.org/post/${data.id}`}
+                  quote={
+                    data?.desc?.length ?? 0 > 50
+                      ? data.desc.substring(0, 50) + " ...via SDA Social "
+                      : data.desc.length
+                      ? data.desc + " ...via SDA Social"
+                      : "Via SDA Social"
+                  }
+                >
+                  <FacebookIcon size={25} round />
+                </FacebookShareButton>
+                <WhatsappShareButton
+                  url={`https://social.kampalacentraladventist.org/post/${data.id}`}
+                  title={
+                    data?.desc?.length ?? 0 > 50
+                      ? data.desc.substring(0, 50) + " ...via SDA Social "
+                      : data.desc.length
+                      ? data.desc + " ...via SDA Social"
+                      : "Via SDA Social"
+                  }
+                >
+                  <WhatsappIcon size={25} round />
+                </WhatsappShareButton>
+                <TwitterShareButton
+                  url={`https://social.kampalacentraladventist.org/post/${data.id}`}
+                  title={
+                    data?.desc?.length ?? 0 > 50
+                      ? data.desc.substring(0, 50) + " ...via SDA Social "
+                      : data.desc.length
+                      ? data.desc + " ...via SDA Social"
+                      : "Via SDA Social"
+                  }
+                >
+                  <TwitterIcon size={25} round />
+                </TwitterShareButton>
+                <span onClick={() => handleSharingPost(data.id)}>
+                  <img src={Logo} style={{ width: "2rem" }} alt="" />
+                </span>
               </div>
             </ArrowContainer>
           )}
         >
-          <div onClick={() => setIsPopoverOpen(!isPopoverOpen)}><img src={Share} alt="" /></div>
+          <div onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+            <img src={Share} alt="" />
+          </div>
         </Popover>
-        
-        
+
         <small className="postActions">
           <span>{data.shares}</span>
           <span className="hideMobile">
