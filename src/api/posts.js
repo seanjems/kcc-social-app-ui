@@ -12,15 +12,14 @@ const tryGetAllPostPaged = (page, userProfileId, userName = null) =>
   apiClient.get(
     `${endpointCreatePost}?page=${page}&userProfileId=${userProfileId}&userName=${userName}`
   );
-  const tryGetTrendingTags = (page) =>
-  apiClient.get(
-    `${endpointCreatePost}/GetTrendingTags?page=${page}`
+const tryGetTrendingTags = (page) =>
+  apiClient.get(`${endpointCreatePost}/GetTrendingTags?page=${page}`);
+const tryGetAllPostPerTagPaged = (keyWords, page = 1) => {
+  return apiClient.get(
+    `${endpointSearchPosts}?keyWords=${keyWords}&page=${page}`
   );
-  const tryGetAllPostPerTagPaged = (keyWords,  page=1) => {    
-    return  apiClient.get(
-      `${endpointSearchPosts}?keyWords=${keyWords}&page=${page}`);
-  }
-  
+};
+
 const tryGetSinglePost = (postId) =>
   apiClient.get(`${endpointGetallPostPaged}/${postId}`);
 const tryLikePost = (postLikeObj) =>
@@ -31,5 +30,5 @@ export default {
   tryGetAllPostPerTagPaged,
   tryLikePost,
   tryGetSinglePost,
-  tryGetTrendingTags
+  tryGetTrendingTags,
 };

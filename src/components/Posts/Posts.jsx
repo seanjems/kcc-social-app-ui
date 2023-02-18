@@ -28,6 +28,7 @@ import {
 } from "react-share";
 
 import ReactPlayer from "react-player/lazy";
+import VideoPlayer from "../VideoPlayer/VideoPlayer";
 
 const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
   const userContext = useContext(AuthContext);
@@ -205,17 +206,28 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
         />
       )}
       {data.videoUrl && (
-        <div className="player-wrapper hideMobile">
-          <ReactPlayer
+        <div className="hideMobile">
+          {/* <video
+            id="videoPlayer"
+            src={data.videoUrl}
+            width="650"
+            controls
+            muted="muted"
+            autoplay
+          /> */}
+          <VideoPlayer videoUrl={data.videoUrl} />
+
+          {/* <ReactPlayer
             url={data.videoUrl}
             width="100%"
-            playsinline
-            aspectRatio="16:9"
-          />
+            controls
+            // playsinline
+            // aspectRatio="16:9"
+          /> */}
         </div>
       )}
       {data.videoUrl && (
-        <div className="player-wrapper showOnMobileOnly">
+        <div className="showOnMobileOnly">
           <ReactPlayer
             url={data.videoUrl}
             width="100%"

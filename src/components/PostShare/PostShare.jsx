@@ -18,7 +18,7 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import AuthContext from "../../auth/context";
 import posts from "../../api/posts";
-import { showNotification } from "@mantine/notifications";
+import { showNotification, updateNotification } from "@mantine/notifications";
 import Resizer from "react-image-file-resizer";
 import { useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
@@ -28,8 +28,12 @@ import ErrorTextComponent from "../../components/Reusables/ErrorTextComponent";
 import { ArrowContainer, Popover } from "react-tiny-popover";
 import ReactPlayer from "react-player";
 
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
 //video editor
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+import { IconCheck, IconX } from "@tabler/icons";
 const ffmpeg = createFFmpeg({ log: true });
 
 const PostShare = forwardRef((props, ref) => {
@@ -44,12 +48,23 @@ const PostShare = forwardRef((props, ref) => {
   const [image, setImage] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
+  console.log(
+    "🚀 ~ file: PostShare.jsx:50 ~ PostShare ~ videoPreview",
+    videoPreview
+  );
+
   const [uploadVideoFile, setUploadVideoFile] = useState(null);
+  console.log(
+    "🚀 ~ file: PostShare.jsx:56 ~ PostShare ~ uploadVideoFile",
+    uploadVideoFile
+  );
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [shareVideoLink, setShareVideoLink] = useState(null);
   const [compressionProgress, setCompressionProgress] = useState(null);
 
   const [ready, setReady] = useState(false);
+  const [downloadingVideoProcessor, setDownloadingVideoProcessor] =
+    useState(false);
   const [video, setVideo] = useState();
 
   const imageRef = useRef();
@@ -80,15 +95,11 @@ const PostShare = forwardRef((props, ref) => {
 
   //download ffmpeg lib
   const load = async () => {
+    setDownloadingVideoProcessor(true);
     await ffmpeg.load();
     setReady(true);
+    setDownloadingVideoProcessor(false);
   };
-
-  useEffect(() => {
-    if (!ready) {
-      load();
-    }
-  }, []);
 
   //compress video with ffmpeg
 
@@ -96,6 +107,9 @@ const PostShare = forwardRef((props, ref) => {
     const typicalWebVideoSize = 2500000; // 1 MB
     const typicalWebVideoPlaytime = 60; // 60 seconds
 
+    if (!ready) {
+      await load();
+    }
     const fileSize = file.size;
     const filePlaytime = await getVideoPlaytime(file);
 
@@ -136,6 +150,50 @@ const PostShare = forwardRef((props, ref) => {
     });
   };
 
+  // const getVideoThumbnail = async (videoFile) => {
+  //   // Write the file to memory
+  //   ffmpeg.FS("writeFile", "test.mp4", await fetchFile(videoFile));
+
+  //   // Run the FFmpeg command to extract the 10th frame
+  //   await ffmpeg.run(
+  //     "-i",
+  //     "test.mp4",
+  //     "-vframes",
+  //     "1",
+  //     "-ss",
+  //     "00:00:09.999",
+  //     "thumbnail.png"
+  //   );
+
+  //   // Read the result
+  //   const data = ffmpeg.FS("readFile", "thumbnail.png");
+
+  //   // Create a Blob object
+  //   var blobObj = new Blob([data.buffer], { type: "image/*" });
+
+  //   // Create a URL
+  //   const url = URL.createObjectURL(blobObj);
+  //   console.log("🚀 ~ file: PostShare.jsx:163 ~ getVideoThumbnail ~ url", url);
+
+  //   // Update the videoThumbnail state variable
+  //   setVideoThumbnail(url);
+  // };
+
+  const cancelProcessingVideo = async () => {
+    if (ready) {
+      await ffmpeg.exit();
+
+      setCompressionProgress(null);
+      setReady(false);
+      setUploadVideoFile(null);
+      setShareVideoLink(null);
+    }
+  };
+  const cancelImageUpload = (e) => {
+    setImage(null);
+    setUploadFile(null);
+  };
+
   const compressVideoAsync = async (file) => {
     console.log(
       "🚀 ~ file: PostShare.jsx:93 ~ compressVideoAsync ~ file",
@@ -151,13 +209,14 @@ const PostShare = forwardRef((props, ref) => {
       // Write the file to memory
       ffmpeg.FS("writeFile", "test.mp4", await fetchFile(file));
 
+      setVideoPreview(null);
+
       // Start a loop to periodically update the compression progress
       const interval = setInterval(() => {
         ffmpeg.setProgress(({ ratio }) => {
-          console.log(ratio);
-          setCompressionProgress((ratio * 100).toFixed(1));
+          setCompressionProgress((ratio * 100).toFixed(0));
         });
-      }, 500);
+      }, 2000);
 
       // Run the FFMpeg command
       await ffmpeg.run(
@@ -175,8 +234,6 @@ const PostShare = forwardRef((props, ref) => {
         "aac",
         "-b:a",
         "64k",
-        "-vf",
-        "scale=854:480",
         "-f",
         "mp4",
         "output.mp4"
@@ -195,7 +252,8 @@ const PostShare = forwardRef((props, ref) => {
     // Create a URL
     const url = URL.createObjectURL(bigFile ? blobObj : file);
     setVideoPreview({ vid: url });
-    setUploadVideoFile(blobObj);
+    var fileName = Math.random().toString(36).substring(2, 15) + ".mp4";
+    setUploadVideoFile(bigFile ? new File([blobObj], fileName + ".mp4") : file);
   };
 
   const onImageChanged = async (event) => {
@@ -260,11 +318,15 @@ const PostShare = forwardRef((props, ref) => {
       .min(3)
       .max(10000)
       .label("Post Description"),
-    exterlVideoUrl: Yup.string().url("Invalid URL").required("URL is required"),
   });
 
   //post to db
   const handleCreatePost = async (createPostInput) => {
+    console.log(
+      "🚀 ~ file: PostShare.jsx:317 ~ handleCreatePost ~ createPostInput",
+      createPostInput
+    );
+
     var { description, imageFile } = createPostInput;
 
     //addlinebreaks
@@ -278,6 +340,8 @@ const PostShare = forwardRef((props, ref) => {
 
     var formData = new FormData();
     formData.append("imageFile", imageFile);
+    formData.append("videoFile", uploadVideoFile);
+    formData.append("externalVideoLink", shareVideoLink);
     formData.append("description", description);
     formData.append("hashTags", extractTagsToArray(description));
     formData.append("userId", userId);
@@ -285,21 +349,36 @@ const PostShare = forwardRef((props, ref) => {
 
     //close modal if open
     setIsModalOpen && setIsModalOpen(false);
-
+    showNotification({
+      id: "save-data",
+      loading: true,
+      title: "Posting",
+      message: "Please wait...",
+      autoClose: false,
+      disallowClose: true,
+      style: { zIndex: "999999" },
+    });
     //call api
     const result = await posts.tryCreatePost(formData);
 
     if (!result.ok) {
-      showNotification({
-        id: "user-data",
-        title: "Error",
-        message: `${user.status} ${user.problem}`,
-        autoClose: true,
-        disallowClose: false,
-        // style: { zIndex: "999999" },
-      });
+      // setCreatePostFailed(true);
+      // setCreatePostErrors(result.data);
+      setTimeout(() => {
+        updateNotification({
+          id: "save-data",
+          color: "red",
+          title: "Error while updating your profile",
+          message: `${result.status} ${result.problem}`,
+          icon: <IconX size={16} />,
+          autoClose: 6000,
+          style: { zIndex: "99999999" },
+        });
+      }, 3000);
+
       return;
     }
+
     // //add to posts array
     // var currentData = [...fetchList];
     // // console.log(
@@ -309,6 +388,18 @@ const PostShare = forwardRef((props, ref) => {
     // currentData.unshift(result.data);
     // setFetchList(currentData);
     // console.log(result.data, "this is the new istem we are pushing");
+
+    setTimeout(() => {
+      updateNotification({
+        id: "save-data",
+        color: "teal",
+        title: "Posted successfully",
+        message: "Success",
+        icon: <IconCheck size={16} />,
+        autoClose: 2000,
+        style: { zIndex: "99999999" },
+      });
+    }, 1000);
 
     //trigger post refresh
     setReSetPosts((oldValue) => {
@@ -327,6 +418,11 @@ const PostShare = forwardRef((props, ref) => {
     setImage(null);
     shareTextInput.current.value = "";
     setUploadFile(null);
+
+    setVideo(null);
+    setVideoPreview(null);
+    setUploadVideoFile(null);
+    setShareVideoLink(null);
   };
 
   return (
@@ -347,6 +443,11 @@ const PostShare = forwardRef((props, ref) => {
         <Form>
           <div className="PostShare">
             <div style={{ marginLeft: "2rem" }}>
+              {console.log(errors)}
+              {console.log(
+                "🚀 ~ file: PostShare.jsx:412 ~ PostShare ~ errors",
+                errors
+              )}
               <ErrorTextComponent
                 error={errors.description}
                 visible={
@@ -381,13 +482,21 @@ const PostShare = forwardRef((props, ref) => {
                   <div className="shareInput">
                     <input
                       type="text"
+                      name="externalVideoUrl"
                       ref={shareTextInput}
                       placeholder="Video Link e.g from youtube, etc..."
                       onChange={(e) => {
-                        setShareVideoLink(e.target.value);
-                        handleChange("description");
+                        const delayDebounceFn = setTimeout(() => {
+                          // console.log(searchTerm);
+                          setShareVideoLink(e.target.value);
+                          console.log(
+                            "🚀 ~ file: PostShare.jsx:437 ~ PostShare ~ e.target.value",
+                            e.target.value
+                          );
+                          handleChange("exterlVideoUrl");
+                        }, 2000);
                       }}
-                      onBlur={() => setFieldTouched("description")}
+                      onBlur={() => setFieldTouched("externalVideoUrl")}
                       style={{ width: "100%", resize: "none" }}
                     />
                   </div>
@@ -406,7 +515,7 @@ const PostShare = forwardRef((props, ref) => {
               <div className="option" style={{ color: "var(--video)" }}>
                 <Popover
                   isOpen={isPopoverOpen}
-                  positions={["bottom", "left", "right"]} // preferred positions by priority
+                  positions={["top", "left", "right"]} // preferred positions by priority
                   padding={10}
                   onClickOutside={() => setIsPopoverOpen(false)}
                   content={({ position, childRect, popoverRect }) => (
@@ -433,7 +542,16 @@ const PostShare = forwardRef((props, ref) => {
                       >
                         <div
                           className="d-flex flex-column align-items-center text-center"
-                          onClick={() => videoRef.current.click()}
+                          onClick={() => {
+                            if (!compressionProgress) {
+                              cancelImageUpload();
+                              videoRef.current.click();
+                            } else {
+                              cancelProcessingVideo();
+                              cancelImageUpload();
+                              videoRef.current.click();
+                            }
+                          }}
                         >
                           <UilUpload color="green" size="30" />
                           <small style={{ fontSize: "0.5rem" }}>
@@ -445,11 +563,13 @@ const PostShare = forwardRef((props, ref) => {
 
                         <div
                           className="d-flex flex-column align-items-center text-center"
-                          onClick={() =>
+                          onClick={() => {
                             shareVideoLink === true
                               ? setShareVideoLink(false)
-                              : setShareVideoLink(true)
-                          }
+                              : setShareVideoLink(true);
+                            cancelImageUpload();
+                            cancelProcessingVideo();
+                          }}
                         >
                           <UilLink color="blue" size="30" />
                           <small
@@ -512,40 +632,94 @@ const PostShare = forwardRef((props, ref) => {
             <div>
               {image && (
                 <div className="imagePreview">
-                  <UilTimes
-                    onClick={() => {
-                      setImage(null);
-                      setUploadFile(null);
-                    }}
-                  />
-                  {console.log(image.image)}
+                  <div className="closeButton">
+                    <UilTimes
+                      size="50"
+                      onClick={() => {
+                        setImage(null);
+                        setUploadFile(null);
+                      }}
+                    />
+                  </div>
+
                   <img src={image.image} alt="" />
                 </div>
               )}
             </div>
             <div>
+              {downloadingVideoProcessor && (
+                <span>
+                  <b>Initializing, please wait...</b>
+                </span>
+              )}
               {compressionProgress && (
-                <div className="w-100 mt-4 mb-4">
-                  <span>
-                    Processing Video...{" "}
+                <div
+                  className="w-100 d-flex
+                  flex-column
+                  justify-content-center
+                  align-items-center"
+                  style={{ marginBottom: "3rem", gap: "0.5rem" }}
+                >
+                  <div
+                    className="mt-1 mb-4 flex-column
+                  justify-content-center
+                  align-items-center"
+                    style={{
+                      height: "5rem",
+                      width: "5rem",
+                    }}
+                  >
+                    <span style={{ fontSize: "0.6rem" }}>Processing... </span>
+                    <br />
                     <span>
-                      <b>{compressionProgress}%</b>
+                      <CircularProgressbar
+                        value={compressionProgress}
+                        text={`${compressionProgress}%`}
+                      />
                     </span>
-                  </span>
+                    <br />
+                    <button
+                      className="btn btn-danger"
+                      onClick={cancelProcessingVideo}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               )}
               {videoPreview && (
                 <div className="imagePreview">
-                  <UilTimes
-                    onClick={() => {
-                      setVideoPreview(null);
-                      setUploadVideoFile(null);
-                    }}
-                  />
-                  {/* {console.log(image.image)} */}
+                  <div className="closeButton">
+                    <UilTimes
+                      size="50"
+                      onClick={() => {
+                        setVideo(null);
+                        setVideoPreview(null);
+                        setUploadVideoFile(null);
+                      }}
+                    />
+                  </div>
                   <ReactPlayer url={videoPreview.vid} controls />
                 </div>
               )}
+              {/* {shareVideoLink !== null &&
+                shareVideoLink !== false &&
+                shareVideoLink !== true && (
+                  <div className="imagePreview">
+                    <div className="closeButton">
+                      <UilTimes
+                        size="50"
+                         onClick={() => {
+                        setVideo(null);
+                        setVideoPreview(null);
+                        setUploadVideoFile(null);
+                      }}}
+                      />
+                    </div>
+
+                    <ReactPlayer url={shareVideoLink} controls />
+                  </div>
+                )} */}
             </div>
           </div>
         </Form>
