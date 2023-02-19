@@ -11,7 +11,7 @@ import Comment from "../../img/comment.png";
 import comments from "../../api/comments";
 import AuthContext from "../../auth/context";
 import { showNotification } from "@mantine/notifications";
-import { IconX } from "@tabler/icons";
+import { IconArrowLeft, IconX } from "@tabler/icons";
 import posts from "../../api/posts";
 import NameLink from "../NameLink/NameLink";
 import { useNavigate } from "react-router-dom";
@@ -106,7 +106,7 @@ const PostDetail = ({ dataObj }) => {
   };
 
   const handlePostComment = async (dataToApi, isReplyComment = false) => {
-    console.log("data to send to the api", dataToApi);
+    // console.log("data to send to the api", dataToApi);
     var { userId, comId, avatarUrl, userProfile, fullName, text, replies } =
       dataToApi;
     var formData = new FormData();
@@ -210,6 +210,27 @@ const PostDetail = ({ dataObj }) => {
   };
   return (
     <div className="Posts">
+      <div
+        className="w-100"
+        style={{
+          backgroundColor: "white",
+          display: "flex",
+          justifyContent: "left",
+          alignItems: "center",
+          cursor: "pointer",
+        }}
+        onClick={() => navigate(-1)}
+      >
+        <IconArrowLeft
+          size={35}
+          style={{
+            marginRight: "0.5rem",
+            marginLeft: "-0.5rem",
+            padding: "4px",
+          }}
+        />
+        <span> Back</span>
+      </div>
       {/* <span>
         <b>{data.name}</b>
       </span> */}

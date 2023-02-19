@@ -48,7 +48,7 @@ const Chat = () => {
 
   //configure back button for mobile
   function closeQuickView() {
-    console.log("we have been called to close");
+    // console.log("we have been called to close");
     mobile && setToggleToMobileRight(false); // do whatever you need to close this component
   }
 

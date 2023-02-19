@@ -21,15 +21,17 @@ const PostSide = ({
 
   return (
     <div className="PostSide">
-      <PostShare
-        fetchList={fetchList}
-        setFetchList={setFetchList}
-        isLoading={isLoading}
-        setIsLoading={setIsLoading}
-        userProfile={userProfile}
-        setReSetPosts={setReSetPosts}
-        ref={sharePostInputRef}
-      />
+      {!selectedPostDetail && (
+        <PostShare
+          fetchList={fetchList}
+          setFetchList={setFetchList}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          userProfile={userProfile}
+          setReSetPosts={setReSetPosts}
+          ref={sharePostInputRef}
+        />
+      )}
       <PostsCard
         fetchList={fetchList}
         handleLike={handleLike}
