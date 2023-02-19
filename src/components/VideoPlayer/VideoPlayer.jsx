@@ -1,10 +1,18 @@
 import { divide } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 
-function VideoPlayer({ src, classNameProp, poster = null, parentScrolled }) {
+function VideoPlayer({
+  src,
+  classNameProp,
+  poster = null,
+  parentScrolled,
+  muteAudio = false,
+  autoPlay = false,
+}) {
   const videoPlayerRef = useRef(null);
   const [isFirstPlay, setIsFirstPlay] = useState(true);
 
+  //withouth this gimick, the player calls the endpoint endlessly with un ordered ranges
   function handlePlay() {
     if (isFirstPlay) {
       setTimeout(() => {
@@ -43,15 +51,16 @@ function VideoPlayer({ src, classNameProp, poster = null, parentScrolled }) {
     }
   }
   return (
-    <div classNmame="w-100" style={{ borderRadius: "5px", overflow: "clip" }}>
+    <div className="w-100" style={{ borderRadius: "5px", overflow: "clip" }}>
       <video
         ref={videoPlayerRef}
         className={classNameProp}
         width="100%"
         controls
         poster={poster ? poster : ""}
-        muted="muted"
+        muted={muteAudio}
         onPlay={handlePlay}
+        autoPlay={autoPlay ? autoPlay : false}
       >
         <source src={src} type="video/mp4" preload="metadata" />
       </video>

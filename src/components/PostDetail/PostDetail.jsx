@@ -15,9 +15,10 @@ import { IconX } from "@tabler/icons";
 import posts from "../../api/posts";
 import NameLink from "../NameLink/NameLink";
 import { useNavigate } from "react-router-dom";
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 import TextWithTags from "../Reusables/TextWithHarshTags/TextWithTags";
-
+import VideoPlayer from "../VideoPlayer/VideoPlayer";
+import ReactPlayer from "react-player";
 
 const PostDetail = ({ dataObj }) => {
   //   console.log("🚀 ~ file: Posts.jsx ~ line 20 ~ Posts ~ data", data);
@@ -43,7 +44,7 @@ const PostDetail = ({ dataObj }) => {
   };
 
   const PurifyLineBreaks = (text) => {
-    const purifiedText = DOMPurify.sanitize(text, {ALLOWED_TAGS: ['br']});
+    const purifiedText = DOMPurify.sanitize(text, { ALLOWED_TAGS: ["br"] });
     return purifiedText;
   };
 
@@ -213,7 +214,7 @@ const PostDetail = ({ dataObj }) => {
         <b>{data.name}</b>
       </span> */}
       <NameLink dataObj={data} callBackFn={handleSelectProfile} />
-      {data.desc && <TextWithTags text={PurifyLineBreaks(data.desc)}/>}
+      {data.desc && <TextWithTags text={PurifyLineBreaks(data.desc)} />}
       {data.img && (
         <img
           src={data.img}
@@ -221,6 +222,48 @@ const PostDetail = ({ dataObj }) => {
           style={{ width: "100%", height: "100%", maxHeight: "100%" }}
         />
       )}
+      {data.videoUrl &&
+        (data.videoUrl.includes("localhost") ||
+          data.videoUrl.includes("kampalacentraladventist.org")) && (
+          <div className="">
+            <VideoPlayer
+              src={data.videoUrl}
+              poster={data.videoThumbnailUrl}
+              autoPlay={true}
+              muteAudio={false}
+            />
+          </div>
+        )}
+      {data.videoUrl &&
+        !(
+          data.videoUrl.includes("localhost") ||
+          data.videoUrl.includes("kampalacentraladventist.org")
+        ) && (
+          <div className="hideMobile">
+            <ReactPlayer
+              url={data.videoUrl}
+              width="100%"
+              playsinline
+              aspectRatio="16:9"
+              autoPlay
+            />
+          </div>
+        )}
+      {data.videoUrl &&
+        !(
+          data.videoUrl.includes("localhost") ||
+          data.videoUrl.includes("kampalacentraladventist.org")
+        ) && (
+          <div className="showOnMobileOnly">
+            <ReactPlayer
+              url={data.videoUrl}
+              width="100%"
+              height="100%"
+              playsinline
+              autoPlay
+            />
+          </div>
+        )}
       <div className="shareOptions">
         <img
           src={data.liked ? Liked : Like}
