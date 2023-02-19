@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { useRef } from "react";
 import PostDetail from "../PostDetail/PostDetail";
@@ -16,6 +16,24 @@ const PostsCard = ({
   hasMore,
 }) => {
   const observer = useRef();
+  const componentRef = useRef();
+  const [parentScrolled, setParentScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const newValue = Math.random().toString();
+
+      setParentScrolled(newValue);
+    };
+
+    const componentElement = componentRef.current;
+    componentElement.addEventListener("scroll", handleScroll);
+
+    return () => {
+      componentElement.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const lastPostElementRef = useCallback(
     (node) => {
       // console.log("🚀 ~ file: PostsCard.jsx ~ line 21 ~ node", node);
@@ -39,7 +57,7 @@ const PostsCard = ({
   );
 
   return fetchList ? (
-    <div className="PostsCard">
+    <div className="PostsCard" ref={componentRef}>
       {selectedPostDetail ? (
         <PostDetail dataObj={selectedPostDetail} handleLike={handleLike} />
       ) : (
@@ -51,13 +69,23 @@ const PostsCard = ({
             // );
             return (
               <div ref={lastPostElementRef} key={idx}>
-                <Posts data={data} handleLike={handleLike} idx={idx} />
+                <Posts
+                  data={data}
+                  handleLike={handleLike}
+                  idx={idx}
+                  parentScrolled={parentScrolled}
+                />
               </div>
             );
           } else {
             return (
               <div key={idx}>
-                <Posts data={data} handleLike={handleLike} idx={idx} />
+                <Posts
+                  data={data}
+                  handleLike={handleLike}
+                  idx={idx}
+                  parentScrolled={parentScrolled}
+                />
               </div>
             );
           }

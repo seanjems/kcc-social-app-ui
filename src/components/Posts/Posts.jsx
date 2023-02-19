@@ -29,9 +29,14 @@ import {
 
 import ReactPlayer from "react-player/lazy";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
-import VideoJS from "../VideoPlayer/VideoJS ";
 
-const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
+const Posts = ({
+  data,
+  idx,
+  handleLike,
+  setSelectedPostId,
+  parentScrolled,
+}) => {
   const userContext = useContext(AuthContext);
 
   const [postComments, setPostComments] = useState([]);
@@ -220,37 +225,45 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
           onClick={() => navigate(`../post/${data.id}`)}
         />
       )}
-      {data.videoUrl && (
-        <div className="hideMobile">
-          {/* <video
-            id="videoPlayer"
-            src={data.videoUrl}
-            width="650"
-            controls
-            muted="muted"
-            autoplay
-          /> */}
-          <VideoPlayer src={data.videoUrl} />
-          {/* <ReactPlayer
-            url={data.videoUrl}
-            width="100%"
-            controls
-            // playsinline
-            // aspectRatio="16:9"
-          /> */}
-        </div>
-      )}
-      {data.videoUrl && (
-        <div className="showOnMobileOnly">
-          <ReactPlayer
-            url={data.videoUrl}
-            width="100%"
-            height="100%"
-            playsinline
-            aspectRatio="16:9"
-          />
-        </div>
-      )}
+      {data.videoUrl &&
+        (data.videoUrl.includes("localhost") ||
+          data.videoUrl.includes("kampalacentraladventist.org")) && (
+          <div className="">
+            <VideoPlayer
+              src={data.videoUrl}
+              poster={data.videoThumbnailUrl}
+              parentScrolled={parentScrolled}
+            />
+          </div>
+        )}
+      {data.videoUrl &&
+        !(
+          data.videoUrl.includes("localhost") ||
+          data.videoUrl.includes("kampalacentraladventist.org")
+        ) && (
+          <div className="hideMobile">
+            <ReactPlayer
+              url={data.videoUrl}
+              width="100%"
+              playsinline
+              aspectRatio="16:9"
+            />
+          </div>
+        )}
+      {data.videoUrl &&
+        !(
+          data.videoUrl.includes("localhost") ||
+          data.videoUrl.includes("kampalacentraladventist.org")
+        ) && (
+          <div className="showOnMobileOnly">
+            <ReactPlayer
+              url={data.videoUrl}
+              width="100%"
+              height="100%"
+              playsinline
+            />
+          </div>
+        )}
       <div className="shareOptions">
         <img
           src={data.liked ? Liked : Like}

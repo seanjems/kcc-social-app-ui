@@ -1,5 +1,6 @@
-.PostsCard{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.PostsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: scroll;
 }
