@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import "./Posts.css";
 import { CommentSection } from "react-comments-section";
@@ -29,6 +29,7 @@ import {
 
 import ReactPlayer from "react-player/lazy";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
+import VideoJS from "../VideoPlayer/VideoJS ";
 
 const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
   const userContext = useContext(AuthContext);
@@ -39,6 +40,7 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [currentData, setCurrentData] = useState([]);
   const navigate = useNavigate();
+  const playerRef = useRef();
 
   useEffect(() => {
     if (commentPage > 0) {
@@ -49,6 +51,19 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
   const handleSelectProfile = (data) => {
     console.log(data, "data from call back");
     navigate(`/${data?.userName}`);
+  };
+
+  const handlePlayerReady = (player) => {
+    playerRef.current = player;
+
+    // You can handle player events here, for example:
+    // player.on("waiting", () => {
+    //   videojs.log("player is waiting");
+    // });
+
+    // player.on("dispose", () => {
+    //   videojs.log("player will dispose");
+    // });
   };
 
   const handleGetComment = async () => {
@@ -215,8 +230,7 @@ const Posts = ({ data, idx, handleLike, setSelectedPostId }) => {
             muted="muted"
             autoplay
           /> */}
-          <VideoPlayer videoUrl={data.videoUrl} />
-
+          <VideoPlayer src={data.videoUrl} />
           {/* <ReactPlayer
             url={data.videoUrl}
             width="100%"
