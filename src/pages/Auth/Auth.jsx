@@ -41,16 +41,35 @@ const Auth = (props) => {
   const [hasAccount, setHasAccount] = useState(true);
   const [accountCreated, setAccountCreated] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
+  const [processingLogin, setProcessingLogin] = useState(false);
   const [createUserFailed, setCreateUserFailed] = useState(false);
   const [createUserErrors, setCreateUserErrors] = useState([]);
 
   const loginGoogle = useGoogleLogin({
     onSuccess: async (codeResponse) => {
+      setProcessingLogin(true);
       console.log(codeResponse);
       var { code } = codeResponse;
       var result = await externalAuth.tryGetExternalAuthInit(code);
       // console.log("🚀 ~ file: Auth.jsx:50 ~ onSuccess: ~ result", result);
       //  console.log(result.data.userToken);
+      if (!result?.ok) {
+        if (result.status === 404) {
+          return setLoginFailed(true);
+        }
+        showNotification({
+          id: "user-data",
+          title: "Error",
+          message: `${
+            (result.status || result.status !== "null") && result.status
+          } ${result.problem}`,
+          autoClose: true,
+          disallowClose: false,
+          // style: { zIndex: "999999" },
+        });
+        setProcessingLogin(false);
+        return;
+      }
       const user = jwtDecode(result.data.userToken);
 
       const cleanItem = JSON.parse(user.user);
@@ -62,6 +81,7 @@ const Auth = (props) => {
         Authorization: `Bearer ${result.data.userToken}`,
       });
       //console.log("from cache", localStorage.getItem("token"));
+      setProcessingLogin(false);
     },
     flow: "auth-code",
   });
@@ -106,6 +126,7 @@ const Auth = (props) => {
   const handleLogin = async ({ userNameOrEmailAddress: email, password }) => {
     setLoginFailed(false);
     setAccountCreated(false);
+    setProcessingLogin(true);
     const result = await authorization.tryLogin(email, password);
     console.log(result);
     if (!result?.ok) {
@@ -120,6 +141,7 @@ const Auth = (props) => {
         disallowClose: false,
         // style: { zIndex: "999999" },
       });
+      setProcessingLogin(false);
       return;
     }
     //  console.log(result.data.userToken);
@@ -134,6 +156,7 @@ const Auth = (props) => {
       Authorization: `Bearer ${result.data.userToken}`,
     });
     //console.log("from cache", localStorage.getItem("token"));
+    setProcessingLogin(false);
   };
 
   const Login = () => {
@@ -206,8 +229,9 @@ const Auth = (props) => {
                   className="button sign-button"
                   type="submit"
                   onSubmit={handleSubmit}
+                  disabled={processingLogin}
                 >
-                  Login
+                  {processingLogin ? "Loading..." : "Login"}
                 </button>
               </Form>
             )}
@@ -402,7 +426,11 @@ const Auth = (props) => {
         <div className="divider">
           <div className="divider-text">OR</div>
         </div>
-        <GoogleLoginButton onClick={() => loginGoogle()} />
+        <div disabled={processingLogin}>
+          <GoogleLoginButton onClick={() => loginGoogle()}>
+            {processingLogin ? "Please wait . . ." : "Log in with Google"}
+          </GoogleLoginButton>
+        </div>
       </div>
     </div>
   );
