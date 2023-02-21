@@ -19,6 +19,7 @@ import ChatContext from "./auth/ChatContext";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { HarshTagTimeline } from "./pages/HarshTags/HarshTagTimeline";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {
   //redirect after login to intended page
@@ -278,129 +279,128 @@ function App() {
                 return "";
               }}
             /> */}
-            <NotificationsProvider position="top-right" zIndex={2077}>
-              <div className={mobile ? "mainAppSections" : ""}>
-                {/* <div>Main App Section</div>
+            <GoogleOAuthProvider clientId="308096063661-b24pphi7teq8b1kg5u6kpsbc9kfn5kfh.apps.googleusercontent.com">
+              <NotificationsProvider position="top-right" zIndex={2077}>
+                <div className={mobile ? "mainAppSections" : ""}>
+                  {/* <div>Main App Section</div>
                 <div>Mobile Launcher Section</div> */}
-                {/* main appsection */}
-                <div
-                  className="App container 
+                  {/* main appsection */}
+                  <div
+                    className="App container 
                   container container-fluid container-lg container-md container-sm container-xl container-xxl"
-                  style={isMobileChatTyping ? {} : { marginBottom: "64px" }}
-                >
-                  <div className="blurs">
-                    <div
-                      className="blur"
-                      style={{ top: "-18%", right: "0" }}
-                    ></div>
-                    <div
-                      className="blur"
-                      style={{ top: "45%", left: "-8rem " }}
-                    ></div>
-                  </div>
+                    style={isMobileChatTyping ? {} : { marginBottom: "64px" }}
+                  >
+                    <div className="blurs">
+                      <div
+                        className="blur"
+                        style={{ top: "-18%", right: "0" }}
+                      ></div>
+                      <div
+                        className="blur"
+                        style={{ top: "45%", left: "-8rem " }}
+                      ></div>
+                    </div>
 
-                  <Routes>
-                    <Route
-                      path="/auth"
-                      element={
-                        user ? (
-                          <Navigate to={from} replace />
-                        ) : (
-                          <Auth setUser={setUser} />
-                        )
-                      }
-                    />
-<Route
-                      path="/trending/:tag"
-                      element={
-                        user ? (
-                          <HarshTagTimeline setUser={setUser} replace/>
-                        ) : (
-                          <Navigate to="../auth" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/profile"
-                      element={
-                        user ? (
-                          <Profile setUser={setUser} user={user} />
-                        ) : (
-                          <Navigate to="../auth" replace />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/chat"
-                      element={
-                        user ? <Chat /> : <Navigate to="../auth" replace />
-                      }
-                    />
-                    <Route
-                      path="/"
-                      element={
-                        user ? (
-                          <Navigate to="home" replace />
-                        ) : (
-                          <Navigate to="/auth" />
-                        )
-                      }
-                    />
+                    <Routes>
+                      <Route
+                        path="/auth"
+                        element={
+                          user ? (
+                            <Navigate to={from} replace />
+                          ) : (
+                            <Auth setUser={setUser} />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/trending/:tag"
+                        element={
+                          user ? (
+                            <HarshTagTimeline setUser={setUser} replace />
+                          ) : (
+                            <Navigate to="../auth" />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/profile"
+                        element={
+                          user ? (
+                            <Profile setUser={setUser} user={user} />
+                          ) : (
+                            <Navigate to="../auth" replace />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/chat"
+                        element={
+                          user ? <Chat /> : <Navigate to="../auth" replace />
+                        }
+                      />
+                      <Route
+                        path="/"
+                        element={
+                          user ? (
+                            <Navigate to="home" replace />
+                          ) : (
+                            <Navigate to="/auth" />
+                          )
+                        }
+                      />
 
-                    <Route
-                      path="/home"
-                      element={
-                        user ? (
-                          <Home setUser={setUser} />
-                        ) : (
-                          <Navigate to="../auth" replace />
-                        )
-                      }
-                    />
+                      <Route
+                        path="/home"
+                        element={
+                          user ? (
+                            <Home setUser={setUser} />
+                          ) : (
+                            <Navigate to="../auth" replace />
+                          )
+                        }
+                      />
 
-                    <Route
-                      path="/search"
-                      element={
-                        user ? (
-                          <MobileSearch />
-                        ) : (
-                          <Navigate to="../auth" replace />
-                        )
-                      }
-                    />
-                     
-                    
-                       
-                    <Route
-                      path="/post/:postId"
-                      element={
-                        user ? (
-                          <Home setUser={setUser} />
-                        ) : (
-                          <Navigate to="../auth" />
-                        )
-                      }
-                    />
-                
-                    <Route
-                      path="/resetpassword/:resettoken"
-                      element={<ResetPassword />}
-                    />
-                    <Route
-                      path="/:userName"
-                      element={user ? <Profile /> : <Navigate to="../auth" />}
-                    />
-                     <Route
-                      path="*"
-                      element={
-                        <main style={{ padding: "1rem" }}>
-                          <p>There's nothing here!</p>
-                        </main>
-                      }
-                    />
-                  </Routes>
+                      <Route
+                        path="/search"
+                        element={
+                          user ? (
+                            <MobileSearch />
+                          ) : (
+                            <Navigate to="../auth" replace />
+                          )
+                        }
+                      />
 
-                  {/* <Routes>
+                      <Route
+                        path="/post/:postId"
+                        element={
+                          user ? (
+                            <Home setUser={setUser} />
+                          ) : (
+                            <Navigate to="../auth" />
+                          )
+                        }
+                      />
+
+                      <Route
+                        path="/resetpassword/:resettoken"
+                        element={<ResetPassword />}
+                      />
+                      <Route
+                        path="/:userName"
+                        element={user ? <Profile /> : <Navigate to="../auth" />}
+                      />
+                      <Route
+                        path="*"
+                        element={
+                          <main style={{ padding: "1rem" }}>
+                            <p>There's nothing here!</p>
+                          </main>
+                        }
+                      />
+                    </Routes>
+
+                    {/* <Routes>
                     <Route
                       path="/auth"
                       element={
@@ -486,16 +486,20 @@ function App() {
                       }
                     />
                   </Routes> */}
-                </div>
-
-                {/* Mobile Launcher */}
-                {mobile && user && !isMobileChatTyping && (
-                  <div>
-                    <NavIcons className="mobileLauncher" isLauncherBar={true} />
                   </div>
-                )}
-              </div>
-            </NotificationsProvider>
+
+                  {/* Mobile Launcher */}
+                  {mobile && user && !isMobileChatTyping && (
+                    <div>
+                      <NavIcons
+                        className="mobileLauncher"
+                        isLauncherBar={true}
+                      />
+                    </div>
+                  )}
+                </div>
+              </NotificationsProvider>
+            </GoogleOAuthProvider>
           </>
         </MantineProvider>
       </ChatContext.Provider>

@@ -2561,6 +2561,11 @@
   dependencies:
     "@babel/runtime" "^7.6.2"
 
+"@react-oauth/google@^0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@react-oauth/google/-/google-0.7.1.tgz#3a68444468a9196882b724295b8d2ab62a42596d"
+  integrity sha512-FIMKcXGAbgUinUSM7VpH9VbA6tZNcXEYgi0jmlHIT1FDs4aON80jZsPUX98/TqKznWZHY4l2J9CTL62bskr7Fg==
+
 "@restart/hooks@^0.4.6", "@restart/hooks@^0.4.7":
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.4.7.tgz#d79ca6472c01ce04389fc73d4a79af1b5e33cd39"
@@ -10386,6 +10391,11 @@ react-share@^4.4.1:
   dependencies:
     classnames "^2.3.2"
     jsonp "^0.2.1"
+
+react-social-login-buttons@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/react-social-login-buttons/-/react-social-login-buttons-3.6.1.tgz#77e5c33ac6610a29071e2ad688ef585871120763"
+  integrity sha512-DIz30W+C147s7wxwt8zgwjx5pE+gTJwtUzTNKpKZO3bEY06eLjcY1zvZ8h35hQd1Yjd7b4rLkeuZBwlLURYIfg==
 
 react-textarea-autosize@^8.3.2:
   version "8.3.4"

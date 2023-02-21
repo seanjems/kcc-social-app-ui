@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
 import "./Auth.css";
+import "./divider.scss";
 import { Navigate } from "react-router-dom";
 
 import Logo from "../../img/logo.png";
+// import googleSvg from "../../img/google.svg";
 import AuthContext from "../../auth/context";
-import testingApi from "../../api/testingApi";
-
+import { GoogleLoginButton } from "react-social-login-buttons";
 import authorization from "../../api/authorization";
 
 import { Formik, Form } from "formik";
@@ -14,7 +15,9 @@ import * as Yup from "yup";
 import ErrorTextComponent from "../../components/Reusables/ErrorTextComponent";
 import apiClient from "../../api/apiClient";
 import { showNotification } from "@mantine/notifications";
-
+import GoogleAuthButton from "../../components/ExternalAuth/GoogleAuthButton";
+import { useGoogleLogin } from "@react-oauth/google";
+import externalAuth from "../../api/externalAuth";
 //validationObjects
 const createUserFormValidation = Yup.object().shape({
   emailAddress: Yup.string().required().email().label("Email"),
@@ -40,6 +43,28 @@ const Auth = (props) => {
   const [loginFailed, setLoginFailed] = useState(false);
   const [createUserFailed, setCreateUserFailed] = useState(false);
   const [createUserErrors, setCreateUserErrors] = useState([]);
+
+  const loginGoogle = useGoogleLogin({
+    onSuccess: async (codeResponse) => {
+      console.log(codeResponse);
+      var { code } = codeResponse;
+      var result = await externalAuth.tryGetExternalAuthInit(code);
+      // console.log("🚀 ~ file: Auth.jsx:50 ~ onSuccess: ~ result", result);
+      //  console.log(result.data.userToken);
+      const user = jwtDecode(result.data.userToken);
+
+      const cleanItem = JSON.parse(user.user);
+      //console.log(cleanItem);
+      userContext.setUser(cleanItem);
+      user && localStorage.setItem("token", result.data.userToken);
+      //http headers
+      apiClient.setHeaders({
+        Authorization: `Bearer ${result.data.userToken}`,
+      });
+      //console.log("from cache", localStorage.getItem("token"));
+    },
+    flow: "auth-code",
+  });
 
   const mobile = window.innerWidth <= 768 ? true : false;
   const handleCreateUser = async (createUserInput) => {
@@ -372,7 +397,13 @@ const Auth = (props) => {
           <span>Connect and share with your church memebers all the time.</span>
         </div>
       </div>
-      <div className="a-right">{hasAccount ? <Login /> : <SignUp />}</div>
+      <div className="a-right">
+        {hasAccount ? <Login /> : <SignUp />}
+        <div className="divider">
+          <div className="divider-text">OR</div>
+        </div>
+        <GoogleLoginButton onClick={() => loginGoogle()} />
+      </div>
     </div>
   );
 };
