@@ -13,13 +13,13 @@ const MyProfileCard = ({ userProfile, profileUpdated }) => {
   const userContext = useContext(AuthContext);
 
   const IsCurrentUsersProfile = () => {
-    return userProfile.userId === userContext.user.UserId;
+    return userProfile?.userId === userContext.user?.UserId;
   };
 
   return (
     <div className="MyProfileCard">
       <div>
-        {(userProfile.lastname || userProfile.firstName) && (
+        {(userProfile?.lastname || userProfile?.firstName) && (
           <h4>
             {IsCurrentUsersProfile()
               ? "Your Bio"

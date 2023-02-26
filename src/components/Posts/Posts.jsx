@@ -54,7 +54,7 @@ const Posts = ({
   }, [commentPage]);
 
   const handleSelectProfile = (data) => {
-    console.log(data, "data from call back");
+    // console.log(data, "data from call back");
     navigate(`/${data?.userName}`);
   };
 

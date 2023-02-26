@@ -13,7 +13,8 @@ const tryUpdateProfile = (formData) =>
   apiClient.put(endpointUpdateProfile, formData);
 
 const tryGetTofollow = () => apiClient.get(endpointGetTofollow);
-const tryGetFollowing = () => apiClient.get(endpointGetFollowing);
+const tryGetFollowing = (userName, page = 1) =>
+  apiClient.get(`${endpointGetFollowing}?page=${page}&userName=${userName}`);
 const tryGetSpecificUser = (userId) =>
   apiClient.get(`${endpointGetSingleUser}${userId}`);
 const tryCreateFollowerToggle = (followObj) =>

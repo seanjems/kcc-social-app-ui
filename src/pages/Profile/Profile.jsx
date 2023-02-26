@@ -24,7 +24,7 @@ const Profile = ({ userProfileId }) => {
   const [userProfile, setUserProfile] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [refetchProfile, setRefetchProfile] = useState(false);
-  const [toFollowList, setToFollowList] = useState(null);
+  // const [toFollowList, setToFollowList] = useState(null);
   const [updateToFollow, setUpdateToFollow] = useState(false);
   const [postsPage, setPostsPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -33,7 +33,10 @@ const Profile = ({ userProfileId }) => {
   const mobile = window.innerWidth <= 768 ? true : false;
 
   let { userName } = useParams();
-  console.log("🚀 ~ file: Profile.jsx:36 ~ Profile ~ userName in the profile page", userName)
+  console.log(
+    "🚀 ~ file: Profile.jsx:36 ~ Profile ~ userName in the profile page",
+    userName
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,9 +51,9 @@ const Profile = ({ userProfileId }) => {
     getItems(userName, 1);
   }, [reSetPosts]);
 
-  useEffect(() => {
-    getToFollow();
-  }, [updateToFollow]);
+  // useEffect(() => {
+  //   getToFollow();
+  // }, [updateToFollow]);
 
   const profileUpdated = () => {
     setRefetchProfile(!refetchProfile);
@@ -141,62 +144,6 @@ const Profile = ({ userProfileId }) => {
     fetchListCopy[idx].likes = like.data.likes;
     setFetchList(fetchListCopy);
   };
-  const handleFollow = async (idx) => {
-    var toFollowListBackup = JSON.parse(JSON.stringify(toFollowList));
-    var toFollowListCopy = [...toFollowList];
-    toFollowListCopy.splice(idx, 1);
-    console.log(
-      "after splicing the array",
-      toFollowListCopy,
-      toFollowListBackup
-    );
-    setToFollowList(toFollowListCopy);
-
-    //update backend server
-
-    var result = await profile.tryCreateFollowerToggle({
-      toFollowId: toFollowListBackup[idx]?.userId,
-    });
-
-    if (!result.ok) {
-      showNotification({
-        id: "save-data",
-        icon: <IconX size={16} />,
-        title: "Error",
-        message: `${result.status ? result.status : ""} ${result.problem}`,
-        autoClose: true,
-        disallowClose: false,
-        style: { zIndex: "999999" },
-      });
-      setToFollowList(toFollowListBackup);
-      return;
-    }
-
-    //refetch follow suggestions if all followed
-    if (toFollowListBackup.length === 1) {
-      setUpdateToFollow(!updateToFollow);
-    }
-  };
-  const getToFollow = async () => {
-    //var userId = userProfileId ? userProfileId : userContext.user.UserId;
-    // console.log("userId and user context", userContext, userId);
-
-    var result = await profile.tryGetTofollow();
-    if (!result.ok) {
-      showNotification({
-        id: "save-data",
-        icon: <IconX size={16} />,
-        title: "Error",
-        message: `${result.status ? result.status : ""} ${result.problem}`,
-        autoClose: true,
-        disallowClose: false,
-        style: { zIndex: "999999" },
-      });
-      return;
-    }
-
-    setToFollowList(result.data);
-  };
 
   const getUserProfile = async (userProfileName) => {
     var userId = userProfileName ? null : userContext.user.UserId;
@@ -231,7 +178,7 @@ const Profile = ({ userProfileId }) => {
   };
 
   const IsCurrentUsersProfile = () => {
-    return userProfile.userId === userContext.user.UserId;
+    return userProfile?.userId === userContext.user.UserId;
   };
   return (
     <div className="Profile">
@@ -249,10 +196,7 @@ const Profile = ({ userProfileId }) => {
           userProfile={userProfile}
           profileUpdated={profileUpdated}
         />
-        <FollowersCard
-          toFollowList={toFollowList}
-          handleFollow={handleFollow}
-        />
+        <FollowersCard userName={userName} />
       </div>
       <div className="ProfileCenter" style={{ display: "relative" }}>
         <div style={{ position: "relative" }}>
