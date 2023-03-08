@@ -20,7 +20,7 @@ import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { HarshTagTimeline } from "./pages/HarshTags/HarshTagTimeline";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-
+import { requestForToken } from "./firebase";
 function App() {
   //redirect after login to intended page
   let location = useLocation();
@@ -28,6 +28,7 @@ function App() {
   const [from, setFrom] = useState(
     location?.key === "default" ? location.pathname : "../home"
   );
+
   //console.log("locationa and from value", location, from);
   const existingLogin = () => {
     var token = localStorage.getItem("token");
@@ -54,7 +55,9 @@ function App() {
   useEffect(() => {
     existingLogin();
   }, []);
-
+  useEffect(() => {
+    requestForToken();
+  }, []);
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (!connection && user) {

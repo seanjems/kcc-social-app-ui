@@ -131,6 +131,8 @@ const Auth = (props) => {
     console.log(result);
     if (!result?.ok) {
       if (result.status === 404) {
+        setProcessingLogin(false);
+
         return setLoginFailed(true);
       }
       showNotification({

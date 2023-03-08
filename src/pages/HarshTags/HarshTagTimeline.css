@@ -1,9 +1,9 @@
 .HarshTagTimeline {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: 20rem auto 20rem;
-    position: relative;
-    height: 100%;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 20rem auto 20rem;
+  position: relative;
+  height: 100%;
 }
 
 /* .Home>:nth-child(1){
@@ -19,13 +19,11 @@
     
 } */
 .hideMobile {
-    display: block;
+  display: block;
 }
-.showOnMobileOnly{
-    display: none;
+.showOnMobileOnly {
+  display: none;
 }
-
-
 
 /* @media screen and (max-width:930px) {
     .Home {
@@ -41,31 +39,30 @@
     }
 
 } */
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
+  .Home {
+    grid-template-columns: auto;
+  }
 
-    .Home {
-        grid-template-columns: auto;
-    }
+  .ProfileSide {
+    display: none;
+  }
 
-    .ProfileSide {
-        display: none
-    }
+  .RightSide {
+    display: none;
+  }
 
-    .RightSide {
-        display: none;
-    }
-
-    /* .PostShare  {
+  /* .PostShare  {
         display:none
     } */
 
-    .hideMobile {
-        display: none;
-    }
-    .showOnMobileOnly{
-        display: block;
-    }
-    /* .Auth {
+  .hideMobile {
+    display: none !important;
+  }
+  .showOnMobileOnly {
+    display: block;
+  }
+  /* .Auth {
         max-height: 90vh;
     }
 
@@ -77,27 +74,22 @@
         max-height: 90vh;
     } */
 
-    .App {
-        display: flex;
-        flex-direction: column;
-        /* justify-content: end; */
-        padding-top: 1rem;
-    }
+  .App {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: end; */
+    padding-top: 1rem;
+  }
 
+  .navIcons {
+    justify-content: space-around;
+    background-color: white;
+  }
 
-    .navIcons {
-        justify-content: space-around;
-        background-color: white;
-    }
-
-    .isMobileSearch {
-
-        display: grid;
-        gap: 0rem;
-        grid-template-columns: auto !important;
-        position: relative;
-    }
-  
-
-
+  .isMobileSearch {
+    display: grid;
+    gap: 0rem;
+    grid-template-columns: auto !important;
+    position: relative;
+  }
 }
