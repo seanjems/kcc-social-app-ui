@@ -9,6 +9,10 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 const FollowersCard = (userName = null) => {
   const [toFollowList, setToFollowList] = useState();
+  console.log(
+    "🚀 ~ file: FollowersCard.jsx:12 ~ FollowersCard ~ toFollowList:",
+    toFollowList
+  );
   const [followersList, setFollowersList] = useState();
   const [page, setPage] = useState(1);
   const [updateToFollow, setUpdateToFollow] = useState(false);
@@ -135,7 +139,7 @@ const FollowersCard = (userName = null) => {
                   <div className="followername">
                     <span className="FollowerName">{`${
                       follower.firstName ? follower.firstName : ""
-                    } ${follower.lastname ? follower.lastname : ""}`}</span>
+                    } ${follower.lastName ? follower.lastName : ""}`}</span>
                     {follower.userName && <span>@{follower.userName}</span>}
                   </div>
                 </div>
