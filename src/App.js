@@ -326,6 +326,16 @@ function App() {
                         }
                       />
                       <Route
+                        path="/profile/:editProfile"
+                        element={
+                          user ? (
+                            <Profile setUser={setUser} user={user} />
+                          ) : (
+                            <Navigate to="../auth" replace />
+                          )
+                        }
+                      />
+                      <Route
                         path="/profile"
                         element={
                           user ? (

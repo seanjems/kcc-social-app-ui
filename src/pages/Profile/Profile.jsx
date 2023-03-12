@@ -32,7 +32,7 @@ const Profile = ({ userProfileId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const mobile = window.innerWidth <= 768 ? true : false;
 
-  let { userName } = useParams();
+  let { userName, editProfile } = useParams();
   console.log(
     "🚀 ~ file: Profile.jsx:36 ~ Profile ~ userName in the profile page",
     userName
@@ -180,6 +180,11 @@ const Profile = ({ userProfileId }) => {
   const IsCurrentUsersProfile = () => {
     return userProfile?.userId === userContext.user.UserId;
   };
+  useEffect(() => {
+    if (editProfile === "edit") {
+      setIsModalOpen(true);
+    }
+  }, []);
   return (
     <div className="Profile">
       <ProfileModal

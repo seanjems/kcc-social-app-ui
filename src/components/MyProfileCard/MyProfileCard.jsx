@@ -4,12 +4,16 @@ import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal/ProfileModal";
 import AuthContext from "../../auth/context";
 
-const MyProfileCard = ({ userProfile, profileUpdated }) => {
+const MyProfileCard = ({
+  userProfile,
+  profileUpdated,
+  editProfile = false,
+}) => {
   // console.log(
   // "🚀 ~ file: MyProfileCard.jsx ~ line 8 ~ MyProfileCard ~ userProfile",
   // userProfile
   // );
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(editProfile);
   const userContext = useContext(AuthContext);
 
   const IsCurrentUsersProfile = () => {

@@ -1,0 +1,28 @@
+.nameBold {
+  margin: 0px;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: "DM Sans", sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 240px;
+}
+
+.nameGrey {
+  margin: 0px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-family: "DM Sans", sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(119, 126, 137);
+  font-weight: 400;
+  width: 240px;
+}
+.nameSeparator {
+  margin: 0px;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+}
