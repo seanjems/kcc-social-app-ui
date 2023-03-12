@@ -218,10 +218,7 @@ const ResetPassword = (props) => {
         <br />
         <br />
         <div>
-          <a
-            href="https://kampalacentraladventist.org"
-            className="btn btn-primary btn-small align-self-centre"
-          >
+          <a href="/" className="btn btn-primary btn-small align-self-centre">
             Back to Home
           </a>
         </div>

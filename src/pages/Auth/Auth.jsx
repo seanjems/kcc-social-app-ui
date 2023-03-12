@@ -8,7 +8,7 @@ import Logo from "../../img/logo.png";
 import AuthContext from "../../auth/context";
 import { GoogleLoginButton } from "react-social-login-buttons";
 import authorization from "../../api/authorization";
-
+import { IconCheck } from "@tabler/icons";
 import { Formik, Form } from "formik";
 import jwtDecode from "jwt-decode";
 import * as Yup from "yup";
@@ -36,9 +36,14 @@ const loginFormValidation = Yup.object().shape({
   password: Yup.string().required().min(4).label("Password"),
 });
 
+const ResetFormValidation = Yup.object().shape({
+  userNameOrEmailAddress: Yup.string().required().email().label("Email"),
+});
+
 const Auth = (props) => {
   const userContext = useContext(AuthContext);
   const [hasAccount, setHasAccount] = useState(true);
+  const [resetPassWord, setResetPassword] = useState(false);
   const [accountCreated, setAccountCreated] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
   const [processingLogin, setProcessingLogin] = useState(false);
@@ -161,6 +166,43 @@ const Auth = (props) => {
     setProcessingLogin(false);
   };
 
+  const handleReset = async ({ userNameOrEmailAddress: email }) => {
+    console.log("🚀 ~ file: Auth.jsx:166 ~ handleReset ~ email:", email);
+    setLoginFailed(false);
+    setAccountCreated(false);
+    setProcessingLogin(true);
+    const result = await authorization.tryResetPass(email);
+    console.log(result);
+    if (!result?.ok) {
+      if (result.status === 404) {
+        setProcessingLogin(false);
+
+        return setLoginFailed(true);
+      }
+      showNotification({
+        id: "user-data",
+        title: "Error",
+        message: `${result.status && result.status} ${result.problem}`,
+        autoClose: true,
+        disallowClose: false,
+        // style: { zIndex: "999999" },
+      });
+      setProcessingLogin(false);
+      return;
+    }
+    showNotification({
+      id: "user-data",
+      title: "Email sent",
+      icon: <IconCheck size={16} />,
+      message: `Check your email for reset link`,
+      autoClose: true,
+      disallowClose: false,
+      // style: { zIndex: "999999" },
+    });
+    setHasAccount(true);
+    setResetPassword(false);
+    setProcessingLogin(false);
+  };
   const Login = () => {
     return (
       <>
@@ -196,7 +238,8 @@ const Auth = (props) => {
                 <div>
                   <input
                     type="text"
-                    placeholder="Username"
+                    name="userNameOrEmailAddress"
+                    placeholder="Email Address"
                     onBlur={() => setFieldTouched("userNameOrEmailAddress")}
                     className="formInput"
                     onChange={handleChange("userNameOrEmailAddress")}
@@ -226,7 +269,9 @@ const Auth = (props) => {
                 <span onClick={() => setHasAccount(!hasAccount)}>
                   Don't have an account? Signup
                 </span>
-
+                <span onClick={() => setResetPassword(true)}>
+                  Forgot Password? Reset
+                </span>
                 <button
                   className="button sign-button"
                   type="submit"
@@ -234,6 +279,79 @@ const Auth = (props) => {
                   disabled={processingLogin}
                 >
                   {processingLogin ? "Loading..." : "Login"}
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </>
+    );
+  };
+
+  const ResetPassWord = () => {
+    return (
+      <>
+        <div className="inputForm">
+          <Formik
+            initialValues={{ userNameOrEmailAddress: "" }}
+            onSubmit={(values) => {
+              handleReset(values);
+            }}
+            validationSchema={ResetFormValidation}
+          >
+            {({
+              handleChange,
+              handleSubmit,
+              errors,
+              setFieldTouched,
+              touched,
+            }) => (
+              <Form>
+                <ErrorTextComponent
+                  error="Check your email for Reset link"
+                  visible={accountCreated}
+                  greenMessage={true}
+                />
+
+                <h2>Reset Password</h2>
+
+                <ErrorTextComponent
+                  error="Invalid Username and/or Password"
+                  visible={loginFailed}
+                />
+
+                <div>
+                  <input
+                    type="text"
+                    name="userNameOrEmailAddress"
+                    placeholder="Email Address"
+                    onBlur={() => setFieldTouched("userNameOrEmailAddress")}
+                    className="formInput"
+                    onChange={handleChange("userNameOrEmailAddress")}
+                  />
+                </div>
+
+                <ErrorTextComponent
+                  error={errors.userNameOrEmailAddress}
+                  visible={touched.userNameOrEmailAddress}
+                />
+
+                <span
+                  onClick={() => {
+                    setResetPassword(false);
+                    setHasAccount(true);
+                  }}
+                >
+                  Back to Login
+                </span>
+
+                <button
+                  className="button sign-button"
+                  type="submit"
+                  onSubmit={handleSubmit}
+                  disabled={processingLogin}
+                >
+                  {processingLogin ? "Loading..." : "Reset"}
                 </button>
               </Form>
             )}
@@ -424,7 +542,13 @@ const Auth = (props) => {
         </div>
       </div>
       <div className="a-right">
-        {hasAccount ? <Login /> : <SignUp />}
+        {resetPassWord ? (
+          <ResetPassWord />
+        ) : hasAccount ? (
+          <Login />
+        ) : (
+          <SignUp />
+        )}
         <div className="divider">
           <div className="divider-text">OR</div>
         </div>
