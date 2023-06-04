@@ -105,6 +105,15 @@ const NavIcons = ({ isLauncherBar }) => {
           <Icon.Mail size={14} className="mr-50" />
           <span className="align-middle">My Inbox</span>
         </DropdownItem>
+        <DropdownItem
+          tag="a"
+          href="#"
+          className="dropdownPopupItem"
+          onClick={() => navigate("../article")}
+        >
+          <Icon.List size={14} className="mr-50" />
+          <span className="align-middle">Articles</span>
+        </DropdownItem>
         {/* <DropdownItem
           tag="a"
           href="#"

@@ -21,6 +21,12 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { HarshTagTimeline } from "./pages/HarshTags/HarshTagTimeline";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { requestForToken } from "./firebase";
+import PrivacyPolicy from "./pages/StaticPages/PrivacyPolicy";
+import TermsOfService from "./pages/StaticPages/TermsOfService";
+import BlogPostPage from "./pages/BlogPostEditor/BlogPostPage";
+import BlogTable from "./components/BlogEditor/BlogsTable";
+import BlogArticlesTablePage from "./pages/BlogPostEditor/BlogArticlesTablePage";
+import BlogPostForm from "./components/BlogEditor/BlogEditoUpdate";
 function App() {
   //redirect after login to intended page
   let location = useLocation();
@@ -336,6 +342,16 @@ function App() {
                         }
                       />
                       <Route
+                        exact
+                        path="/termsofservice"
+                        element={<TermsOfService />}
+                      />
+                      <Route
+                        exact
+                        path="/privacypolicy"
+                        element={<PrivacyPolicy />}
+                      />
+                      <Route
                         path="/profile"
                         element={
                           user ? (
@@ -372,7 +388,40 @@ function App() {
                           )
                         }
                       />
-
+                      <Route
+                        path="/article"
+                        exact
+                        element={
+                          user ? (
+                            <BlogArticlesTablePage
+                              setUser={setUser}
+                              user={user}
+                            />
+                          ) : (
+                            <Navigate to="../auth" replace />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/article/create"
+                        element={
+                          user ? (
+                            <BlogPostPage setUser={setUser} user={user} />
+                          ) : (
+                            <Navigate to="../auth" replace />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/article/edit"
+                        element={
+                          user ? (
+                            <BlogPostForm setUser={setUser} user={user} />
+                          ) : (
+                            <Navigate to="../auth" replace />
+                          )
+                        }
+                      />
                       <Route
                         path="/search"
                         element={
