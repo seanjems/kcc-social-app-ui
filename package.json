@@ -57,7 +57,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docker:repush": "docker build -t seanjems/billtrickcentral:sdakccsocialui . && docker push seanjems/billtrickcentral:sdakccsocialui"
   },
   "eslintConfig": {
     "extends": [
